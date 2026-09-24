@@ -1,0 +1,237 @@
+.public-profile-container {
+  background-color: var(--color-warm-white, #FAFAF9);
+  min-height: 100vh;
+  padding-bottom: 6rem;
+}
+
+/* Header */
+.public-profile-header {
+  background-color: var(--color-dark-navy, #0B192C);
+  color: white;
+  padding: 6rem 2rem 4rem;
+  text-align: center;
+}
+
+.profile-header-content {
+  max-width: 800px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.public-profile-img {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 4px solid white;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+}
+
+.public-profile-name {
+  font-family: var(--font-display, 'Playfair Display', serif);
+  font-size: 3rem;
+  margin: 0 0 0.5rem 0;
+}
+
+.public-profile-category {
+  color: var(--color-sage, #B2C5B2);
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin: 0 0 1rem 0;
+}
+
+.public-profile-location {
+  color: #D1D5DB;
+  margin: 0 0 1.5rem 0;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.verified-badge {
+  display: inline-block;
+  background-color: var(--color-primary-green, #2E5C53);
+  color: white;
+  padding: 0.25rem 0.75rem;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  margin-bottom: 2rem;
+}
+
+.header-socials {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.social-link-btn {
+  background-color: rgba(255,255,255,0.1);
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  text-decoration: none;
+  font-weight: 500;
+  transition: background-color 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.social-link-btn:hover {
+  background-color: rgba(255,255,255,0.2);
+}
+
+/* Content Body */
+.public-profile-body {
+  max-width: 1000px;
+  margin: -2rem auto 0;
+  padding: 0 2rem;
+  position: relative;
+  z-index: 10;
+}
+
+.profile-section-card {
+  background: white;
+  border-radius: 8px;
+  padding: 3rem;
+  margin-bottom: 2rem;
+  border: 1px solid var(--color-subtle-border, #E5E5E5);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.02);
+}
+
+.profile-section-card h3 {
+  font-family: var(--font-display, 'Playfair Display', serif);
+  font-size: 1.75rem;
+  color: var(--color-dark-navy, #0B192C);
+  margin-top: 0;
+  margin-bottom: 1.5rem;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 1rem;
+}
+
+.profile-bio-text {
+  font-size: 1.1rem;
+  line-height: 1.8;
+  color: #444;
+  white-space: pre-wrap;
+}
+
+/* Stats */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 2rem;
+}
+
+.stat-item {
+  text-align: center;
+}
+
+.stat-value {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: var(--color-primary-green, #2E5C53);
+  margin-bottom: 0.5rem;
+}
+
+.stat-label {
+  color: #666;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-size: 0.9rem;
+}
+
+/* Portfolio */
+.portfolio-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.5rem;
+}
+
+.portfolio-card {
+  border: 1px solid #eee;
+  border-radius: 8px;
+  padding: 1.5rem;
+  transition: box-shadow 0.2s;
+}
+
+.portfolio-card:hover {
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+}
+
+.portfolio-card h4 {
+  margin: 0 0 0.5rem 0;
+  color: var(--color-dark-navy, #0B192C);
+}
+
+.portfolio-card p {
+  color: #666;
+  font-size: 0.9rem;
+  margin-bottom: 1rem;
+}
+
+.portfolio-link {
+  color: var(--color-primary-green, #2E5C53);
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.portfolio-link:hover {
+  text-decoration: underline;
+}
+
+/* CTA */
+.profile-cta-section {
+  text-align: center;
+  background-color: var(--color-primary-green, #2E5C53);
+  color: white;
+}
+
+.profile-cta-section h3 {
+  color: white;
+  border-bottom: none;
+}
+
+.profile-cta-section p {
+  margin-bottom: 2rem;
+  font-size: 1.1rem;
+}
+
+.btn-contact-creator {
+  display: inline-block;
+  background-color: white;
+  color: var(--color-primary-green, #2E5C53);
+  padding: 1rem 2.5rem;
+  border-radius: 4px;
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 1.1rem;
+  transition: transform 0.2s;
+}
+
+.btn-contact-creator:hover {
+  transform: translateY(-2px);
+}
+
+@media (max-width: 768px) {
+  .public-profile-header {
+    padding: 4rem 1rem 3rem;
+  }
+  .public-profile-name {
+    font-size: 2.5rem;
+  }
+  .public-profile-body {
+    padding: 0 1rem;
+  }
+  .profile-section-card {
+    padding: 2rem;
+  }
+}

@@ -1,0 +1,396 @@
+/* ══════════════════════════════════════════════════════
+   CREATOR APPLY PAGE  ·  /for-creators/register
+   Matches existing C-PEB brand: warm, editorial, premium
+   ══════════════════════════════════════════════════════ */
+
+/* ── Page shell ──────────────────────────────────────── */
+.ca-page {
+  min-height: 100vh;
+  background: var(--bg, #FAFAF9);
+  display: flex;
+  align-items: stretch;
+}
+
+/* ── Two-column layout ───────────────────────────────── */
+.ca-inner {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 5rem 2rem;
+  gap: 6rem;
+  align-items: center;
+}
+
+/* ── LEFT — branding ─────────────────────────────────── */
+.ca-left {
+  position: sticky;
+  top: 100px;
+  align-self: start;
+}
+
+.ca-eyebrow {
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  color: var(--color-primary-green, #2E5C53);
+  text-transform: uppercase;
+  margin-bottom: 1.25rem;
+}
+
+.ca-heading {
+  font-family: var(--font-display, 'Playfair Display', Georgia, serif);
+  font-size: clamp(2.25rem, 4vw, 3.25rem);
+  font-weight: 700;
+  line-height: 1.1;
+  color: var(--color-dark-navy, #0B192C);
+  margin-bottom: 1.25rem;
+  letter-spacing: -0.02em;
+}
+
+.ca-subtext {
+  font-size: 1rem;
+  line-height: 1.7;
+  color: var(--text-2, #555);
+  margin-bottom: 2rem;
+  max-width: 400px;
+}
+
+.ca-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  margin-bottom: 2.5rem;
+}
+
+.ca-tags span {
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  color: var(--text-3, #999);
+  text-transform: uppercase;
+}
+
+.ca-perks {
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+}
+
+.ca-perk {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-size: 0.9rem;
+  color: var(--text-2, #555);
+  font-weight: 500;
+}
+
+.ca-perk-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--color-primary-green, #2E5C53);
+  flex-shrink: 0;
+}
+
+/* ── RIGHT — form ────────────────────────────────────── */
+.ca-right {
+  width: 100%;
+}
+
+.ca-form {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+/* ── Field ───────────────────────────────────────────── */
+.ca-field {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 1.25rem;
+}
+
+.ca-field label {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--color-dark-navy, #0B192C);
+  margin-bottom: 0.45rem;
+  letter-spacing: 0.01em;
+}
+
+.ca-req {
+  color: #B91C1C;
+  margin-left: 2px;
+}
+
+.ca-field input,
+.ca-field select {
+  height: 52px;
+  padding: 0 1rem;
+  border: 1px solid #D9DDD8;
+  border-radius: 8px;
+  font-family: inherit;
+  font-size: 0.95rem;
+  color: var(--color-dark-navy, #0B192C);
+  background: #FFFFFF;
+  outline: none;
+  transition: border-color 0.18s, box-shadow 0.18s;
+  width: 100%;
+  box-sizing: border-box;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.ca-field input:focus,
+.ca-field select:focus,
+.ca-phone-code:focus {
+  border-color: var(--color-primary-green, #2E5C53);
+  box-shadow: 0 0 0 3px rgba(46, 92, 83, 0.1);
+}
+
+.ca-field input.ca-input-err,
+.ca-field select.ca-input-err {
+  border-color: #DC2626;
+  background: #FEF2F2;
+}
+
+.ca-err {
+  font-size: 0.78rem;
+  color: #DC2626;
+  margin-top: 0.3rem;
+  font-weight: 500;
+}
+
+/* ── Select wrapper (custom chevron) ─────────────────── */
+.ca-select-wrap {
+  position: relative;
+}
+
+.ca-select-wrap::after {
+  content: '';
+  position: absolute;
+  right: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 0;
+  height: 0;
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-top: 5px solid #888;
+  pointer-events: none;
+}
+
+.ca-select-wrap select {
+  padding-right: 2.5rem;
+}
+
+/* ── Phone row ───────────────────────────────────────── */
+.ca-phone-row {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.ca-phone-code {
+  height: 52px;
+  width: 108px !important;   /* must override .ca-field select { width:100% } */
+  flex: 0 0 108px;
+  padding: 0 0.75rem;
+  border: 1px solid #D9DDD8;
+  border-radius: 8px;
+  font-family: inherit;
+  font-size: 0.88rem;
+  color: var(--color-dark-navy, #0B192C);
+  background: #FFFFFF;
+  outline: none;
+  cursor: pointer;
+  -webkit-appearance: none;
+  appearance: none;
+  transition: border-color 0.18s, box-shadow 0.18s;
+}
+
+.ca-phone-row input {
+  flex: 1 1 0;
+  width: 0 !important;       /* override .ca-field input { width:100% } */
+  min-width: 0;
+}
+
+/* ── Optional toggle ─────────────────────────────────── */
+.ca-optional-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  background: none;
+  border: none;
+  padding: 0;
+  font-family: inherit;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--color-primary-green, #2E5C53);
+  cursor: pointer;
+  margin-bottom: 1.25rem;
+  transition: opacity 0.15s;
+}
+
+.ca-optional-toggle:hover { opacity: 0.7; }
+
+/* ── Optional fields ─────────────────────────────────── */
+.ca-optional-fields {
+  background: #F8FAF9;
+  border: 1px solid #E2E8E6;
+  border-radius: 10px;
+  padding: 1.25rem 1.25rem 0.25rem;
+  margin-bottom: 1.25rem;
+}
+
+/* ── Submit button ───────────────────────────────────── */
+.ca-submit-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  height: 52px;
+  padding: 0 2rem;
+  background: var(--color-dark-navy, #0B192C);
+  color: #ffffff;
+  border: none;
+  border-radius: 8px;
+  font-family: inherit;
+  font-size: 0.95rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.15s;
+  margin-top: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.ca-submit-btn:hover:not(:disabled) {
+  background: #1a2e42;
+  transform: translateY(-1px);
+}
+
+.ca-submit-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* ── Microcopy ───────────────────────────────────────── */
+.ca-microcopy {
+  font-size: 0.82rem;
+  color: var(--text-2, #666);
+  margin-bottom: 0.4rem;
+  line-height: 1.5;
+}
+
+.ca-privacy {
+  font-size: 0.76rem;
+  color: var(--text-3, #999);
+  line-height: 1.5;
+  margin: 0;
+}
+
+/* ── Server error ────────────────────────────────────── */
+.ca-server-error {
+  background: #FEF2F2;
+  border: 1px solid #FCA5A5;
+  color: #B91C1C;
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  font-size: 0.88rem;
+  font-weight: 500;
+  margin-bottom: 1.25rem;
+}
+
+/* ── Success screen ──────────────────────────────────── */
+.ca-success-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  width: 100%;
+  padding: 4rem 2rem;
+}
+
+.ca-success-box {
+  text-align: center;
+  max-width: 480px;
+}
+
+.ca-success-badge {
+  display: inline-block;
+  background: #EEF9F2;
+  color: var(--color-primary-green, #2E5C53);
+  border: 1px solid #A7F3D0;
+  border-radius: 100px;
+  padding: 0.35rem 1rem;
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-bottom: 1.5rem;
+}
+
+.ca-success-box h1 {
+  font-family: var(--font-display, 'Playfair Display', Georgia, serif);
+  font-size: 2.25rem;
+  font-weight: 700;
+  color: var(--color-dark-navy, #0B192C);
+  margin-bottom: 1rem;
+  letter-spacing: -0.02em;
+}
+
+.ca-success-box p {
+  font-size: 1rem;
+  color: var(--text-2, #555);
+  line-height: 1.7;
+  margin-bottom: 2rem;
+}
+
+.ca-btn-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: var(--color-dark-navy, #0B192C);
+  color: #ffffff;
+  text-decoration: none;
+  padding: 0.85rem 1.75rem;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-weight: 700;
+  transition: background 0.2s;
+}
+
+.ca-btn-back:hover { background: #1a2e42; }
+
+/* ── Responsive ──────────────────────────────────────── */
+@media (max-width: 900px) {
+  .ca-inner {
+    grid-template-columns: 1fr;
+    gap: 2.5rem;
+    padding: 3rem 1.5rem;
+  }
+
+  .ca-left {
+    position: static;
+    text-align: center;
+  }
+
+  .ca-subtext { max-width: 100%; }
+
+  .ca-tags { justify-content: center; }
+  .ca-perks { align-items: flex-start; }
+
+  .ca-submit-btn { width: 100%; }
+}
+
+@media (max-width: 480px) {
+  .ca-heading { font-size: 1.9rem; }
+
+  .ca-phone-code { width: 90px; }
+
+  .ca-inner { padding: 2rem 1.25rem; }
+}

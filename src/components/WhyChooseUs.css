@@ -1,0 +1,455 @@
+/* ═══════════════════════════════════════════════════
+   WhyChooseUs.css — Editorial Redesign
+   The C-PEB Advantage: 2-Sided Layout, Flat Principles
+   List, Continuous Timeline & Image Crossfade
+   ═══════════════════════════════════════════════════ */
+
+.wcu-section {
+  padding: 7rem 0 6rem;
+  background-color: var(--bg-2);
+  border-top: 1px solid var(--border);
+  position: relative;
+  overflow: hidden;
+}
+
+.wcu-container {
+  max-width: 1260px;
+  margin: 0 auto;
+  padding: 0 48px;
+}
+
+/* ── 12-Column Grid ── */
+.wcu-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+  gap: 5.5rem;
+  align-items: start;
+}
+
+/* ── Left Column: Editorial Content & Visual Frame ── */
+.wcu-left {
+  position: sticky;
+  top: 6rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.wcu-eyebrow {
+  display: block;
+  font-family: var(--font-head);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text-3);
+  margin-bottom: 1.15rem;
+}
+
+.wcu-heading {
+  font-family: var(--font-head);
+  font-size: clamp(2.2rem, 3.6vw, 3.1rem);
+  font-weight: 800;
+  line-height: 1.14;
+  letter-spacing: -0.03em;
+  color: var(--text-1);
+  margin-bottom: 1.35rem;
+}
+
+.wcu-heading em {
+  font-family: Georgia, 'Times New Roman', serif;
+  font-style: italic;
+  font-weight: 400;
+  color: var(--green-mid);
+}
+
+.wcu-lead {
+  font-size: 1.02rem;
+  color: var(--text-2);
+  line-height: 1.7;
+  margin-bottom: 2rem;
+  max-width: 480px;
+}
+
+/* ── Trust Statement Pill / Bar ── */
+.wcu-trust-block {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.65rem;
+  padding: 0.65rem 1.15rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  margin-bottom: 2.5rem;
+  width: fit-content;
+}
+
+.wcu-trust-dash {
+  color: var(--green-mid);
+  font-weight: 700;
+  font-size: 1rem;
+}
+
+.wcu-trust-content {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+  font-family: var(--font-head);
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-1);
+}
+
+.wcu-trust-dot {
+  color: var(--green-mid);
+  font-weight: 900;
+}
+
+/* ── Visual Frame ── */
+.wcu-visual-wrap {
+  width: 100%;
+  max-width: 490px;
+}
+
+.wcu-visual-frame {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.05);
+}
+
+.wcu-visual-img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  transform: scale(1.03);
+  transition: opacity 0.4s ease, transform 0.45s ease;
+  pointer-events: none;
+}
+
+.wcu-visual-img.is-active {
+  opacity: 1;
+  transform: scale(1);
+  z-index: 1;
+}
+
+/* Subtle corner crosshairs */
+.wcu-frame-crosshair {
+  position: absolute;
+  font-family: monospace;
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.85);
+  z-index: 3;
+  pointer-events: none;
+  line-height: 1;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+}
+.wcu-frame-tl { top: 12px; left: 12px; }
+.wcu-frame-tr { top: 12px; right: 12px; }
+.wcu-frame-bl { bottom: 12px; left: 12px; }
+.wcu-frame-br { bottom: 12px; right: 12px; }
+
+/* Floating micro-badge */
+.wcu-visual-badge {
+  position: absolute;
+  bottom: 14px;
+  left: 14px;
+  z-index: 2;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.4rem 0.85rem;
+  background: rgba(15, 23, 42, 0.82);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 100px;
+  color: #ffffff;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+}
+
+.wcu-badge-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--green-mid);
+  box-shadow: 0 0 8px var(--green-mid);
+}
+
+.wcu-visual-footer {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  margin-top: 0.85rem;
+  font-family: var(--font-head);
+  font-size: 0.72rem;
+  color: var(--text-3);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.wcu-vf-divider {
+  color: var(--border);
+}
+
+/* ── Right Column: Flat Editorial List ── */
+.wcu-right {
+  display: flex;
+  flex-direction: column;
+}
+
+.wcu-list {
+  display: flex;
+  flex-direction: column;
+}
+
+.wcu-item {
+  position: relative;
+  display: grid;
+  grid-template-columns: 24px 1fr;
+  gap: 1.5rem;
+  padding: 2.25rem 0;
+  border-bottom: 1px solid var(--border);
+  outline: none;
+  cursor: pointer;
+  transition: border-color 0.3s ease;
+}
+
+.wcu-item:first-child {
+  padding-top: 0.5rem;
+}
+
+.wcu-item:last-child {
+  border-bottom: none;
+}
+
+/* ── Continuous Vertical Timeline Gutter ── */
+.wcu-item-gutter {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.wcu-node-marker {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  border: 1.5px solid var(--border);
+  background: var(--surface);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 5px;
+  transition: border-color 0.3s ease, background 0.3s ease;
+  z-index: 2;
+}
+
+.wcu-node-dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: transparent;
+  transition: background 0.3s ease;
+}
+
+.wcu-line-segment {
+  position: absolute;
+  top: 20px;
+  bottom: -2.35rem; /* Extends down across the padding gap */
+  width: 1px;
+  background: var(--border);
+  transition: background 0.3s ease;
+  z-index: 1;
+}
+
+/* Active & Hover states for node */
+.wcu-item.is-active .wcu-node-marker,
+.wcu-item:hover .wcu-node-marker {
+  border-color: var(--green-mid);
+}
+
+.wcu-item.is-active .wcu-node-dot,
+.wcu-item:hover .wcu-node-dot {
+  background: var(--green-mid);
+}
+
+.wcu-item.is-active .wcu-line-segment {
+  background: linear-gradient(to bottom, var(--green-mid), var(--border));
+}
+
+.wcu-item:hover {
+  border-bottom-color: var(--text-3);
+}
+
+/* ── Item Content ── */
+.wcu-item-content {
+  display: flex;
+  flex-direction: column;
+}
+
+.wcu-item-header {
+  display: flex;
+  align-items: baseline;
+  gap: 1.15rem;
+  margin-bottom: 0.65rem;
+}
+
+.wcu-item-num {
+  font-family: var(--font-head);
+  font-size: 0.85rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  color: var(--text-3);
+  transition: color 0.3s ease;
+}
+
+.wcu-item.is-active .wcu-item-num,
+.wcu-item:hover .wcu-item-num {
+  color: var(--green-mid);
+}
+
+.wcu-item-title {
+  font-family: var(--font-head);
+  font-size: clamp(1.15rem, 1.8vw, 1.35rem);
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  color: var(--text-1);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0;
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), color 0.3s ease;
+}
+
+.wcu-item.is-active .wcu-item-title,
+.wcu-item:hover .wcu-item-title {
+  transform: translateX(6px);
+  color: var(--text-1);
+}
+
+.wcu-item-arrow {
+  opacity: 0;
+  transform: translate(-4px, 4px);
+  color: var(--green-mid);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.wcu-item.is-active .wcu-item-arrow,
+.wcu-item:hover .wcu-item-arrow {
+  opacity: 1;
+  transform: translate(0, 0);
+}
+
+.wcu-item-desc {
+  font-size: 0.98rem;
+  line-height: 1.7;
+  color: var(--text-2);
+  margin: 0 0 0.45rem 0;
+  max-width: 620px;
+}
+
+.wcu-item-support {
+  font-size: 0.86rem;
+  line-height: 1.55;
+  color: var(--text-3);
+  font-style: italic;
+  margin: 0 0 0.95rem 0;
+}
+
+.wcu-item-tags {
+  font-family: var(--font-head);
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-3);
+}
+
+/* ── Responsive ── */
+@media (max-width: 1024px) {
+  .wcu-container {
+    padding: 0 32px;
+  }
+
+  .wcu-grid {
+    grid-template-columns: 1fr;
+    gap: 4rem;
+  }
+
+  .wcu-left {
+    position: static;
+  }
+
+  .wcu-visual-wrap {
+    max-width: 100%;
+    margin-top: 1rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .wcu-section {
+    padding: 4.5rem 0 3.5rem;
+  }
+
+  .wcu-container {
+    padding: 0 20px;
+  }
+
+  .wcu-heading {
+    font-size: 2rem;
+  }
+
+  .wcu-trust-block {
+    padding: 0.5rem 0.85rem;
+  }
+
+  .wcu-visual-frame {
+    aspect-ratio: 16 / 9;
+  }
+
+  .wcu-item {
+    padding: 1.75rem 0;
+    grid-template-columns: 20px 1fr;
+    gap: 1rem;
+  }
+
+  .wcu-item-title {
+    font-size: 1.15rem;
+  }
+
+  /* Mobile: keep elements steady without requiring hover */
+  .wcu-item.is-active .wcu-item-title,
+  .wcu-item:hover .wcu-item-title {
+    transform: none;
+  }
+
+  .wcu-item-arrow {
+    opacity: 0.7;
+    transform: none;
+  }
+}
+
+/* ── Reduced Motion Preference ── */
+@media (prefers-reduced-motion: reduce) {
+  .wcu-visual-img,
+  .wcu-item-title,
+  .wcu-item-arrow,
+  .wcu-node-marker,
+  .wcu-node-dot,
+  .wcu-line-segment {
+    transition: none !important;
+    transform: none !important;
+  }
+}
+

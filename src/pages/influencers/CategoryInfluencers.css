@@ -1,0 +1,278 @@
+/* ── Category Influencers Page ── */
+
+.cat-inf-page {
+  min-height: 100vh;
+  background: var(--bg);
+}
+
+/* ── Hero Banner (Editorial Style) ── */
+.cat-inf-hero {
+  padding: 8rem 0 5rem;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  position: relative;
+  overflow: hidden;
+}
+
+.cat-inf-hero-content {
+  max-width: 800px;
+}
+
+.cat-back-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--bg-2);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 0.4rem 1rem;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--text-2);
+  cursor: pointer;
+  margin-bottom: 2rem;
+  transition: all var(--t-fast);
+}
+
+.cat-back-btn:hover {
+  background: var(--bg-3);
+  color: var(--text-1);
+  border-color: var(--green-mid);
+}
+
+.cat-inf-hero h1 {
+  font-size: clamp(2.5rem, 5vw, 4rem);
+  font-weight: 800;
+  line-height: 1.1;
+  color: var(--text-1);
+  margin: 0.5rem 0 1.25rem;
+  letter-spacing: -1px;
+}
+
+.cat-inf-hero-sub {
+  font-size: 1.15rem;
+  color: var(--text-2);
+  max-width: 600px;
+  line-height: 1.7;
+  margin-bottom: 2rem;
+}
+
+.cat-hero-stats {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--border);
+  max-width: fit-content;
+}
+
+.cat-h-stat {
+  font-size: 0.95rem;
+  color: var(--text-2);
+}
+
+.cat-h-stat strong {
+  color: var(--text-1);
+  font-size: 1.1rem;
+}
+
+.cat-h-divider {
+  width: 1px;
+  height: 24px;
+  background: var(--border);
+}
+
+
+/* ── Grid Section ── */
+.cat-inf-grid-section {
+  padding: 4rem 0 6rem;
+}
+
+.cat-inf-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.75rem;
+  margin-bottom: 4rem;
+}
+
+/* ── Influencer Card ── */
+.cat-inf-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+  /* Premium subtle elevation instead of dramatic bouncing */
+  transition: box-shadow 0.25s ease, transform 0.25s ease, border-color 0.25s ease;
+}
+
+.cat-inf-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.1);
+  border-color: #cbd5e1;
+}
+
+/* Photo */
+.cat-card-photo-wrap {
+  position: relative;
+  aspect-ratio: 1 / 1;
+  overflow: hidden;
+  background: var(--bg-2);
+}
+
+.cat-card-photo {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.4s ease-out;
+}
+
+.cat-inf-card:hover .cat-card-photo {
+  /* Reduced from 1.03 to 1.015 for subtlety */
+  transform: scale(1.015);
+}
+
+.cat-card-verified {
+  position: absolute;
+  bottom: 10px;
+  left: 10px;
+  background: var(--green-mid);
+  color: white;
+  font-size: 0.65rem;
+  font-weight: 700;
+  padding: 3px 8px;
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  gap: 3px;
+}
+
+.cat-card-platform {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  color: white;
+  font-size: 0.6rem;
+  font-weight: 800;
+  padding: 3px 7px;
+  border-radius: 5px;
+  letter-spacing: 0.5px;
+}
+
+/* Body */
+.cat-card-body {
+  padding: 1.25rem;
+}
+
+.cat-card-name {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--text-1);
+  margin-bottom: 3px;
+}
+
+.cat-card-niche {
+  font-size: 0.82rem;
+  color: var(--text-3);
+  margin-bottom: 1.1rem;
+}
+
+/* Stats Row */
+.cat-card-stats {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: var(--bg-2);
+  border-radius: 8px;
+  padding: 0.65rem 0.75rem;
+  margin-bottom: 1.1rem;
+}
+
+.cat-stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 1;
+  gap: 2px;
+}
+
+.cat-stat svg { color: var(--green-mid); }
+
+.cat-stat span,
+.engagement-val {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--text-1);
+}
+
+.cat-stat small {
+  font-size: 0.68rem;
+  color: var(--text-3);
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+}
+
+.cat-stat-divider {
+  width: 1px;
+  height: 30px;
+  background: var(--border);
+}
+
+/* ── Sleek Text Link ── */
+.cat-view-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text-1);
+  text-decoration: none;
+  margin-top: 0.5rem;
+  transition: color 0.2s ease;
+}
+
+.cat-view-link:hover {
+  color: var(--green-mid);
+}
+
+.cat-arrow-icon {
+  transition: transform 0.25s cubic-bezier(0.2, 0, 0, 1);
+}
+
+.cat-view-link:hover .cat-arrow-icon {
+  /* Instead of scaling, move the arrow natively to the right */
+  transform: translateX(4px) rotate(180deg) !important;
+}
+
+/* CTA */
+.cat-inf-cta {
+  padding: 3rem 2rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+}
+
+.cat-inf-cta p {
+  font-size: 1.1rem;
+  color: var(--text-2);
+  margin-bottom: 1.25rem;
+}
+
+/* Error State */
+.cat-page-error {
+  min-height: 60vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+}
+
+/* ── Responsive ── */
+@media (max-width: 1024px) {
+  .cat-inf-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 640px) {
+  .cat-inf-grid { grid-template-columns: 1fr; }
+  .cat-inf-hero-content h1 { font-size: 2rem; }
+}

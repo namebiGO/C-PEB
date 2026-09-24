@@ -1,0 +1,178 @@
+/* ── 404 Not Found Page ────────────────────────────── */
+
+.nf-page {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg);
+  overflow: hidden;
+  padding: 6rem 1.5rem 4rem;
+}
+
+/* Particle canvas */
+.nf-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Radial glow behind content */
+.nf-page::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 700px;
+  height: 700px;
+  background: radial-gradient(circle, rgba(23,168,90,0.08) 0%, transparent 70%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.nf-inner {
+  position: relative;
+  z-index: 1;
+  text-align: center;
+  max-width: 680px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.2rem;
+}
+
+/* ── Giant 404 ── */
+.nf-code-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.25rem;
+  line-height: 1;
+  margin-bottom: 0.5rem;
+  user-select: none;
+}
+
+.nf-four {
+  font-family: var(--font-head);
+  font-size: clamp(7rem, 20vw, 14rem);
+  font-weight: 800;
+  letter-spacing: -0.05em;
+  background: linear-gradient(160deg, var(--green-dark) 0%, var(--green-mid) 60%, #5eead4 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 0 40px rgba(23,168,90,0.25));
+}
+
+.nf-zero {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: clamp(6.5rem, 18vw, 13rem);
+  height: clamp(6.5rem, 18vw, 13rem);
+  border-radius: 50%;
+  border: 4px solid var(--green-mid);
+  background: linear-gradient(135deg, rgba(23,168,90,0.06), rgba(10,124,62,0.12));
+  box-shadow:
+    0 0 0 12px rgba(23,168,90,0.06),
+    0 0 60px rgba(23,168,90,0.15),
+    inset 0 0 30px rgba(23,168,90,0.05);
+  position: relative;
+  animation: nfPulse 3s ease-in-out infinite;
+}
+
+.nf-zero-inner {
+  color: var(--green-mid);
+  display: flex;
+}
+
+@keyframes nfPulse {
+  0%, 100% { box-shadow: 0 0 0 12px rgba(23,168,90,0.06), 0 0 60px rgba(23,168,90,0.15), inset 0 0 30px rgba(23,168,90,0.05); }
+  50%       { box-shadow: 0 0 0 20px rgba(23,168,90,0.03), 0 0 80px rgba(23,168,90,0.22), inset 0 0 30px rgba(23,168,90,0.08); }
+}
+
+/* ── Copy ── */
+.nf-heading {
+  font-size: clamp(2rem, 5vw, 3rem);
+  margin: 0;
+}
+
+.nf-sub {
+  font-size: 1.05rem;
+  color: var(--text-2);
+  max-width: 480px;
+  line-height: 1.7;
+}
+
+/* ── Buttons ── */
+.nf-actions {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-top: 0.4rem;
+}
+
+/* ── Quick links ── */
+.nf-links {
+  margin-top: 0.8rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.nf-links p {
+  font-size: 0.85rem;
+  color: var(--text-3);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-weight: 600;
+}
+
+.nf-pill-row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.nf-pill {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.4rem 1rem;
+  border-radius: 999px;
+  border: 1.5px solid var(--border);
+  font-family: var(--font-head);
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--text-2);
+  background: var(--surface);
+  transition: all var(--t-med);
+}
+
+.nf-pill:hover {
+  border-color: var(--green-mid);
+  color: var(--green-dark);
+  background: var(--green-light);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-sm);
+}
+
+/* ── Responsive ── */
+@media (max-width: 480px) {
+  .nf-actions {
+    flex-direction: column;
+    width: 100%;
+  }
+  .nf-actions .btn {
+    width: 100%;
+    justify-content: center;
+  }
+}

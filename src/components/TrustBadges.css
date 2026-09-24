@@ -1,0 +1,85 @@
+.trust-badges-section {
+  padding: 3rem 0;
+  background-color: var(--white);
+  border-bottom: 1px solid var(--border-light);
+  overflow: hidden; /* Hide the marquee overflow */
+}
+
+.tb-heading {
+  text-align: center;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--gray-medium);
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  margin-bottom: 2rem;
+}
+
+.tb-marquee-wrapper {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  /* Add subtle fade gradients on edges */
+  mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+  -webkit-mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+}
+
+.tb-marquee {
+  display: flex;
+  align-items: center;
+  gap: 3rem;
+  width: max-content;
+  animation: scrollMarquee 30s linear infinite;
+}
+
+/* Pause animation on hover for better UX */
+.tb-marquee:hover {
+  animation-play-state: paused;
+}
+
+@keyframes scrollMarquee {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(calc(-50% - 1.5rem)); } /* Shift by exactly half the content + half gap */
+}
+
+.tb-logo-placeholder {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.75rem 1.5rem;
+  background: var(--bg-light);
+  border: 1px solid var(--border-light);
+  border-radius: 8px;
+  font-weight: 700;
+  font-size: 1.125rem;
+  color: var(--gray-dark);
+  white-space: nowrap;
+  opacity: 0.7;
+  transition: opacity 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+  user-select: none;
+}
+
+.tb-logo-placeholder:hover {
+  opacity: 1;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  border-color: var(--green-light);
+  color: var(--green-mid);
+}
+
+/* Mobile Adjustments */
+@media (max-width: 768px) {
+  .trust-badges-section {
+    padding: 2.5rem 0;
+  }
+  
+  .tb-logo-placeholder {
+    font-size: 1rem;
+    padding: 0.6rem 1.25rem;
+  }
+  
+  .tb-marquee {
+    gap: 2rem;
+    animation: scrollMarquee 20s linear infinite; /* slightly faster on mobile */
+  }
+}

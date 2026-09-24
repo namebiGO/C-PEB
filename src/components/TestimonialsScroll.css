@@ -1,0 +1,234 @@
+/* ═══════════════════════════════════════════════════
+   TestimonialsScroll.css
+   Shared styles for the horizontal infinite-scroll
+   testimonials section used on Home & Our Work pages.
+═══════════════════════════════════════════════════ */
+
+.ts-section {
+  padding: 6rem 0 4.5rem;
+  border-top: 1px solid var(--border);
+  overflow: hidden;
+}
+
+/* ── Container (header only) ── */
+.ts-container {
+  max-width: 1260px;
+  margin: 0 auto;
+  padding: 0 48px;
+}
+
+.ts-head {
+  margin-bottom: 3.5rem;
+}
+
+.ts-eyebrow {
+  display: block;
+  font-family: var(--font-head);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text-3);
+  margin-bottom: 1rem;
+}
+
+.ts-heading {
+  font-family: var(--font-head);
+  font-size: clamp(1.9rem, 3.5vw, 2.75rem);
+  font-weight: 800;
+  line-height: 1.1;
+  letter-spacing: -0.03em;
+  color: var(--text-1);
+  margin-bottom: 0.75rem;
+}
+
+.ts-subhead {
+  font-size: 1.05rem;
+  color: var(--text-2);
+  line-height: 1.65;
+  max-width: 460px;
+}
+
+.ts-note {
+  margin-top: 0.5rem;
+  font-size: 0.78rem;
+  color: var(--text-3);
+  font-style: italic;
+}
+
+/* ── Scrolling Viewport ── */
+.ts-outer {
+  position: relative;
+  overflow: hidden;
+  padding: 0.5rem 0 1.5rem;
+}
+
+/* Edge fades — blends cards into the section background */
+.ts-fade {
+  position: absolute;
+  top: 0; bottom: 0;
+  width: 160px;
+  pointer-events: none;
+  z-index: 2;
+}
+.ts-fade--l {
+  left: 0;
+  background: linear-gradient(to right, var(--bg) 5%, transparent 100%);
+}
+.ts-fade--r {
+  right: 0;
+  background: linear-gradient(to left, var(--bg) 5%, transparent 100%);
+}
+
+/*
+  Track — LEFT → RIGHT drift (rightward).
+
+  [Set A][Set B] rendered, both identical.
+  Keyframe: from translateX(-setWidth) → translateX(0).
+  At the loop reset: Set B is already at Set A's start position.
+  No visible jump.
+
+  setWidth = 5 cards × (440px + 24px gap) = 2320px
+  Duration: ~38s ≈ comfortable reading pace at ~60px/s
+*/
+.ts-track {
+  display: flex;
+  gap: 24px;
+  padding: 0.5rem 48px;
+  width: max-content;
+  animation: ts-drift 38s linear infinite;
+  will-change: transform;
+}
+
+/* Pause on hover — GPU-friendly, no abrupt jump on resume */
+.ts-track:hover {
+  animation-play-state: paused;
+}
+
+@keyframes ts-drift {
+  from { transform: translate3d(calc(-5 * 464px), 0, 0); }
+  to   { transform: translate3d(0, 0, 0); }
+}
+
+/* Respect system reduced-motion preference */
+@media (prefers-reduced-motion: reduce) {
+  .ts-track {
+    animation: none;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+  .ts-track::-webkit-scrollbar { display: none; }
+}
+
+/* ── Individual Card ── */
+.ts-card {
+  width: 440px;
+  flex-shrink: 0;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 2rem 2.25rem 1.75rem;
+  display: flex;
+  flex-direction: column;
+  scroll-snap-align: start;
+  transition: box-shadow 0.3s, transform 0.3s;
+}
+
+.ts-card:hover {
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.08);
+  transform: translateY(-3px);
+}
+
+/* Decorative large quotation character */
+.ts-q {
+  font-family: Georgia, serif;
+  font-size: 4rem;
+  line-height: 0.8;
+  color: var(--green-mid);
+  opacity: 0.15;
+  margin-bottom: 0.5rem;
+  user-select: none;
+  letter-spacing: -0.04em;
+}
+
+.ts-text {
+  font-size: 0.95rem;
+  color: var(--text-1);
+  line-height: 1.75;
+  flex: 1;
+  margin-bottom: 1.75rem;
+}
+
+/* ── Card Footer ── */
+.ts-footer {
+  display: flex;
+  align-items: center;
+  gap: 0.875rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid var(--border);
+  margin-top: auto;
+}
+
+.ts-avatar {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  object-fit: cover;
+  flex-shrink: 0;
+  border: 2px solid var(--border);
+}
+
+.ts-who {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+}
+
+.ts-name {
+  font-family: var(--font-head);
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: var(--text-1);
+}
+
+.ts-role {
+  font-size: 0.78rem;
+  color: var(--text-2);
+}
+
+.ts-company {
+  font-size: 0.7rem;
+  color: var(--text-3);
+  letter-spacing: 0.02em;
+}
+
+/* ── Responsive ── */
+@media (max-width: 1100px) {
+  .ts-container { padding: 0 32px; }
+  .ts-track { padding-left: 32px; padding-right: 32px; }
+}
+
+@media (max-width: 768px) {
+  .ts-section { padding: 5rem 0 3rem; }
+  .ts-container { padding: 0 20px; }
+
+  .ts-card {
+    width: 88vw;
+    max-width: 380px;
+  }
+
+  /* Mobile: disable autoplay, enable native swipe */
+  .ts-track {
+    animation: none;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    padding-left: 20px;
+    padding-right: 20px;
+    scrollbar-width: none;
+  }
+  .ts-track::-webkit-scrollbar { display: none; }
+  .ts-fade { width: 32px; }
+}

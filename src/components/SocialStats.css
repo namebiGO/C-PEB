@@ -1,0 +1,107 @@
+/* ── Social Stats Section ── */
+.social-stats-section {
+  padding: 4rem 0;
+  background-color: var(--bg);
+}
+
+.social-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.5rem;
+}
+
+/* ── Card Styling ── */
+.social-card {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1.5rem;
+  border-radius: 8px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.06);
+  color: var(--text-1);
+}
+
+/* Gradient Backgrounds */
+.social-bg-youtube {
+  background: linear-gradient(135deg, #e0f2fe 0%, #ffedd5 100%);
+}
+
+.social-bg-twitter {
+  background: linear-gradient(135deg, #dbeafe 0%, #ffedd5 100%);
+}
+
+.social-bg-tiktok {
+  background: linear-gradient(135deg, #e5e5e5 0%, #ffedd5 100%);
+}
+[data-theme="dark"] .social-bg-tiktok {
+  background: linear-gradient(135deg, #334155 0%, #7c2d12 100%);
+}
+
+.social-bg-instagram {
+  background: linear-gradient(135deg, #dbeafe 0%, #ffedd5 100%);
+}
+[data-theme="dark"] .social-bg-instagram {
+  background: linear-gradient(135deg, #1e3a8a 0%, #7c2d12 100%);
+}
+[data-theme="dark"] .social-bg-youtube {
+  background: linear-gradient(135deg, #1e3a8a 0%, #7c2d12 100%);
+}
+[data-theme="dark"] .social-bg-twitter {
+  background: linear-gradient(135deg, #1e3a8a 0%, #7c2d12 100%);
+}
+
+/* ── Icons ── */
+.social-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: var(--surface);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+}
+
+.tiktok-icon-wrapper {
+  color: var(--text-1);
+  display: flex;
+}
+
+.ig-icon {
+  background: radial-gradient(circle at 30% 107%, #fdf497 0%, #fdf497 5%, #fd5949 45%,#d6249f 60%,#285AEB 90%);
+  border-radius: 6px;
+  padding: 2px;
+}
+
+/* ── Text ── */
+.social-text {
+  display: flex;
+  flex-direction: column;
+}
+
+.social-value {
+  font-size: 1.5rem;
+  font-weight: 800;
+  font-family: var(--font-head);
+  line-height: 1.1;
+  color: var(--text-1);
+}
+
+.social-label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-2);
+}
+
+/* ── Responsive ── */
+@media (max-width: 1024px) {
+  .social-stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 480px) {
+  .social-stats-grid {
+    grid-template-columns: 1fr;
+  }
+}
