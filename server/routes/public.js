@@ -1,5 +1,5 @@
 import express from 'express';
-import Influencer from '../models/Influencer.js';
+import CreatorProfile from '../models/CreatorProfile.js';
 import Service from '../models/Service.js';
 import Lead from '../models/Lead.js';
 
@@ -9,9 +9,9 @@ const router = express.Router();
 // @desc    Get featured influencers for homepage
 router.get('/featured-influencers', async (req, res) => {
   try {
-    const influencers = await Influencer.find({ isActive: true, isFeatured: true })
-      .sort({ featuredOrder: 1 })
-      .limit(10); // Limit just in case
+    const influencers = await CreatorProfile.find({ status: 'APPROVED', visibility: 'VISIBLE', featured: true })
+      .sort({ priority: 1, createdAt: -1 })
+      .limit(10);
     res.json({ success: true, data: influencers });
   } catch (error) {
     res.status(500).json({ success: false, error: 'Server Error' });
@@ -22,9 +22,8 @@ router.get('/featured-influencers', async (req, res) => {
 // @desc    Get featured services for homepage
 router.get('/featured-services', async (req, res) => {
   try {
-    const services = await Service.find({ isActive: true, isFeatured: true })
-      .populate('influencerId', 'name profileImage')
-      .sort({ displayOrder: 1 })
+    const services = await Service.find({ status: 'ACTIVE', featured: true })
+      .sort({ displayOrder: 1, createdAt: -1 })
       .limit(12);
     res.json({ success: true, data: services });
   } catch (error) {

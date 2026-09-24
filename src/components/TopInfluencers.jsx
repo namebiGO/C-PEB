@@ -147,8 +147,9 @@ const TopInfluencers = () => {
             <Link to="/contact" className="featured-creator-card">
               <div className="fc-image-wrap">
                 <img 
-                  src={featuredCreator.profileImage || featuredCreator.img || 'https://via.placeholder.com/800'} 
-                  alt={featuredCreator.name} 
+                <img 
+                  src={featuredCreator.profileImage || 'https://via.placeholder.com/800'} 
+                  alt={featuredCreator.displayName || featuredCreator.name} 
                   className="fc-image" 
                   loading="lazy" 
                 />
@@ -156,15 +157,15 @@ const TopInfluencers = () => {
               <div className="fc-content">
                 <div className="fc-header">
                   <div className="fc-title-row">
-                    <h3 className="fc-name">{featuredCreator.name}</h3>
+                    <h3 className="fc-name">{featuredCreator.displayName || featuredCreator.name}</h3>
                     <CheckCircle2 size={18} className="fc-verified" />
                   </div>
-                  <p className="fc-meta">{featuredCreator.category} · {featuredCreator.location || 'India'}</p>
+                  <p className="fc-meta">{featuredCreator.primaryCategory || featuredCreator.category} · {featuredCreator.city || featuredCreator.location || 'India'}</p>
                 </div>
                 
                 <div className="fc-stats">
                   <div className="fc-stat">
-                    <span className="fc-stat-val">{featuredCreator.followers || '0'}</span>
+                    <span className="fc-stat-val">{featuredCreator.followersDisplay || featuredCreator.followers || '0'}</span>
                     <span className="fc-stat-lbl">Followers</span>
                   </div>
                   <div className="fc-stat">
@@ -191,16 +192,16 @@ const TopInfluencers = () => {
               {supportingCreators.map((creator) => (
                 <Link to="/contact" className="supp-creator-card" key={creator._id || creator.slug}>
                   <img 
-                    src={creator.profileImage || creator.img || 'https://via.placeholder.com/150'} 
-                    alt={creator.name} 
+                    src={creator.profileImage || 'https://via.placeholder.com/150'} 
+                    alt={creator.displayName || creator.name} 
                     className="supp-image" 
                     loading="lazy" 
                   />
                   <div className="supp-content">
-                    <h4 className="supp-name">{creator.name}</h4>
-                    <p className="supp-meta">{creator.category} · {creator.location || 'India'}</p>
+                    <h4 className="supp-name">{creator.displayName || creator.name}</h4>
+                    <p className="supp-meta">{creator.primaryCategory || creator.category} · {creator.city || creator.location || 'India'}</p>
                     <div className="supp-stats">
-                      <span className="supp-followers">{creator.followers || '0'} followers</span>
+                      <span className="supp-followers">{creator.followersDisplay || creator.followers || '0'} followers</span>
                       <span className="supp-dot">·</span>
                       <span className="supp-er">{creator.engagementRate || '0%'} engagement</span>
                     </div>
