@@ -102,8 +102,18 @@ app.use('/api/public/creators', publicCreatorsRouter);
 app.use('/api/public', publicRouter);
 
 // 404 handler — catches unknown API routes
-app.use((_req, res) => {
-  res.status(404).json({ success: false, error: 'Route not found' });
+app.use('/api', (_req, res) => {
+  res.status(404).json({ success: false, error: 'API Route not found' });
+});
+
+// ── Serve Frontend ─────────────────────────────
+// Serve static files from the React app build directory
+const frontendPath = path.join(__dirname, '../dist');
+app.use(express.static(frontendPath));
+
+// For any other route, send back the React index.html file (React Router)
+app.get('*', (req, res) => {
+  res.sendFile(path.join(frontendPath, 'index.html'));
 });
 
 // Central error handler (must be last)
