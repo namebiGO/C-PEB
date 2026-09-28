@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { io } from 'socket.io-client';
 import { ArrowRight, CheckCircle2 } from 'lucide-react';
 import './TopInfluencers.css';
 
@@ -87,7 +86,7 @@ const TopInfluencers = () => {
       const timeoutId = setTimeout(() => controller.abort(), 1500);
       
       try {
-        const res = await fetch('http://localhost:5001/api/public/featured-influencers', {
+        const res = await fetch('/api/public/featured-influencers', {
           signal: controller.signal
         });
         clearTimeout(timeoutId);
@@ -107,16 +106,20 @@ const TopInfluencers = () => {
     };
     fetchInfluencers();
 
-    // Listen for real-time updates
-    try {
-      const socket = io('http://localhost:5001');
-      socket.on('content_updated', (data) => {
-        if (data && data.type && data.type.startsWith('influencer_')) {
-          fetchInfluencers();
-        }
-      });
-      return () => socket.disconnect();
-    } catch {}
+    // Listen for real-time updates (dynamically imported)
+    const socketUrl = import.meta.env.VITE_API_URL || window.location.origin;
+    let socket = null;
+    import('socket.io-client').then(({ io }) => {
+      try {
+        socket = io(socketUrl, { reconnectionAttempts: 3 });
+        socket.on('content_updated', (data) => {
+          if (data && data.type && data.type.startsWith('influencer_')) {
+            fetchInfluencers();
+          }
+        });
+      } catch {}
+    }).catch(() => {});
+    return () => { if (socket) socket.disconnect(); };
   }, []);
 
   if (loading) return null;
@@ -146,7 +149,6 @@ const TopInfluencers = () => {
           {featuredCreator && (
             <Link to="/contact" className="featured-creator-card">
               <div className="fc-image-wrap">
-                <img 
                 <img 
                   src={featuredCreator.profileImage || 'https://via.placeholder.com/800'} 
                   alt={featuredCreator.displayName || featuredCreator.name} 

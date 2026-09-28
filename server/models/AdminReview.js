@@ -14,7 +14,7 @@ const adminReviewSchema = new mongoose.Schema(
     },
     action: {
       type: String,
-      enum: ['APPROVED', 'CHANGES_REQUESTED', 'REJECTED'],
+      enum: ['APPROVED', 'CHANGES_REQUESTED', 'REJECTED', 'SUSPENDED', 'SUBMITTED', 'UPDATED'],
       required: true,
     },
     note: {

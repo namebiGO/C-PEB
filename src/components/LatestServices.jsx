@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { io } from 'socket.io-client';
 import { Bookmark, Star, ArrowRight } from 'lucide-react';
 import './LatestServices.css';
 
@@ -79,7 +78,7 @@ const LatestServices = () => {
       const timeoutId = setTimeout(() => controller.abort(), 2000);
       
       try {
-        const res = await fetch('http://localhost:5001/api/public/featured-services', {
+        const res = await fetch('/api/public/featured-services', {
           signal: controller.signal
         });
         clearTimeout(timeoutId);
@@ -104,15 +103,23 @@ const LatestServices = () => {
     };
     fetchServices();
 
-    // Listen for real-time updates
-    const socket = io('http://localhost:5001');
-    socket.on('content_updated', (data) => {
-      if (data && data.type && data.type.startsWith('service_')) {
-        fetchServices();
+    // Listen for real-time updates (dynamically imported to avoid loading socket.io until needed)
+    const socketUrl = import.meta.env.VITE_API_URL || window.location.origin;
+    let socket = null;
+    import('socket.io-client').then(({ io }) => {
+      try {
+        socket = io(socketUrl, { reconnectionAttempts: 3 });
+        socket.on('content_updated', (data) => {
+          if (data && data.type && data.type.startsWith('service_')) {
+            fetchServices();
+          }
+        });
+      } catch {
+        // socket unavailable in this environment
       }
-    });
+    }).catch(() => {});
 
-    return () => socket.disconnect();
+    return () => { if (socket) socket.disconnect(); };
   }, []);
 
   const toggleWishlist = (id, e) => {

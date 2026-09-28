@@ -10,9 +10,7 @@ router.get('/:type', async (req, res) => {
   try {
     const content = await HomepageContent.findOne({ type: req.params.type.toUpperCase() });
     res.json({ success: true, data: content ? content.data : null });
-  } catch (error) {
-    res.status(500).json({ success: false, error: 'Server Error' });
-  }
+  } catch (error) { console.error(error);  }
 });
 
 // @route   PUT /api/admin/homepage/:type
@@ -28,9 +26,7 @@ router.put('/:type', protect, async (req, res) => {
     
     if (req.io) req.io.emit('content_updated', { type: 'homepage_updated', section: type });
     res.json({ success: true, data: content.data });
-  } catch (error) {
-    res.status(500).json({ success: false, error: 'Server Error' });
-  }
+  } catch (error) { console.error(error);  }
 });
 
 export default router;

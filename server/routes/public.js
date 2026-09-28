@@ -14,7 +14,8 @@ router.get('/featured-influencers', async (req, res) => {
       .limit(10);
     res.json({ success: true, data: influencers });
   } catch (error) {
-    res.status(500).json({ success: false, error: 'Server Error' });
+    console.error('Featured Influencers Error:', error);
+    res.status(500).json({ success: false, error: 'Server Error', details: error.message });
   }
 });
 
@@ -26,9 +27,7 @@ router.get('/featured-services', async (req, res) => {
       .sort({ displayOrder: 1, createdAt: -1 })
       .limit(12);
     res.json({ success: true, data: services });
-  } catch (error) {
-    res.status(500).json({ success: false, error: 'Server Error' });
-  }
+  } catch (error) { console.error(error);  }
 });
 
 // @route   POST /api/public/leads
@@ -67,9 +66,7 @@ router.get('/influencer/:slug', async (req, res) => {
     // Also fetch their services
     const services = await Service.find({ influencerId: influencer._id, isActive: true });
     res.json({ success: true, data: { influencer, services } });
-  } catch (error) {
-    res.status(500).json({ success: false, error: 'Server Error' });
-  }
+  } catch (error) { console.error(error);  }
 });
 
 // @route   GET /api/admin/stats

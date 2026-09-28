@@ -33,9 +33,7 @@ router.post('/login', async (req, res) => {
     } else {
       res.status(401).json({ success: false, error: 'Invalid email or password' });
     }
-  } catch (error) {
-    res.status(500).json({ success: false, error: 'Server Error' });
-  }
+  } catch (error) { console.error(error);  }
 });
 
 // @route   POST /api/admin/seed
@@ -58,9 +56,7 @@ router.post('/seed', async (req, res) => {
     });
 
     res.status(201).json({ success: true, message: 'Admin seeded successfully' });
-  } catch (error) {
-    res.status(500).json({ success: false, error: 'Server Error' });
-  }
+  } catch (error) { console.error(error);  }
 });
 
 export default router;

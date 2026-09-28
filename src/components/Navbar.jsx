@@ -2,7 +2,7 @@ import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Menu, X, ChevronDown, Sun, Moon } from 'lucide-react';
 import { useTheme } from '../context/ThemeContext';
-import logo from '../assets/logo.jpg';
+import logo from '../assets/logo.webp';
 import './Navbar.css';
 
 const services = [
@@ -75,7 +75,7 @@ const Navbar = () => {
           <Link to="/case-studies" className="nav-link-direct" onClick={() => setOpen(false)}>Our Work</Link>
           <Link to="/startup-business-advisory" className="nav-link-direct" onClick={() => setOpen(false)}>Pricing</Link>
           <Link to="/tools" className="nav-link-direct" onClick={() => setOpen(false)}>Free Tools</Link>
-          <Link to="/creators" className="nav-link-direct" onClick={() => setOpen(false)}>For Creators</Link>
+          <Link to="/join-creator" className="nav-link-direct" onClick={() => setOpen(false)}>Creator</Link>
         </div>
 
         <div className="nav-right">

@@ -106,9 +106,7 @@ router.get('/settings/:key', async (req, res) => {
   try {
     const setting = await SystemSetting.findOne({ key: req.params.key.toUpperCase() });
     res.json({ success: true, data: setting ? setting.values : [] });
-  } catch (error) {
-    res.status(500).json({ success: false, error: 'Server Error' });
-  }
+  } catch (error) { console.error(error);  }
 });
 
 // @route   PUT /api/admin/settings/:key
@@ -123,9 +121,7 @@ router.put('/settings/:key', async (req, res) => {
       { upsert: true, new: true }
     );
     res.json({ success: true, data: setting.values });
-  } catch (error) {
-    res.status(500).json({ success: false, error: 'Server Error' });
-  }
+  } catch (error) { console.error(error);  }
 });
 
 export default router;

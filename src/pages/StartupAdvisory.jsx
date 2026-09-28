@@ -1,11 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import {
   CheckCircle2,
   ArrowRight,
   ChevronDown,
   ChevronUp,
-  Sparkles,
   ShieldCheck,
   Clock,
   HelpCircle,
@@ -18,7 +17,6 @@ import {
   Target,
   Megaphone,
   Calendar,
-  Layers,
   Check,
   Search,
   Lock,
@@ -236,6 +234,13 @@ export default function StartupAdvisory() {
     setSubmitError('');
   };
 
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    if (params.get('activate') === 'true') {
+      handleOpenCheckout('ONE_MONTH');
+    }
+  }, []);
+
   const handleFormChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
@@ -430,7 +435,6 @@ export default function StartupAdvisory() {
 
   const isThreeMonths = selectedPlan === 'THREE_MONTHS';
   const planPrice = isThreeMonths ? 5999 : 2499;
-  const planDuration = isThreeMonths ? '3 Months' : '1 Month';
 
   return (
     <div className="adv-page">
@@ -719,7 +723,7 @@ export default function StartupAdvisory() {
                   className="adv-btn adv-btn-secondary w-full"
                   onClick={() => handleOpenCheckout('ONE_MONTH')}
                 >
-                  PROCEED TO PAY — ₹2,499 →
+                  BOOK NOW — ₹2,499 →
                 </button>
                 <div className="adv-plan-rzp-meta">
                   <Lock size={12} />
@@ -759,7 +763,7 @@ export default function StartupAdvisory() {
                   className="adv-btn adv-btn-primary w-full"
                   onClick={() => handleOpenCheckout('THREE_MONTHS')}
                 >
-                  PROCEED TO PAY — ₹5,999 →
+                  BOOK NOW — ₹5,999 →
                 </button>
                 <div className="adv-plan-rzp-meta">
                   <Lock size={12} />

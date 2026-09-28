@@ -7,7 +7,6 @@ import AdminReview from '../models/AdminReview.js';
 
 const router = express.Router();
 
-// Apply middleware to all routes in this file
 router.use(protect);
 router.use(admin);
 
@@ -24,8 +23,6 @@ router.get('/profiles', async (req, res) => {
       .populate('userId', 'name email')
       .sort({ createdAt: -1 });
     
-    // Attach counts or basic social accounts if needed for the table
-    // For now returning base profiles is enough for the table view
     res.json({ success: true, data: profiles });
   } catch (error) {
     console.error(error);
@@ -44,8 +41,6 @@ router.get('/profiles/:id', async (req, res) => {
       return res.status(404).json({ success: false, error: 'Profile not found' });
     }
 
-    const socialAccounts = await SocialAccount.find({ creatorProfileId: profile._id });
-    const portfolios = await CreatorPortfolio.find({ creatorProfileId: profile._id }).sort({ sortOrder: 1 });
     const reviews = await AdminReview.find({ creatorProfileId: profile._id })
       .populate('adminId', 'name')
       .sort({ createdAt: -1 });
@@ -54,8 +49,6 @@ router.get('/profiles/:id', async (req, res) => {
       success: true,
       data: {
         ...profile.toObject(),
-        socialAccounts,
-        portfolios,
         reviews,
       }
     });
@@ -66,13 +59,12 @@ router.get('/profiles/:id', async (req, res) => {
 });
 
 // @route   POST /api/admin/creators/profiles/:id/review
-// @desc    Approve, Reject, or Request Changes
+// @desc    Approve, Reject, Request Changes, or Suspend
 router.post('/profiles/:id/review', async (req, res) => {
   try {
     const { action, note } = req.body;
-    // action must be one of: APPROVED, CHANGES_REQUESTED, REJECTED
     
-    if (!['APPROVED', 'CHANGES_REQUESTED', 'REJECTED'].includes(action)) {
+    if (!['APPROVED', 'CHANGES_REQUESTED', 'REJECTED', 'SUSPENDED'].includes(action)) {
       return res.status(400).json({ success: false, error: 'Invalid action' });
     }
 
@@ -85,12 +77,18 @@ router.post('/profiles/:id/review', async (req, res) => {
     
     if (action === 'APPROVED') {
       profile.approvedAt = new Date();
-      profile.visibility = 'VISIBLE';
+      profile.approvedBy = req.user._id;
+      profile.isPublished = true;
     } else if (action === 'REJECTED') {
       profile.rejectedAt = new Date();
-      profile.visibility = 'HIDDEN';
+      profile.rejectedBy = req.user._id;
+      profile.rejectionReason = note || '';
+      profile.isPublished = false;
     } else if (action === 'CHANGES_REQUESTED') {
-      profile.visibility = 'HIDDEN';
+      profile.changesRequestedReason = note || '';
+      profile.isPublished = false;
+    } else if (action === 'SUSPENDED') {
+      profile.isPublished = false;
     }
 
     await profile.save();
@@ -111,13 +109,13 @@ router.post('/profiles/:id/review', async (req, res) => {
 });
 
 // @route   PUT /api/admin/creators/profiles/:id
-// @desc    Update creator profile fields
+// @desc    Update creator profile fields directly
 router.put('/profiles/:id', async (req, res) => {
   try {
     const profile = await CreatorProfile.findById(req.params.id);
     if (!profile) return res.status(404).json({ success: false, error: 'Profile not found' });
 
-    const updatableFields = ['displayName', 'slug', 'bio', 'profileImage', 'city', 'state', 'country', 'primaryCategory', 'secondaryCategories', 'languages', 'priority', 'featured', 'visibility', 'imagePosition', 'followersExact', 'followersDisplay'];
+    const updatableFields = ['displayName', 'slug', 'bio', 'profileImage', 'city', 'state', 'country', 'primaryCategory', 'secondaryCategories', 'languages', 'priority', 'featured', 'isPublished', 'imagePosition', 'followersExact', 'followersDisplay'];
     
     for (const field of updatableFields) {
       if (req.body[field] !== undefined) {
@@ -125,30 +123,8 @@ router.put('/profiles/:id', async (req, res) => {
       }
     }
     
-    if (req.body.followersExact !== undefined || req.body.followersDisplay !== undefined) {
-       profile.followersUpdatedAt = new Date();
-    }
-
     await profile.save();
     res.json({ success: true, data: profile });
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ success: false, error: 'Server Error' });
-  }
-});
-
-// @route   PUT /api/admin/creators/order
-// @desc    Bulk update creator priority
-router.put('/order', async (req, res) => {
-  try {
-    const { order } = req.body; // Array of { id, priority }
-    if (!Array.isArray(order)) return res.status(400).json({ success: false, error: 'Invalid order data' });
-    
-    for (const item of order) {
-      await CreatorProfile.findByIdAndUpdate(item.id, { priority: item.priority });
-    }
-    
-    res.json({ success: true, message: 'Order updated successfully' });
   } catch (error) {
     console.error(error);
     res.status(500).json({ success: false, error: 'Server Error' });

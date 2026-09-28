@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import { Sparkles, TrendingUp, DollarSign, Users, ArrowRight, CheckCircle2 } from 'lucide-react';
+import { Sparkles, TrendingUp, DollarSign, Users, ArrowRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import './JoinCreator.css';
 import SEO from '../components/SEO';
-import creatorImg from '../assets/creator_hero.jpg';
+import creatorImg from '../assets/creator_hero.webp';
 
 export default function JoinCreator() {
   // Earnings Estimator State

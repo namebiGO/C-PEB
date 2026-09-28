@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { ArrowLeft, CheckCircle2, Camera, PlayCircle, MapPin, Users, Activity, BarChart, Bookmark } from 'lucide-react';
+import { ArrowLeft, CheckCircle2, Camera, PlayCircle, MapPin, Users, Activity, BarChart } from 'lucide-react';
 import SEO from '../../components/SEO';
 import './InfluencerProfile.css';
 

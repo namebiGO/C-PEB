@@ -10,9 +10,7 @@ import {
   Volume2,
   VolumeX,
   Minus,
-  ExternalLink,
-  PhoneCall,
-  CheckCircle2
+  ExternalLink
 } from 'lucide-react';
 import {
   InfluencerCard,
@@ -21,7 +19,6 @@ import {
   LeadConfirmationCard
 } from './ChatbotCard';
 import { processMessage } from './chatbotEngine';
-import { COMPANY_INFO } from './chatbotData';
 import './Chatbot.css';
 
 const INITIAL_WELCOME = {

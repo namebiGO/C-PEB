@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import './Footer.css';
 import { Globe, Share2, Link2, Mail } from 'lucide-react';
-import logo from '../assets/logo.jpg';
+import logo from '../assets/logo.webp';
 
 const Footer = () => (
   <footer className="footer">
@@ -25,7 +25,7 @@ const Footer = () => (
         <div className="link-col">
           <h5>Platform</h5>
           <Link to="/case-studies">Our Work</Link>
-          <Link to="/creators">For Creators</Link>
+          <Link to="/join-creator">Creator</Link>
           <Link to="/startup-business-advisory">Pricing Plans</Link>
           <Link to="/tools">Free Tools</Link>
           <Link to="/services/business-services">Business Services</Link>

@@ -12,9 +12,7 @@ router.get('/', async (req, res) => {
   try {
     const leads = await Lead.find().sort({ createdAt: -1 });
     res.json({ success: true, data: leads });
-  } catch (error) {
-    res.status(500).json({ success: false, error: 'Server Error' });
-  }
+  } catch (error) { console.error(error);  }
 });
 
 // @route   PUT /api/admin/leads/:id
@@ -48,9 +46,7 @@ router.delete('/:id', async (req, res) => {
 
     await lead.deleteOne();
     res.json({ success: true, data: {} });
-  } catch (error) {
-    res.status(500).json({ success: false, error: 'Server Error' });
-  }
+  } catch (error) { console.error(error);  }
 });
 
 export default router;

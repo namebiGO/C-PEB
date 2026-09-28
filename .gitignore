@@ -25,3 +25,9 @@ dist-ssr
 
 # Server environment — keep secrets out of git
 server/.env
+# Root environment (never commit secrets)
+.env
+.env.local
+.env.production
+# Scratch / utility scripts output
+scratch/

@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowRight, ChevronDown, ChevronUp, CheckCircle2, Star, Rocket, Users, FileText, Lightbulb, Package, TrendingUp } from 'lucide-react';
+import { ArrowRight, ChevronDown, ChevronUp, CheckCircle2, Star, Rocket, Users, FileText, Lightbulb, Package, TrendingUp, Lock } from 'lucide-react';
 import './ServicePage.css';
+import './StartupAdvisory.css';
 import SEO from '../components/SEO';
+import TestimonialsScroll from '../components/TestimonialsScroll';
 
 const SERVICES = [
   {
@@ -109,24 +111,66 @@ export default function StartupSupport() {
         description="From zero to known. We help startups break through with influencer-powered growth strategies built specifically for early-stage companies." 
       />
 
-      <section className="svc-hero svc-hero--startup">
-        <div className="container svc-hero-inner">
-          <div className="svc-hero-copy">
-            <p className="section-eyebrow">Startup Support</p>
-            <h1>From Zero to Known — <span className="svc-h1-accent">We Help Startups Break Through</span></h1>
-            <p>You've built something worth talking about. We get the right people talking. Influencer-powered growth strategies built specifically for early-stage startups.</p>
+      <section className="svc-hero svc-hero--startup svc-hero--startup-new">
+        <div className="container svc-hero-inner svc-hero-inner--startup-new">
+          <div className="svc-hero-copy svc-hero-copy--startup-new">
+            <p className="section-eyebrow">STARTUP GROWTH • CREATOR-LED</p>
+            <h1>
+              Turn Your Startup<br />
+              Into Something<br />
+              <span className="svc-h1-accent">People Talk About.</span>
+            </h1>
+            <p>From positioning and creator strategy to campaigns that generate real attention — we help early-stage startups become visible, credible, and talked about.</p>
             <div className="svc-hero-actions">
-              <button className="btn btn-primary btn-lg">Talk to Us <ArrowRight size={18} /></button>
-              <button className="btn btn-secondary btn-lg">View Startup Packages</button>
+              <button className="btn btn-primary btn-lg">Build My Growth Plan <ArrowRight size={18} /></button>
+              <button className="btn btn-secondary btn-lg">Explore Startup Support</button>
             </div>
           </div>
-          <div className="svc-result-pills">
-            {RESULTS.map((r, i) => (
-              <div className="svc-result-pill" key={i}>
-                <span className="svc-result-metric">{r.metric}</span>
-                <span className="svc-result-label">{r.label}</span>
+          
+          <div className="startup-hero-visual">
+            <div className="shv-wrapper">
+              <img 
+                src="https://images.unsplash.com/photo-1556761175-5973dc0f32d7?ixlib=rb-4.0.3&auto=format&fit=crop&w=1600&q=80" 
+                alt="Startup ecosystem and growth" 
+                className="shv-image"
+              />
+              <div className="shv-overlay"></div>
+              
+              <svg className="shv-connections" viewBox="0 0 100 100" preserveAspectRatio="none">
+                <path d="M22,22 L50,50" className="shv-line" vectorEffect="non-scaling-stroke" />
+                <path d="M78,17 L50,50" className="shv-line" vectorEffect="non-scaling-stroke" />
+                <path d="M15,78 L50,50" className="shv-line" vectorEffect="non-scaling-stroke" />
+                <path d="M78,83 L50,50" className="shv-line" vectorEffect="non-scaling-stroke" />
+              </svg>
+              
+              <div className="shv-center-node">STARTUP</div>
+              
+              <div className="shv-floating-card card-creators">
+                <span className="shv-dot"></span> Creators
               </div>
-            ))}
+              <div className="shv-floating-card card-content">
+                <span className="shv-dot"></span> Content
+              </div>
+              <div className="shv-floating-card card-community">
+                <span className="shv-dot"></span> Community
+              </div>
+              <div className="shv-floating-card card-growth">
+                <span className="shv-dot"></span> Growth
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div className="container">
+          <div className="startup-proof-strip">
+            <p className="sps-label">Built for ambitious early-stage teams</p>
+            <div className="sps-metrics">
+              {RESULTS.map((r, i) => (
+                <div className="sps-metric-item" key={i}>
+                  <strong>{r.metric}</strong> <span>{r.label}</span>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </section>
@@ -175,57 +219,101 @@ export default function StartupSupport() {
         </div>
       </section>
 
-      <section className="svc-section" id="pricing">
-        <div className="container">
-          <div className="svc-section-head">
-            <p className="section-eyebrow">Startup Packages</p>
-            <h2>Startup-Friendly Pricing</h2>
-            <p>Flexible plans that grow with you. No annual lock-ins, no hidden costs.</p>
+
+
+      {/* ─────────────────────────────────────────────────────────────
+          SECTION 6 — PRICING
+          ───────────────────────────────────────────────────────────── */}
+      <section className="adv-section" id="plans">
+        <div className="adv-container">
+          <div className="adv-section-head text-center max-w-750">
+            <span className="adv-subheading-tag">COMMERCIAL PLANS</span>
+            <h2 className="adv-heading">Choose Your Support Period.</h2>
+            <p className="adv-lead">
+              Two straightforward plans. Both include full priority support for the duration of your selected period.
+            </p>
           </div>
-          <div className="svc-pricing-grid">
-            {PACKAGES.map((pkg, i) => (
-              <div className={`svc-pricing-card ${pkg.badge ? 'svc-pricing-card--featured' : ''}`} key={i}>
-                {pkg.badge && <div className="svc-pricing-badge">{pkg.badge}</div>}
-                <h3>{pkg.name}</h3>
-                <div className="svc-pricing-price">
-                  <span className="svc-price-val">{pkg.price}</span>
-                  <span className="svc-price-period">{pkg.period}</span>
+
+          <div className="adv-pricing-grid">
+            {/* Plan 1 */}
+            <div className="adv-plan-card">
+              <div className="adv-plan-head">
+                <span className="adv-plan-code">PLAN 01</span>
+                <h3 className="adv-plan-title">STARTER ADVISORY</h3>
+                <span className="adv-plan-duration">1 MONTH</span>
+                <div className="adv-plan-price-wrap">
+                  <span className="adv-currency">₹</span>
+                  <span className="adv-amount">2,499</span>
                 </div>
-                <p className="svc-pricing-desc">{pkg.desc}</p>
-                <ul className="svc-pricing-features">
-                  {pkg.features.map((f, j) => <li key={j}><CheckCircle2 size={14} /> {f}</li>)}
-                </ul>
-                <button className={`btn btn-lg ${pkg.badge ? 'btn-primary' : 'btn-secondary'} svc-pricing-cta`}>
-                  {pkg.cta} <ArrowRight size={16} />
-                </button>
+                <div className="adv-plan-support-tag">
+                  <CheckCircle2 size={14} className="text-green" />
+                  <span>Priority Support Included</span>
+                </div>
               </div>
-            ))}
+
+              <p className="adv-plan-desc">
+                Flexible support for founders and businesses that want guidance over the next month.
+              </p>
+
+              <div className="adv-plan-action">
+                <Link
+                  to="/startup-business-advisory?activate=true"
+                  className="adv-btn adv-btn-secondary w-full"
+                  style={{ display: 'block', textAlign: 'center', textDecoration: 'none' }}
+                >
+                  BOOK NOW — ₹2,499 →
+                </Link>
+                <div className="adv-plan-rzp-meta">
+                  <Lock size={12} />
+                  <span>Secure Razorpay Checkout</span>
+                </div>
+              </div>
+            </div>
+
+            {/* Plan 2 */}
+            <div className="adv-plan-card adv-plan-featured">
+              <div className="adv-featured-badge">BEST FOR CONTINUOUS SUPPORT</div>
+              <div className="adv-plan-head">
+                <span className="adv-plan-code">PLAN 02</span>
+                <h3 className="adv-plan-title">ONGOING ADVISORY</h3>
+                <span className="adv-plan-duration">3 MONTHS</span>
+                <div className="adv-plan-price-wrap">
+                  <span className="adv-currency">₹</span>
+                  <span className="adv-amount">5,999</span>
+                </div>
+                <div className="adv-plan-total-notice">
+                  <strong>₹5,999 TOTAL FOR 3 MONTHS</strong>
+                  <span>≈ ₹2,000/month when billed for 3 months</span>
+                </div>
+                <div className="adv-plan-support-tag">
+                  <CheckCircle2 size={14} className="text-green" />
+                  <span>Priority Support Included</span>
+                </div>
+              </div>
+
+              <p className="adv-plan-desc">
+                Extended support for businesses that want consistent guidance and ongoing assistance.
+              </p>
+
+              <div className="adv-plan-action">
+                <Link
+                  to="/startup-business-advisory?activate=true"
+                  className="adv-btn adv-btn-primary w-full"
+                  style={{ display: 'block', textAlign: 'center', textDecoration: 'none' }}
+                >
+                  BOOK NOW — ₹5,999 →
+                </Link>
+                <div className="adv-plan-rzp-meta">
+                  <Lock size={12} />
+                  <span>Secure Razorpay Checkout</span>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </section>
 
-      <section className="svc-section svc-section--alt">
-        <div className="container">
-          <div className="svc-section-head">
-            <p className="section-eyebrow">Founder Stories</p>
-            <h2>Startups That Took Off With Us</h2>
-          </div>
-          <div className="svc-testimonials-grid">
-            {TESTIMONIALS.map((t, i) => (
-              <div className="svc-testimonial-card" key={i}>
-                <div className="svc-testimonial-stars">
-                  {Array(t.stars).fill(0).map((_, j) => <Star key={j} size={14} fill="#f59e0b" color="#f59e0b" />)}
-                </div>
-                <p className="svc-testimonial-text">"{t.text}"</p>
-                <div className="svc-testimonial-author">
-                  <div className="svc-testimonial-avatar">{t.name[0]}</div>
-                  <div><strong>{t.name}</strong><span>{t.role}</span></div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
+      <TestimonialsScroll />
 
       <section className="svc-section">
         <div className="container svc-faq-layout">

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Target, Users, Shield, Zap, ArrowRight, CheckCircle2 } from 'lucide-react';
+import { ArrowRight, CheckCircle2 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import './About.css';
 import SEO from '../components/SEO';

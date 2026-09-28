@@ -6,7 +6,7 @@
 /* ── Page shell ──────────────────────────────────────── */
 .ca-page {
   min-height: 100vh;
-  background: var(--bg, #FAFAF9);
+  background: var(--bg);
   display: flex;
   align-items: stretch;
 }
@@ -34,17 +34,17 @@
   font-size: 0.75rem;
   font-weight: 700;
   letter-spacing: 0.12em;
-  color: var(--color-primary-green, #2E5C53);
+  color: var(--green-mid);
   text-transform: uppercase;
   margin-bottom: 1.25rem;
 }
 
 .ca-heading {
-  font-family: var(--font-display, 'Playfair Display', Georgia, serif);
+  font-family: var(--font-head);
   font-size: clamp(2.25rem, 4vw, 3.25rem);
   font-weight: 700;
   line-height: 1.1;
-  color: var(--color-dark-navy, #0B192C);
+  color: var(--text-1);
   margin-bottom: 1.25rem;
   letter-spacing: -0.02em;
 }
@@ -52,7 +52,7 @@
 .ca-subtext {
   font-size: 1rem;
   line-height: 1.7;
-  color: var(--text-2, #555);
+  color: var(--text-2);
   margin-bottom: 2rem;
   max-width: 400px;
 }
@@ -68,7 +68,7 @@
   font-size: 0.7rem;
   font-weight: 700;
   letter-spacing: 0.1em;
-  color: var(--text-3, #999);
+  color: var(--text-3);
   text-transform: uppercase;
 }
 
@@ -83,7 +83,7 @@
   align-items: center;
   gap: 0.75rem;
   font-size: 0.9rem;
-  color: var(--text-2, #555);
+  color: var(--text-2);
   font-weight: 500;
 }
 
@@ -91,7 +91,7 @@
   width: 7px;
   height: 7px;
   border-radius: 50%;
-  background: var(--color-primary-green, #2E5C53);
+  background: var(--green-mid);
   flex-shrink: 0;
 }
 
@@ -116,13 +116,13 @@
 .ca-field label {
   font-size: 0.82rem;
   font-weight: 600;
-  color: var(--color-dark-navy, #0B192C);
+  color: var(--text-1);
   margin-bottom: 0.45rem;
   letter-spacing: 0.01em;
 }
 
 .ca-req {
-  color: #B91C1C;
+  color: #ef4444;
   margin-left: 2px;
 }
 
@@ -130,12 +130,12 @@
 .ca-field select {
   height: 52px;
   padding: 0 1rem;
-  border: 1px solid #D9DDD8;
+  border: 1px solid var(--border);
   border-radius: 8px;
   font-family: inherit;
   font-size: 0.95rem;
-  color: var(--color-dark-navy, #0B192C);
-  background: #FFFFFF;
+  color: var(--text-1);
+  background: var(--bg);
   outline: none;
   transition: border-color 0.18s, box-shadow 0.18s;
   width: 100%;
@@ -147,19 +147,19 @@
 .ca-field input:focus,
 .ca-field select:focus,
 .ca-phone-code:focus {
-  border-color: var(--color-primary-green, #2E5C53);
-  box-shadow: 0 0 0 3px rgba(46, 92, 83, 0.1);
+  border-color: var(--green-mid);
+  box-shadow: 0 0 0 3px rgba(23, 168, 90, 0.1);
 }
 
 .ca-field input.ca-input-err,
 .ca-field select.ca-input-err {
-  border-color: #DC2626;
-  background: #FEF2F2;
+  border-color: #ef4444;
+  background: rgba(239, 68, 68, 0.05);
 }
 
 .ca-err {
   font-size: 0.78rem;
-  color: #DC2626;
+  color: #ef4444;
   margin-top: 0.3rem;
   font-weight: 500;
 }
@@ -179,7 +179,7 @@
   height: 0;
   border-left: 5px solid transparent;
   border-right: 5px solid transparent;
-  border-top: 5px solid #888;
+  border-top: 5px solid var(--text-3);
   pointer-events: none;
 }
 
@@ -199,12 +199,12 @@
   width: 108px !important;   /* must override .ca-field select { width:100% } */
   flex: 0 0 108px;
   padding: 0 0.75rem;
-  border: 1px solid #D9DDD8;
+  border: 1px solid var(--border);
   border-radius: 8px;
   font-family: inherit;
   font-size: 0.88rem;
-  color: var(--color-dark-navy, #0B192C);
-  background: #FFFFFF;
+  color: var(--text-1);
+  background: var(--bg);
   outline: none;
   cursor: pointer;
   -webkit-appearance: none;
@@ -229,7 +229,7 @@
   font-family: inherit;
   font-size: 0.85rem;
   font-weight: 600;
-  color: var(--color-primary-green, #2E5C53);
+  color: var(--green-mid);
   cursor: pointer;
   margin-bottom: 1.25rem;
   transition: opacity 0.15s;
@@ -239,8 +239,8 @@
 
 /* ── Optional fields ─────────────────────────────────── */
 .ca-optional-fields {
-  background: #F8FAF9;
-  border: 1px solid #E2E8E6;
+  background: var(--bg-2);
+  border: 1px solid var(--border);
   border-radius: 10px;
   padding: 1.25rem 1.25rem 0.25rem;
   margin-bottom: 1.25rem;
@@ -254,8 +254,8 @@
   gap: 0.5rem;
   height: 52px;
   padding: 0 2rem;
-  background: var(--color-dark-navy, #0B192C);
-  color: #ffffff;
+  background: var(--text-1);
+  color: var(--bg);
   border: none;
   border-radius: 8px;
   font-family: inherit;
@@ -263,13 +263,13 @@
   font-weight: 700;
   letter-spacing: 0.02em;
   cursor: pointer;
-  transition: background 0.2s, transform 0.15s;
+  transition: background 0.2s, transform 0.15s, opacity 0.2s;
   margin-top: 0.5rem;
   margin-bottom: 1rem;
 }
 
 .ca-submit-btn:hover:not(:disabled) {
-  background: #1a2e42;
+  opacity: 0.9;
   transform: translateY(-1px);
 }
 
@@ -281,23 +281,23 @@
 /* ── Microcopy ───────────────────────────────────────── */
 .ca-microcopy {
   font-size: 0.82rem;
-  color: var(--text-2, #666);
+  color: var(--text-2);
   margin-bottom: 0.4rem;
   line-height: 1.5;
 }
 
 .ca-privacy {
   font-size: 0.76rem;
-  color: var(--text-3, #999);
+  color: var(--text-3);
   line-height: 1.5;
   margin: 0;
 }
 
 /* ── Server error ────────────────────────────────────── */
 .ca-server-error {
-  background: #FEF2F2;
-  border: 1px solid #FCA5A5;
-  color: #B91C1C;
+  background: rgba(239, 68, 68, 0.05);
+  border: 1px solid #ef4444;
+  color: #ef4444;
   padding: 0.75rem 1rem;
   border-radius: 8px;
   font-size: 0.88rem;
@@ -322,9 +322,9 @@
 
 .ca-success-badge {
   display: inline-block;
-  background: #EEF9F2;
-  color: var(--color-primary-green, #2E5C53);
-  border: 1px solid #A7F3D0;
+  background: var(--green-light);
+  color: var(--green-mid);
+  border: 1px solid var(--green-mid);
   border-radius: 100px;
   padding: 0.35rem 1rem;
   font-size: 0.72rem;
@@ -335,17 +335,17 @@
 }
 
 .ca-success-box h1 {
-  font-family: var(--font-display, 'Playfair Display', Georgia, serif);
+  font-family: var(--font-head);
   font-size: 2.25rem;
   font-weight: 700;
-  color: var(--color-dark-navy, #0B192C);
+  color: var(--text-1);
   margin-bottom: 1rem;
   letter-spacing: -0.02em;
 }
 
 .ca-success-box p {
   font-size: 1rem;
-  color: var(--text-2, #555);
+  color: var(--text-2);
   line-height: 1.7;
   margin-bottom: 2rem;
 }
@@ -354,17 +354,17 @@
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
-  background: var(--color-dark-navy, #0B192C);
-  color: #ffffff;
+  background: var(--text-1);
+  color: var(--bg);
   text-decoration: none;
   padding: 0.85rem 1.75rem;
   border-radius: 8px;
   font-size: 0.9rem;
   font-weight: 700;
-  transition: background 0.2s;
+  transition: opacity 0.2s;
 }
 
-.ca-btn-back:hover { background: #1a2e42; }
+.ca-btn-back:hover { opacity: 0.9; }
 
 /* ── Responsive ──────────────────────────────────────── */
 @media (max-width: 900px) {

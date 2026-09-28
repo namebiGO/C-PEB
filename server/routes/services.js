@@ -12,9 +12,7 @@ router.get('/', async (req, res) => {
   try {
     const services = await Service.find().sort({ displayOrder: 1, createdAt: -1 });
     res.json({ success: true, data: services });
-  } catch (error) {
-    res.status(500).json({ success: false, error: 'Server Error' });
-  }
+  } catch (error) { console.error(error);  }
 });
 
 // @route   POST /api/admin/services
@@ -71,6 +69,7 @@ router.delete('/:id', async (req, res) => {
     if (req.io) req.io.emit('content_updated', { type: 'service_deleted' });
     res.json({ success: true, data: {} });
   } catch (error) {
+    console.error('Error fetching dashboard stats:', error);
     res.status(500).json({ success: false, error: 'Server Error' });
   }
 });

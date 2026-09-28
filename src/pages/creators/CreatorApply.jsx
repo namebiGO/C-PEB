@@ -13,9 +13,9 @@ const CATEGORIES = [
 
 const COUNTRY_CODES = [
   { code: '+91', label: '🇮🇳 +91' },
-  { code: '+1',  label: '🇺🇸 +1'  },
+  { code: '+1', label: '🇺🇸 +1' },
   { code: '+44', label: '🇬🇧 +44' },
-  { code: '+971',label: '🇦🇪 +971'},
+  { code: '+971', label: '🇦🇪 +971' },
   { code: '+65', label: '🇸🇬 +65' },
   { code: '+61', label: '🇦🇺 +61' },
   { code: '+49', label: '🇩🇪 +49' },
@@ -46,10 +46,10 @@ export default function CreatorApply() {
 
   const validate = () => {
     const e = {};
-    if (!form.creatorName.trim())   e.creatorName = 'Please enter your creator name.';
-    if (!form.instagram.trim())     e.instagram   = 'Please enter your Instagram username or profile link.';
-    if (!form.category)             e.category    = 'Please select a content category.';
-    if (!form.city.trim())          e.city        = 'Please enter your city.';
+    if (!form.creatorName.trim()) e.creatorName = 'Please enter your creator name.';
+    if (!form.instagram.trim()) e.instagram = 'Please enter your Instagram username or profile link.';
+    if (!form.category) e.category = 'Please select a content category.';
+    if (!form.city.trim()) e.city = 'Please enter your city.';
     if (!form.whatsappNumber.trim()) e.whatsappNumber = 'Please enter your WhatsApp number.';
     return e;
   };
@@ -64,17 +64,17 @@ export default function CreatorApply() {
 
     try {
       const payload = {
-        creatorName:  form.creatorName,
-        instagram:    form.instagram,
-        category:     form.category,
-        city:         form.city,
-        whatsapp:     `${form.countryCode} ${form.whatsappNumber}`.trim(),
-        email:        form.email,
-        youtube:      form.youtube,
-        otherSocial:  form.otherSocial,
+        creatorName: form.creatorName,
+        instagram: form.instagram,
+        category: form.category,
+        city: form.city,
+        whatsapp: `${form.countryCode} ${form.whatsappNumber}`.trim(),
+        email: form.email,
+        youtube: form.youtube,
+        otherSocial: form.otherSocial,
       };
 
-      const res  = await fetch('/api/creators/apply', {
+      const res = await fetch('/api/creators/apply', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),
@@ -128,10 +128,10 @@ export default function CreatorApply() {
         {/* LEFT — Branding copy */}
         <div className="ca-left">
           <p className="ca-eyebrow">JOIN C-PEB CREATORS</p>
-          <h1 className="ca-heading">Get discovered by the right brands.</h1>
+          <h1 className="ca-heading">Get discovered by the right brands</h1>
           <p className="ca-subtext">
             Create your creator profile in under a minute. We'll review your
-            application before it appears on C-PEB.
+            application before it appears on C-PEB
           </p>
 
           <div className="ca-tags">

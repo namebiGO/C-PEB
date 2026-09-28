@@ -1162,7 +1162,7 @@ export default function BusinessServices() {
                   <h2>Need expert guidance?</h2>
                   <p>Talk to our advisors — free 30-minute business consultation call.</p>
                 </div>
-                <button className="btn btn-primary btn-lg">Book Free Consultation <ArrowRight size={18} /></button>
+                <Link to="/contact" className="btn btn-primary btn-lg" style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem', textDecoration: 'none' }}>Book Free Consultation <ArrowRight size={18} /></Link>
               </div>
             </div>
           </section>

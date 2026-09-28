@@ -79,9 +79,9 @@ export default function Contact() {
 
   return (
     <div className="contact-page">
-      <SEO 
-        title="Contact Us | C-PEB" 
-        description="Get in touch with C-PEB. Start your journey with our interactive strategy wizard." 
+      <SEO
+        title="Contact Us | C-PEB"
+        description="Get in touch with C-PEB. Start your journey with our interactive strategy wizard."
       />
       {/* ── Hero Section ── */}
       <section className="contact-hero">
@@ -95,7 +95,7 @@ export default function Contact() {
       {/* ── Main Content ── */}
       <section className="contact-content">
         <div className="container contact-grid">
-          
+
           {/* Contact Info Sidebar */}
           <div className="contact-info">
             <h2>Get in Touch</h2>
@@ -115,7 +115,7 @@ export default function Contact() {
                 <div className="info-icon"><Mail size={20} /></div>
                 <div>
                   <h3>Email Us</h3>
-                  <p>hello@c-peb.in</p>
+                  <p>Support@c-peb.in</p>
                   <span>Support & General Enquiries</span>
                 </div>
               </div>
@@ -124,8 +124,8 @@ export default function Contact() {
                 <div className="info-icon"><MapPin size={20} /></div>
                 <div>
                   <h3>Visit Us</h3>
-                  <p>Mumbai, Maharashtra, India</p>
-                  <span>Headquarters</span>
+                  <p>Patna, Bihar, India</p>
+                  <span>Headquarter</span>
                 </div>
               </div>
             </div>
@@ -147,7 +147,7 @@ export default function Contact() {
                   </div>
                   <h3>Request Received!</h3>
                   <p>Thank you for sharing your details. An expert will review your profile and reach out shortly to schedule your strategy call.</p>
-                  <button className="btn btn-outline mt-4" onClick={() => { setIsSubmitted(false); setStep(1); setFormData({identity:'', goal:'', budget:'', name:'', email:'', phone:'', company:''}); }}>
+                  <button className="btn btn-outline mt-4" onClick={() => { setIsSubmitted(false); setStep(1); setFormData({ identity: '', goal: '', budget: '', name: '', email: '', phone: '', company: '' }); }}>
                     Submit Another Request
                   </button>
                 </div>
@@ -166,14 +166,14 @@ export default function Contact() {
                     <div className="wizard-step fade-in">
                       <h3>How can we help you today?</h3>
                       <p className="step-desc">Select the option that best describes you.</p>
-                      
+
                       <div className="wizard-options-grid">
                         {[
                           { id: 'Brand', icon: <Briefcase size={28} /> },
                           { id: 'Creator', icon: <User size={28} /> },
                           { id: 'Startup', icon: <Building2 size={28} /> }
                         ].map(opt => (
-                          <div 
+                          <div
                             key={opt.id}
                             className={`wizard-option-card ${formData.identity === opt.id ? 'selected' : ''}`}
                             onClick={() => { updateData('identity', opt.id); setTimeout(nextStep, 300); }}
@@ -191,10 +191,10 @@ export default function Contact() {
                     <div className="wizard-step fade-in">
                       <h3>What is your primary goal?</h3>
                       <p className="step-desc">This helps us prepare the right strategy for our call.</p>
-                      
+
                       <div className="wizard-options-grid">
                         {getGoalOptions().map(opt => (
-                          <div 
+                          <div
                             key={opt.id}
                             className={`wizard-option-card ${formData.goal === opt.id ? 'selected' : ''}`}
                             onClick={() => { updateData('goal', opt.id); setTimeout(nextStep, 300); }}
@@ -212,10 +212,10 @@ export default function Contact() {
                     <div className="wizard-step fade-in">
                       <h3>What is your monthly budget?</h3>
                       <p className="step-desc">Knowing this helps us recommend realistic solutions.</p>
-                      
+
                       <div className="wizard-options-list">
                         {['Under ₹50k', '₹50k - ₹2L', '₹2L - ₹10L', '₹10L+'].map(budget => (
-                          <div 
+                          <div
                             key={budget}
                             className={`wizard-option-row ${formData.budget === budget ? 'selected' : ''}`}
                             onClick={() => { updateData('budget', budget); setTimeout(nextStep, 300); }}
@@ -232,7 +232,7 @@ export default function Contact() {
                     <div className="wizard-step fade-in">
                       <h3>Almost done!</h3>
                       <p className="step-desc">Where should we send your strategy blueprint?</p>
-                      
+
                       <form onSubmit={handleSubmit} className="wizard-final-form">
                         <div className="form-row">
                           <div className="form-group">
@@ -274,9 +274,9 @@ export default function Contact() {
                       {step > 1 ? (
                         <button className="btn btn-ghost" onClick={prevStep}><ArrowLeft size={16} /> Back</button>
                       ) : <div></div>}
-                      
-                      <button 
-                        className="btn btn-primary" 
+
+                      <button
+                        className="btn btn-primary"
                         onClick={nextStep}
                         disabled={
                           (step === 1 && !formData.identity) ||

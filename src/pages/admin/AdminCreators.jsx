@@ -97,24 +97,24 @@ const AdminCreators = () => {
         <h2>Creators</h2>
         <div className="admin-summary-cards">
           <div className="summary-card">
-            <span>TOTAL CREATORS</span>
-            <strong>{totalCount}</strong>
-          </div>
-          <div className="summary-card">
             <span>PENDING REVIEW</span>
-            <strong>{pendingCount}</strong>
+            <strong>{creators.filter(c => c.status === 'PENDING_REVIEW' || c.status === 'UNDER_REVIEW').length}</strong>
           </div>
           <div className="summary-card">
             <span>APPROVED</span>
-            <strong>{approvedCount}</strong>
+            <strong>{creators.filter(c => c.status === 'APPROVED').length}</strong>
           </div>
           <div className="summary-card">
-            <span>FEATURED</span>
-            <strong>{featuredCount}</strong>
+            <span>CHANGES REQ.</span>
+            <strong>{creators.filter(c => c.status === 'CHANGES_REQUESTED').length}</strong>
           </div>
           <div className="summary-card">
-            <span>HIDDEN</span>
-            <strong>{hiddenCount}</strong>
+            <span>REJECTED</span>
+            <strong>{creators.filter(c => c.status === 'REJECTED').length}</strong>
+          </div>
+          <div className="summary-card" style={{ background: '#f0fdf4', border: '1px solid #bbf7d0' }}>
+            <span style={{ color: '#166534' }}>PUBLISHED</span>
+            <strong style={{ color: '#166534' }}>{creators.filter(c => c.isPublished).length}</strong>
           </div>
         </div>
       </div>

@@ -389,9 +389,7 @@ router.get('/admin/plans', protect, async (req, res) => {
   try {
     const plans = await AdvisoryPlan.find().sort({ displayOrder: 1 });
     res.json({ success: true, data: plans });
-  } catch (error) {
-    res.status(500).json({ success: false, error: 'Server Error' });
-  }
+  } catch (error) { console.error(error);  }
 });
 
 // @route   POST /api/advisory/admin/plans
@@ -423,9 +421,7 @@ router.delete('/admin/plans/:id', protect, async (req, res) => {
   try {
     await AdvisoryPlan.findByIdAndDelete(req.params.id);
     res.json({ success: true, data: {} });
-  } catch (error) {
-    res.status(500).json({ success: false, error: 'Server Error' });
-  }
+  } catch (error) { console.error(error);  }
 });
 
 export default router;

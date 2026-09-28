@@ -1,20 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import {
-  ShieldCheck,
-  Clock,
-  CheckCircle2,
-  AlertCircle,
-  MessageSquare,
   Search,
-  Filter,
   X,
-  Send,
-  User,
-  Building,
-  Mail,
-  Phone,
-  Calendar,
-  CreditCard
+  Send
 } from 'lucide-react';
 import AdminAdvisoryPlans from './AdminAdvisoryPlans';
 

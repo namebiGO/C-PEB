@@ -9,8 +9,12 @@ const router = express.Router();
 // @desc    Get all APPROVED creators (public directory)
 router.get('/', async (req, res) => {
   try {
-    // Only fetch APPROVED and VISIBLE profiles
-    const query = { status: 'APPROVED', visibility: 'VISIBLE' };
+    const page = parseInt(req.query.page, 10) || 1;
+    const limit = parseInt(req.query.limit, 10) || 20;
+    const startIndex = (page - 1) * limit;
+
+    // Only fetch APPROVED and PUBLISHED profiles
+    const query = { status: 'APPROVED', isPublished: true };
     
     // Simple filtering logic
     if (req.query.category) {
@@ -23,22 +27,46 @@ router.get('/', async (req, res) => {
       query.city = { $regex: req.query.location, $options: 'i' };
     }
     
-    // NOTE: In production, pagination should be added here
+    // Fetch profiles with pagination
+    const total = await CreatorProfile.countDocuments(query);
     const profiles = await CreatorProfile.find(query)
       .select('-phone -email -accuracyConsent -userId')
       .sort({ priority: 1, updatedAt: -1 })
+      .skip(startIndex)
+      .limit(limit)
       .lean();
 
+    // Fix N+1 query problem: fetch all social accounts for these profiles in one go
+    const profileIds = profiles.map(p => p._id);
+    const allSocialAccounts = await SocialAccount.find({ creatorProfileId: { $in: profileIds } }).lean();
+    
+    // Group social accounts by profile ID
+    const socialAccountsByProfile = {};
+    allSocialAccounts.forEach(account => {
+      const pid = account.creatorProfileId.toString();
+      if (!socialAccountsByProfile[pid]) {
+        socialAccountsByProfile[pid] = [];
+      }
+      socialAccountsByProfile[pid].push(account);
+    });
+
     // Attach social accounts for the cards
-    const populatedProfiles = await Promise.all(profiles.map(async (profile) => {
-      const socialAccounts = await SocialAccount.find({ creatorProfileId: profile._id }).lean();
-      return {
-        ...profile,
-        socialAccounts,
-      };
+    const populatedProfiles = profiles.map(profile => ({
+      ...profile,
+      socialAccounts: socialAccountsByProfile[profile._id.toString()] || [],
     }));
 
-    res.json({ success: true, data: populatedProfiles });
+    res.json({ 
+      success: true, 
+      count: populatedProfiles.length,
+      pagination: {
+        total,
+        page,
+        limit,
+        pages: Math.ceil(total / limit)
+      },
+      data: populatedProfiles 
+    });
   } catch (error) {
     console.error(error);
     res.status(500).json({ success: false, error: 'Server Error' });
@@ -52,7 +80,7 @@ router.get('/:slug', async (req, res) => {
     const profile = await CreatorProfile.findOne({ 
       slug: req.params.slug, 
       status: 'APPROVED',
-      visibility: 'VISIBLE'
+      isPublished: true
     })
       .select('-phone -email -accuracyConsent -userId')
       .lean();

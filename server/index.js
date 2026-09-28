@@ -3,6 +3,7 @@ import http from 'http';
 import { Server } from 'socket.io';
 import cors from 'cors';
 import helmet from 'helmet';
+import compression from 'compression';
 import connectDB from './config/db.js';
 import contactRouter from './routes/contact.js';
 import authRouter from './routes/auth.js';
@@ -46,6 +47,7 @@ app.use((req, res, next) => {
 
 // Secure HTTP headers
 app.use(helmet());
+app.use(compression());
 
 // CORS — allow the Vite dev server (and any configured origin)
 app.use(

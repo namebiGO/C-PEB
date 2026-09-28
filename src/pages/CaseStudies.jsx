@@ -3,8 +3,8 @@ import { ArrowRight, ArrowUpRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import SEO from '../components/SEO';
 import './CaseStudies.css';
-import projectMockup1 from '../assets/project_mockup_1.jpg';
-import projectMockup2 from '../assets/project_mockup_2.jpg';
+import projectMockup1 from '../assets/project_mockup_1.webp';
+import projectMockup2 from '../assets/project_mockup_2.webp';
 import TestimonialsScroll from '../components/TestimonialsScroll';
 
 /* ═══════════════════════════════════════════════

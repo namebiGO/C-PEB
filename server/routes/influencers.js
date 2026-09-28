@@ -13,9 +13,7 @@ router.get('/', async (req, res) => {
   try {
     const influencers = await Influencer.find().sort({ createdAt: -1 });
     res.json({ success: true, data: influencers });
-  } catch (error) {
-    res.status(500).json({ success: false, error: 'Server Error' });
-  }
+  } catch (error) { console.error(error);  }
 });
 
 // @route   POST /api/admin/influencers
@@ -71,9 +69,7 @@ router.delete('/:id', async (req, res) => {
     await influencer.deleteOne();
     req.io.emit('content_updated', { type: 'influencer_deleted' });
     res.json({ success: true, data: {} });
-  } catch (error) {
-    res.status(500).json({ success: false, error: 'Server Error' });
-  }
+  } catch (error) { console.error(error);  }
 });
 
 export default router;
