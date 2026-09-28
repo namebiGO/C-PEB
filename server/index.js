@@ -54,8 +54,15 @@ app.use((req, res, next) => {
   next();
 });
 
-// Secure HTTP headers
-app.use(helmet());
+// Secure HTTP headers (disabled upgrade-insecure-requests so HTTP testing works without SSL timeout)
+app.use(helmet({
+  contentSecurityPolicy: {
+    useDefaults: true,
+    directives: {
+      "upgrade-insecure-requests": null,
+    },
+  },
+}));
 app.use(compression());
 
 // CORS — allow the Vite dev server (and any configured origin)
