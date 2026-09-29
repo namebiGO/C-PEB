@@ -12,6 +12,7 @@ const Footer = () => (
         {/* Brand */}
         <div className="footer-brand">
           <img src={logo} alt="C-PEB" className="footer-logo" />
+          <h4 style={{ fontWeight: '600', fontSize: '1.1rem', color: 'var(--text-1)', margin: '0 0 0.5rem 0' }}>Let's change the game.</h4>
           <p>Empowering India's creator economy — connecting influencers with brands that matter.</p>
           <div className="social-links">
             <a href="#" className="social-icon" aria-label="Website"><Globe size={16} /></a>
@@ -48,7 +49,10 @@ const Footer = () => (
       </div>
 
       <div className="footer-bottom">
-        <p>© {new Date().getFullYear()} C-PEB. Let's change the game.</p>
+        <div className="footer-copyright-info">
+          <p>© {new Date().getFullYear()} C-PEB. All rights reserved.</p>
+          <p style={{ marginTop: '4px', fontSize: '0.75rem', color: 'var(--text-3)' }}>A unit of brija services private limited</p>
+        </div>
         <div className="footer-bottom-links">
           <Link to="/privacy">Privacy</Link>
           <Link to="/terms">Terms</Link>
