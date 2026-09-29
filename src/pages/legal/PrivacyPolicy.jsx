@@ -32,7 +32,7 @@ export default function PrivacyPolicy() {
         <main className="legal-content-card legal-body">
           <section id="intro">
             <h2>1. Introduction</h2>
-            <p>At C-PEB, we respect your privacy and are committed to protecting your personal data. This privacy policy will inform you as to how we look after your personal data when you visit our website and tell you about your privacy rights and how the law protects you.</p>
+            <p>At C-PEB (a business consultancy service, a unit of brija services private limited), we respect your privacy and are committed to protecting your personal data. This privacy policy will inform you as to how we look after your personal data when you visit our website and tell you about your privacy rights and how the law protects you.</p>
           </section>
           
           <section id="data">

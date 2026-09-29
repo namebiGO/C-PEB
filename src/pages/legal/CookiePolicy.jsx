@@ -67,7 +67,7 @@ export default function CookiePolicy() {
             <h2>6. Contact Information</h2>
             <p>Hopefully that has clarified things for you. If you are still looking for more information, you can contact us at <a href="mailto:privacy@c-peb.in">privacy@c-peb.in</a>.</p>
             <div className="legal-contact-box">
-              <p><strong>C-PEB Data Protection Officer</strong><br />Email: <a href="mailto:privacy@c-peb.in">privacy@c-peb.in</a><br />Subject: Cookie Preferences & Policy</p>
+              <p><strong>C-PEB (a business consultancy service, a unit of brija services private limited) Data Protection Officer</strong><br />Email: <a href="mailto:privacy@c-peb.in">privacy@c-peb.in</a><br />Subject: Cookie Preferences & Policy</p>
             </div>
           </section>
         </main>

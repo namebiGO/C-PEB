@@ -51,7 +51,7 @@ const Footer = () => (
       <div className="footer-bottom">
         <div className="footer-copyright-info">
           <p>© {new Date().getFullYear()} C-PEB. All rights reserved.</p>
-          <p style={{ marginTop: '4px', fontSize: '0.75rem', color: 'var(--text-3)' }}>A unit of brija services private limited</p>
+          <p style={{ marginTop: '4px', fontSize: '0.75rem', color: 'var(--text-3)' }}>C-PEB a business consultancy service a unit of brija services private limited</p>
         </div>
         <div className="footer-bottom-links">
           <Link to="/privacy">Privacy</Link>

@@ -33,7 +33,7 @@ export default function TermsOfService() {
         <main className="legal-content-card legal-body">
           <section id="acceptance">
             <h2>1. Acceptance of Terms</h2>
-            <p>By accessing and using the C-PEB website and services, you accept and agree to be bound by the terms and provision of this agreement. In addition, when using these particular services, you shall be subject to any posted guidelines or rules applicable to such services. Any participation in this service will constitute acceptance of this agreement.</p>
+            <p>By accessing and using the C-PEB (a business consultancy service, a unit of brija services private limited) website and services, you accept and agree to be bound by the terms and provision of this agreement. In addition, when using these particular services, you shall be subject to any posted guidelines or rules applicable to such services. Any participation in this service will constitute acceptance of this agreement.</p>
           </section>
           
           <section id="description">
