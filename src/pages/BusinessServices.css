@@ -257,6 +257,11 @@
   padding: 2.5rem 3rem;
 }
 
+[data-theme='dark'] .bs-bottom-cta-inner {
+  background: rgba(23, 168, 90, 0.1);
+  border-color: rgba(23, 168, 90, 0.2);
+}
+
 .bs-bottom-cta-inner h2 { margin-bottom: 0.4rem; }
 
 /* ── Category Hero (drill-down) ── */

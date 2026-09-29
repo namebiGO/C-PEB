@@ -168,3 +168,33 @@
     max-width: none;
   }
 }
+
+[data-theme='dark'] .creators-directory-container {
+  background-color: var(--bg);
+}
+
+[data-theme='dark'] .creators-hero {
+  background-color: var(--bg-2);
+  border-bottom: 1px solid var(--border);
+}
+
+[data-theme='dark'] .directory-header h2 {
+  color: var(--text-1);
+}
+
+[data-theme='dark'] .directory-header p {
+  color: var(--text-2);
+}
+
+[data-theme='dark'] .filter-select,
+[data-theme='dark'] .filter-search {
+  background-color: var(--bg-2);
+  color: var(--text-1);
+  border-color: var(--border);
+}
+
+[data-theme='dark'] .no-results {
+  background-color: var(--bg-2);
+  border-color: var(--border);
+  color: var(--text-2);
+}

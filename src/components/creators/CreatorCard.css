@@ -125,3 +125,35 @@
 .creator-card:hover .creator-card-cta::after {
   transform: translate(3px, -3px);
 }
+
+[data-theme='dark'] .creator-card {
+  background: var(--surface);
+  border-color: var(--border);
+}
+
+[data-theme='dark'] .creator-card:hover {
+  border-color: var(--border-light);
+  box-shadow: var(--shadow-sm);
+}
+
+[data-theme='dark'] .creator-card-img-wrapper {
+  background-color: var(--bg-2);
+}
+
+[data-theme='dark'] .creator-card-name {
+  color: var(--text-1);
+}
+
+[data-theme='dark'] .creator-card:hover .creator-card-name {
+  color: var(--text-1);
+}
+
+[data-theme='dark'] .creator-card-category,
+[data-theme='dark'] .creator-card-location,
+[data-theme='dark'] .creator-card-followers {
+  color: var(--text-2);
+}
+
+[data-theme='dark'] .creator-card-cta {
+  color: var(--text-1);
+}
