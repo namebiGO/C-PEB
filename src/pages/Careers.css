@@ -3,110 +3,334 @@
 ════════════════════════════════════════ */
 
 .careers-page {
-  padding-top: 64px;
+  padding-top: 64px; /* fixed nav offset */
   background: var(--bg);
   min-height: 100vh;
 }
 
-/* ── Hero ── */
+/* ── Typography Resets & Shared ── */
+.careers-eyebrow {
+  display: block;
+  font-family: var(--font-head);
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--green-mid);
+  margin-bottom: 1rem;
+}
+
+.careers-subtitle {
+  font-size: 1.1rem;
+  color: var(--text-2);
+  line-height: 1.6;
+  max-width: 600px;
+}
+
+/* ── 1. Hero ── */
 .careers-hero {
-  padding: 8rem 0 6rem;
-  text-align: center;
+  padding: 6rem 0 5rem;
+  border-bottom: 1px solid var(--border);
 }
 
 .careers-hero-inner {
-  max-width: 800px;
-  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4rem;
+  align-items: center;
 }
 
 .careers-hero-title {
-  font-size: clamp(2.5rem, 5vw, 4rem);
+  font-size: clamp(2.5rem, 5vw, 3.5rem);
   font-weight: 800;
-  line-height: 1.1;
-  margin-bottom: 1.5rem;
+  line-height: 1.15;
+  margin-bottom: 1.25rem;
   letter-spacing: -0.02em;
+  color: var(--text-1);
 }
 
 .careers-hero-desc {
-  font-size: 1.2rem;
+  font-size: 1.15rem;
   color: var(--text-2);
-  margin-bottom: 2.5rem;
-  line-height: 1.6;
+  margin-bottom: 2.25rem;
+  line-height: 1.65;
+  max-width: 90%;
 }
 
-/* ── Culture ── */
-.careers-culture {
-  padding: 5rem 0;
+.careers-hero-actions {
+  display: flex;
+  gap: 1rem;
+}
+
+.careers-hero-visual {
+  width: 100%;
+  aspect-ratio: 4/3;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
   background: var(--bg-2);
+}
+
+.careers-hero-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* ── 2. Why C-PEB (Editorial Two-Column) ── */
+.careers-why {
+  padding: 6rem 0;
+  background: var(--bg);
+}
+
+.careers-why-inner {
+  display: grid;
+  grid-template-columns: 1fr 1.2fr;
+  gap: 4rem;
+  align-items: flex-start;
+}
+
+.careers-why-left h2 {
+  font-size: clamp(2rem, 3vw, 2.5rem);
+  line-height: 1.2;
+}
+
+.careers-why-right p {
+  font-size: 1.15rem;
+  color: var(--text-2);
+  line-height: 1.7;
+}
+
+/* ── 3. Culture ── */
+.careers-culture {
+  padding: 6rem 0;
+  background: var(--bg-light, #f8fafc);
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+}
+
+.careers-culture-header {
+  margin-bottom: 4rem;
+}
+
+.careers-culture-header h2 {
+  font-size: 2.25rem;
+  margin-bottom: 0.75rem;
 }
 
 .culture-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 2rem;
-  margin-top: 3rem;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.5rem;
 }
 
 .culture-card {
   background: var(--bg);
-  padding: 2.5rem 2rem;
-  border-radius: 16px;
+  padding: 2rem 1.5rem;
+  border-radius: 8px;
   border: 1px solid var(--border);
-  box-shadow: var(--shadow-sm);
   transition: transform var(--t-med), box-shadow var(--t-med);
 }
 
 .culture-card:hover {
-  transform: translateY(-5px);
-  box-shadow: var(--shadow-md);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-sm);
 }
 
 .culture-icon {
-  width: 48px;
-  height: 48px;
-  border-radius: 12px;
-  background: var(--green-light);
-  color: var(--green-mid);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-bottom: 1.5rem;
+  color: var(--text-1);
+  margin-bottom: 1.25rem;
 }
 
 .culture-card h3 {
-  font-size: 1.25rem;
-  margin-bottom: 0.75rem;
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  color: var(--text-1);
 }
 
-/* ── Jobs ── */
-.careers-jobs {
-  padding: 5rem 0;
+.culture-card p {
+  font-size: 0.95rem;
+  color: var(--text-2);
+  line-height: 1.6;
 }
 
-.jobs-header {
-  text-align: center;
+/* ── 4. Life at C-PEB (Editorial Grid) ── */
+.careers-life {
+  padding: 6rem 0;
+  background: var(--bg);
+}
+
+.careers-life-header {
   margin-bottom: 3.5rem;
 }
 
-.jobs-list {
-  max-width: 860px;
+.careers-life-header h2 {
+  font-size: 2.25rem;
+  margin-bottom: 0.75rem;
+}
+
+.life-image-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(2, 280px);
+  gap: 1.5rem;
+}
+
+.life-image-grid img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 8px;
+  transition: transform 0.4s ease;
+}
+
+.life-image-grid > div {
+  overflow: hidden;
+  border-radius: 8px;
+  background: var(--bg-2);
+}
+
+.life-image-grid > div:hover img {
+  transform: scale(1.02);
+}
+
+.life-img-large {
+  grid-column: 1 / 3;
+  grid-row: 1 / 2;
+}
+
+.life-img-small-1 {
+  grid-column: 3 / 4;
+  grid-row: 1 / 2;
+}
+
+.life-img-small-2 {
+  grid-column: 1 / 2;
+  grid-row: 2 / 3;
+}
+
+.life-img-wide {
+  grid-column: 2 / 4;
+  grid-row: 2 / 3;
+}
+
+/* ── 5. People / Team Message ── */
+.careers-team-msg {
+  padding: 4rem 0 6rem;
+  background: var(--bg);
+}
+
+.team-msg-inner {
+  display: grid;
+  grid-template-columns: 0.8fr 1fr;
+  gap: 4rem;
+  align-items: center;
+  max-width: 900px;
   margin: 0 auto;
+}
+
+.team-msg-visual {
+  border-radius: 8px;
+  overflow: hidden;
+  aspect-ratio: 4/5;
+  background: var(--bg-2);
+}
+
+.team-msg-visual img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.team-msg-copy h2 {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+}
+
+.team-msg-copy p {
+  font-size: 1.1rem;
+  line-height: 1.7;
+  color: var(--text-2);
+}
+
+/* ── 6. What You Can Expect ── */
+.careers-expectations {
+  padding: 6rem 0;
+  background: var(--bg-light, #f8fafc);
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+}
+
+.expectations-header {
+  margin-bottom: 3.5rem;
+}
+
+.expectations-header h2 {
+  font-size: 2.25rem;
+}
+
+.expectations-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2.5rem;
+}
+
+.expectation-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+}
+
+.expectation-icon {
+  color: var(--text-1);
+  margin-top: 2px; /* slight visual alignment */
+}
+
+.expectation-content h4 {
+  font-size: 1rem;
+  font-weight: 700;
+  margin-bottom: 0.25rem;
+  color: var(--text-1);
+}
+
+.expectation-content p {
+  font-size: 0.95rem;
+  color: var(--text-2);
+  line-height: 1.5;
+}
+
+/* ── 7. Open Positions ── */
+.careers-jobs {
+  padding: 6rem 0;
+  background: var(--bg);
+}
+
+.jobs-header {
+  margin-bottom: 4rem;
+}
+
+.jobs-header h2 {
+  font-size: 2.25rem;
+  margin-bottom: 0.75rem;
+}
+
+.jobs-list {
   display: flex;
   flex-direction: column;
   gap: 1rem;
+  max-width: 900px;
 }
 
 .job-card {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 1.5rem 2rem;
+  padding: 2rem;
   background: var(--bg);
   border: 1px solid var(--border);
-  border-radius: 12px;
-  transition: all var(--t-med);
-  text-decoration: none;
-  color: inherit;
+  border-radius: 8px;
+  transition: border-color var(--t-med), box-shadow var(--t-med);
 }
 
 .job-card:hover {
@@ -114,48 +338,175 @@
   box-shadow: var(--shadow-sm);
 }
 
-.job-info h3 {
+.job-card-main {
+  flex: 1;
+  padding-right: 2rem;
+}
+
+.job-title {
   font-size: 1.2rem;
   font-weight: 700;
-  margin-bottom: 0.25rem;
+  color: var(--text-1);
+  margin-bottom: 0.4rem;
 }
 
 .job-meta {
   display: flex;
-  gap: 1rem;
-  color: var(--text-3);
-  font-size: 0.9rem;
-  align-items: center;
-}
-
-.job-tag {
-  background: var(--bg-2);
-  padding: 0.2rem 0.75rem;
-  border-radius: 20px;
-  font-size: 0.8rem;
-  font-weight: 600;
-  color: var(--text-2);
-}
-
-.job-action {
-  color: var(--green-mid);
-  font-weight: 700;
-  display: flex;
   align-items: center;
   gap: 0.5rem;
-  font-size: 0.95rem;
-  transition: gap var(--t-fast);
+  font-size: 0.9rem;
+  color: var(--text-2);
+  margin-bottom: 0.75rem;
+  font-weight: 500;
 }
 
-.job-card:hover .job-action {
-  gap: 0.75rem;
+.job-meta-dot {
+  color: var(--text-3);
+}
+
+.job-desc {
+  font-size: 0.95rem;
+  color: var(--text-2);
+  line-height: 1.6;
+}
+
+.job-link-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: var(--font-head);
+  font-weight: 700;
+  font-size: 0.95rem;
+  color: var(--text-1);
+  text-decoration: none;
+  transition: color var(--t-fast);
+}
+
+.job-card:hover .job-link-btn {
+  color: var(--green-mid);
+}
+
+.job-link-btn svg {
+  transition: transform var(--t-fast);
+}
+
+.job-card:hover .job-link-btn svg {
+  transform: translateX(3px);
+}
+
+.jobs-empty {
+  padding: 3rem;
+  text-align: center;
+  background: var(--bg-2);
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  max-width: 600px;
+}
+
+.jobs-empty h3 {
+  font-size: 1.25rem;
+  margin-bottom: 0.5rem;
+}
+
+/* ── 8. General App CTA ── */
+.careers-general-app {
+  padding: 5rem 0;
+  background: rgba(23, 168, 90, 0.03); /* Subtle mint background */
+  border-top: 1px solid rgba(23, 168, 90, 0.1);
+  text-align: center;
+}
+
+.general-app-inner {
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.general-app-inner h2 {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+}
+
+.general-app-inner p {
+  font-size: 1.1rem;
+  color: var(--text-2);
+  line-height: 1.6;
+  margin-bottom: 2rem;
+}
+
+
+/* ── Responsive Adjustments ── */
+@media (max-width: 1024px) {
+  .culture-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .expectations-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
 }
 
 @media (max-width: 768px) {
+  .careers-hero {
+    padding: 4rem 0 3rem;
+  }
+
+  .careers-hero-inner {
+    grid-template-columns: 1fr;
+    gap: 3rem;
+    text-align: center;
+  }
+  
+  .careers-eyebrow {
+    margin-bottom: 0.75rem;
+  }
+
+  .careers-hero-desc {
+    margin: 0 auto 2rem;
+  }
+  
+  .careers-hero-actions {
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  .careers-why-inner,
+  .team-msg-inner {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+  
+  .team-msg-visual {
+    max-width: 400px;
+    margin: 0 auto;
+  }
+
+  .life-image-grid {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto;
+  }
+
+  .life-img-large,
+  .life-img-small-1,
+  .life-img-small-2,
+  .life-img-wide {
+    grid-column: 1 / 2;
+    grid-row: auto;
+    aspect-ratio: 4/3;
+  }
+
+  .expectations-grid,
+  .culture-grid {
+    grid-template-columns: 1fr;
+  }
+
   .job-card {
     flex-direction: column;
     align-items: flex-start;
     gap: 1.5rem;
-    padding: 1.25rem;
+    padding: 1.5rem;
+  }
+
+  .job-card-main {
+    padding-right: 0;
   }
 }
