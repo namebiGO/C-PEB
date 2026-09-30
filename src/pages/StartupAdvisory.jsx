@@ -51,6 +51,16 @@ const saveLocalAdvisorySub = (sub) => {
   }
 };
 
+const loadRazorpay = () => {
+  return new Promise((resolve) => {
+    const script = document.createElement('script');
+    script.src = 'https://checkout.razorpay.com/v1/checkout.js';
+    script.onload = () => resolve(true);
+    script.onerror = () => resolve(false);
+    document.body.appendChild(script);
+  });
+};
+
 const HELP_CATEGORIES = [
   {
     title: 'BUSINESS DIRECTION',
@@ -253,10 +263,9 @@ export default function StartupAdvisory() {
 
     const isThree = selectedPlan === 'THREE_MONTHS';
     const amount = isThree ? 5999 : 2499;
-    const duration = isThree ? '3 Months' : '1 Month';
-    const planTitle = isThree ? 'Ongoing Advisory (3 Months)' : 'Starter Advisory (1 Month)';
 
-    let orderId = `CPEB-ADV-${Date.now().toString(36).toUpperCase()}-${Math.floor(1000 + Math.random() * 9000)}`;
+    let orderId = '';
+    let rzpOrderId = '';
     let createdSub = null;
 
     try {
@@ -267,7 +276,7 @@ export default function StartupAdvisory() {
           ...formData,
           plan: selectedPlan,
           paymentStatus: 'PENDING',
-          paymentMethod: 'Razorpay Payment Page'
+          paymentMethod: 'Razorpay'
         })
       });
 
@@ -275,74 +284,75 @@ export default function StartupAdvisory() {
       if (res.ok && data.success) {
         createdSub = data.data;
         orderId = createdSub.orderId;
+        rzpOrderId = data.razorpayOrderId;
+      } else {
+        throw new Error(data.error || 'Failed to create order');
       }
     } catch (err) {
-      console.warn('Backend unavailable, proceeding with client order generation:', err);
+      console.error('Checkout error:', err);
+      setSubmitError(err.message || 'Failed to initiate checkout. Please try again.');
+      setSubmitting(false);
+      return;
     }
 
-    if (!createdSub) {
-      const startDate = new Date();
-      const endDate = new Date(startDate.getTime() + (isThree ? 90 : 30) * 24 * 60 * 60 * 1000);
-      createdSub = {
-        _id: 'sub_' + Date.now(),
-        customerName: formData.customerName,
-        email: formData.email.toLowerCase(),
-        phone: formData.phone,
-        businessName: formData.businessName,
-        requirement: formData.requirement,
-        plan: selectedPlan,
-        planTitle,
-        amount,
-        duration,
-        startDate: startDate.toISOString(),
-        endDate: endDate.toISOString(),
-        paymentStatus: 'PENDING',
-        paymentMethod: 'Razorpay Payment Page',
-        orderId,
-        prioritySupport: true,
-        supportStatus: 'PENDING_PAYMENT',
-        requests: [
-          {
-            _id: 'req_' + Date.now(),
-            subject: `Initial Advisory Intake: ${formData.businessName}`,
-            requirement: formData.requirement,
-            status: 'OPEN',
-            prioritySupport: true,
-            createdAt: new Date().toISOString(),
-            replies: []
+    const resLoad = await loadRazorpay();
+    if (!resLoad) {
+      setSubmitError('Razorpay SDK failed to load. Are you online?');
+      setSubmitting(false);
+      return;
+    }
+
+    const options = {
+      key: import.meta.env.VITE_RAZORPAY_KEY_ID || 'rzp_live_Ti8XXqrNUy345C',
+      amount: amount * 100,
+      currency: "INR",
+      name: "C-PEB",
+      description: isThree ? "Ongoing Advisory (3 Months)" : "Starter Advisory (1 Month)",
+      order_id: rzpOrderId,
+      handler: async function (response) {
+        try {
+          const verifyRes = await fetch(`${API_BASE}/api/advisory/order/${orderId}/confirm-payment`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              razorpay_payment_id: response.razorpay_payment_id,
+              razorpay_order_id: response.razorpay_order_id,
+              razorpay_signature: response.razorpay_signature
+            })
+          });
+          const verifyData = await verifyRes.json();
+          if (verifyData.success) {
+             setActiveSubscription(verifyData.data);
+             saveLocalAdvisorySub(verifyData.data);
+             setModalOpen(false);
+             setLookupRef(orderId);
+             setLookupOpen(true);
+             setTimeout(() => handleLookupSubscription({ preventDefault: () => {} }), 500);
+          } else {
+             alert('Payment verification failed');
           }
-        ]
-      };
-    }
+        } catch (err) {
+           console.error(err);
+           alert('Payment verification error');
+        }
+      },
+      prefill: {
+        name: formData.customerName,
+        email: formData.email,
+        contact: formData.phone
+      },
+      theme: {
+        color: "#17a85a"
+      }
+    };
 
-    // Persist locally so the user's order reference is retained
-    saveLocalAdvisorySub(createdSub);
-    setRedirectOrderId(orderId);
-
-    // Build the Razorpay redirect URL with customer prefill details
-    const rawTarget = RAZORPAY_LINKS[selectedPlan] || RAZORPAY_LINKS.ONE_MONTH;
-    let finalUrl = rawTarget;
-    try {
-      const u = new URL(rawTarget);
-      u.searchParams.set('name', formData.customerName.trim());
-      u.searchParams.set('email', formData.email.trim());
-      u.searchParams.set('phone', formData.phone.trim());
-      u.searchParams.set('notes[order_id]', orderId);
-      u.searchParams.set('notes[business]', formData.businessName.trim());
-      finalUrl = u.toString();
-    } catch {
-      const joiner = rawTarget.includes('?') ? '&' : '?';
-      finalUrl = `${rawTarget}${joiner}name=${encodeURIComponent(formData.customerName.trim())}&email=${encodeURIComponent(formData.email.trim())}&phone=${encodeURIComponent(formData.phone.trim())}&order_id=${encodeURIComponent(orderId)}`;
-    }
-
-    setRedirectUrl(finalUrl);
-    setRedirecting(true);
+    const rzp = new window.Razorpay(options);
+    rzp.on('payment.failed', function (response){
+        alert(`Payment failed: ${response.error.description}`);
+    });
+    rzp.open();
+    
     setSubmitting(false);
-
-    // Automatically redirect user to the Razorpay Payment Page
-    setTimeout(() => {
-      window.location.href = finalUrl;
-    }, 1500);
   };
 
   const handleLookupSubscription = async (e) => {

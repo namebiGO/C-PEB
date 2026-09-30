@@ -2,6 +2,8 @@ import express from 'express';
 import AdvisorySubscription from '../models/AdvisorySubscription.js';
 import AdvisoryPlan from '../models/AdvisoryPlan.js';
 import { protect } from '../middleware/authMiddleware.js';
+import Razorpay from 'razorpay';
+import crypto from 'crypto';
 
 const router = express.Router();
 
@@ -43,6 +45,19 @@ router.post('/subscribe', async (req, res) => {
     const randomSuffix = Math.floor(1000 + Math.random() * 9000);
     const orderId = `CPEB-ADV-${Date.now().toString(36).toUpperCase()}-${randomSuffix}`;
 
+    const razorpay = new Razorpay({
+      key_id: process.env.RAZORPAY_KEY_ID,
+      key_secret: process.env.RAZORPAY_KEY_SECRET,
+    });
+
+    const options = {
+      amount: amount * 100, // paise
+      currency: 'INR',
+      receipt: orderId.slice(0, 40) // Razorpay receipt max 40 chars
+    };
+
+    const razorpayOrder = await razorpay.orders.create(options);
+
     const subscription = new AdvisorySubscription({
       customerName: customerName.trim(),
       email: email.trim().toLowerCase(),
@@ -56,8 +71,9 @@ router.post('/subscribe', async (req, res) => {
       startDate,
       endDate,
       paymentStatus: req.body.paymentStatus || 'PENDING',
-      paymentMethod: req.body.paymentMethod || 'Razorpay Payment Page',
+      paymentMethod: req.body.paymentMethod || 'Razorpay',
       orderId,
+      razorpayOrderId: razorpayOrder.id,
       prioritySupport: true,
       supportStatus: req.body.paymentStatus === 'PAID' ? 'ACTIVE' : 'PENDING_PAYMENT',
       requests: [
@@ -86,8 +102,9 @@ router.post('/subscribe', async (req, res) => {
 
     res.status(201).json({
       success: true,
-      message: 'Your advisory plan has been successfully activated.',
-      data: subscription
+      message: 'Your advisory plan order has been successfully generated.',
+      data: subscription,
+      razorpayOrderId: razorpayOrder.id
     });
   } catch (error) {
     console.error('Error creating advisory subscription:', error);
@@ -138,7 +155,7 @@ router.get('/order/:orderId', async (req, res) => {
 router.post('/order/:orderId/confirm-payment', async (req, res) => {
   try {
     const { orderId } = req.params;
-    const { paymentId } = req.body;
+    const { razorpay_payment_id, razorpay_order_id, razorpay_signature } = req.body;
 
     let subscription = await AdvisorySubscription.findOne({
       orderId: { $regex: new RegExp(`^${orderId.trim()}$`, 'i') }
@@ -148,11 +165,27 @@ router.post('/order/:orderId/confirm-payment', async (req, res) => {
       return res.status(404).json({ success: false, error: 'Order not found' });
     }
 
+    if (razorpay_payment_id && razorpay_order_id && razorpay_signature) {
+      const shasum = crypto.createHmac('sha256', process.env.RAZORPAY_KEY_SECRET);
+      shasum.update(`${razorpay_order_id}|${razorpay_payment_id}`);
+      const digest = shasum.digest('hex');
+
+      if (digest !== razorpay_signature) {
+        return res.status(400).json({ success: false, error: 'Invalid Razorpay signature' });
+      }
+      
+      subscription.razorpayPaymentId = razorpay_payment_id;
+      subscription.razorpaySignature = razorpay_signature;
+      subscription.paymentMethod = `Razorpay (${razorpay_payment_id})`;
+    } else {
+      // Fallback if not using Razorpay checkout directly
+      if (req.body.paymentId) {
+        subscription.paymentMethod = `Razorpay (${req.body.paymentId})`;
+      }
+    }
+
     subscription.paymentStatus = 'PAID';
     subscription.supportStatus = 'ACTIVE';
-    if (paymentId) {
-      subscription.paymentMethod = `Razorpay (${paymentId})`;
-    }
     await subscription.save();
 
     if (req.io) {

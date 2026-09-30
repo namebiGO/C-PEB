@@ -60,6 +60,14 @@ app.use(helmet({
     useDefaults: true,
     directives: {
       "upgrade-insecure-requests": null,
+      // Allow Razorpay checkout script to load
+      "script-src": ["'self'", "'unsafe-inline'", "'unsafe-eval'", "https://checkout.razorpay.com"],
+      // Allow Razorpay iframe (checkout modal)
+      "frame-src": ["'self'", "https://api.razorpay.com", "https://checkout.razorpay.com"],
+      // Allow API calls to Razorpay servers
+      "connect-src": ["'self'", "https://checkout.razorpay.com", "https://api.razorpay.com", "https://lumberjack.razorpay.com"],
+      // Allow Razorpay-hosted images (e.g. merchant logos in modal)
+      "img-src": ["'self'", "data:", "https:"],
     },
   },
 }));

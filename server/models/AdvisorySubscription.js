@@ -120,9 +120,18 @@ const advisorySubscriptionSchema = new mongoose.Schema(
       type: Boolean,
       default: true
     },
+    razorpayOrderId: {
+      type: String
+    },
+    razorpayPaymentId: {
+      type: String
+    },
+    razorpaySignature: {
+      type: String
+    },
     supportStatus: {
       type: String,
-      enum: ['ACTIVE', 'EXPIRING_SOON', 'EXPIRED'],
+      enum: ['ACTIVE', 'EXPIRING_SOON', 'EXPIRED', 'PENDING_PAYMENT'],
       default: 'ACTIVE'
     },
     requests: [supportRequestSchema],
