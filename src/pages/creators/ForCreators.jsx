@@ -83,7 +83,7 @@ const ForCreators = () => {
   return (
     <div className="creators-directory-container">
       {/* Hero Section */}
-      <section className="creators-hero">
+      <section className="creators-hero shared-hero-bg">
         <div className="creators-hero-content">
           <span className="hero-eyebrow">FOR CREATORS</span>
           <h1>Get Discovered by Brands Looking to Collaborate.</h1>

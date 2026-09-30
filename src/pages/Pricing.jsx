@@ -107,7 +107,7 @@ export default function Pricing() {
       />
 
       {/* ── Hero ── */}
-      <section className="pricing-hero">
+      <section className="pricing-hero shared-hero-bg">
         <div className="container text-center">
           <p className="section-eyebrow">Pricing Plans</p>
           <h1>Simple, Transparent Pricing<br/><span className="text-gradient">For Every Stage of Growth</span></h1>

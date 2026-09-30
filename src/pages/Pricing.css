@@ -6,8 +6,6 @@
 /* ── Hero ── */
 .pricing-hero {
   padding: 5rem 0 3rem;
-  background: radial-gradient(circle at top right, rgba(16, 185, 129, 0.05), transparent 60%),
-              radial-gradient(circle at bottom left, rgba(16, 185, 129, 0.02), transparent 40%);
 }
 
 .pricing-hero h1 {

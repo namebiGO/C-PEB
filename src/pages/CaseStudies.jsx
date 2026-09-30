@@ -150,7 +150,7 @@ const PROCESS_STEPS = [
 
 // HERO
 const WorkHero = () => (
-  <section className="ow-hero">
+  <section className="ow-hero shared-hero-bg">
     <div className="ow-container">
       <div className="ow-hero-inner">
         <div className="ow-hero-copy">

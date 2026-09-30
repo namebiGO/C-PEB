@@ -5,8 +5,6 @@
 
 /* Hero Section */
 .creators-hero {
-  background-color: var(--color-dark-navy, #0B192C);
-  color: white;
   padding: 6rem 2rem;
   text-align: center;
 }

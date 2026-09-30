@@ -43,7 +43,7 @@ export default function ToolsHub() {
         description="Free tools for startups and brands: Influencer ROI Calculator, Government Funding Checker, and more." 
       />
       
-      <section className="tools-hero">
+      <section className="tools-hero shared-hero-bg">
         <div className="container text-center">
           <p className="section-eyebrow">Free Resources</p>
           <h1>Interactive Tools to <br/><span className="text-gradient">Grow Your Business</span></h1>
