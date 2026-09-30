@@ -696,7 +696,7 @@
 
 .ow-stat-item {
   padding: 2rem 2.25rem;
-  background: var(--bg);
+  background: rgba(255,255,255,0.6);
   border-right: 1px solid rgba(23,168,90,0.15);
   border-bottom: 1px solid rgba(23,168,90,0.15);
 }
@@ -713,6 +713,30 @@
 
 .ow-stat-desc {
   font-size: 0.85rem; color: var(--green-dark); opacity: 0.7; line-height: 1.5;
+}
+
+/* Dark Mode Overrides for Stats */
+[data-theme='dark'] .ow-stats {
+  background: var(--bg-2);
+  border-color: var(--border);
+}
+
+[data-theme='dark'] .ow-stats-grid {
+  border-color: var(--border);
+}
+
+[data-theme='dark'] .ow-stat-item {
+  background: var(--bg);
+  border-color: var(--border);
+}
+
+[data-theme='dark'] .ow-stat-label {
+  color: var(--green-mid);
+}
+
+[data-theme='dark'] .ow-stat-desc {
+  color: var(--text-2);
+  opacity: 1;
 }
 
 /* ═══════════════════════════════════════════
