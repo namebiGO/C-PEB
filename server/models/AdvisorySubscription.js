@@ -116,6 +116,14 @@ const advisorySubscriptionSchema = new mongoose.Schema(
       unique: true,
       index: true
     },
+    couponCode: {
+      type: String,
+      default: null
+    },
+    discountAmount: {
+      type: Number,
+      default: 0
+    },
     prioritySupport: {
       type: Boolean,
       default: true

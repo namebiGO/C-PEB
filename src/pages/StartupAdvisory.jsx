@@ -214,6 +214,35 @@ export default function StartupAdvisory() {
   const [activeSubscription, setActiveSubscription] = useState(null);
   const [submitError, setSubmitError] = useState('');
 
+  // Coupon state
+  const [couponInput, setCouponInput] = useState('');
+  const [couponApplied, setCouponApplied] = useState(false);
+  const [couponDiscount, setCouponDiscount] = useState(0);
+  const [couponError, setCouponError] = useState('');
+
+  const VALID_COUPONS = { FIRST10: 10 };
+
+  const handleApplyCoupon = () => {
+    const code = couponInput.toUpperCase().trim();
+    if (!code) { setCouponError('Please enter a coupon code.'); return; }
+    if (VALID_COUPONS[code] !== undefined) {
+      setCouponApplied(true);
+      setCouponDiscount(VALID_COUPONS[code]);
+      setCouponError('');
+    } else {
+      setCouponApplied(false);
+      setCouponDiscount(0);
+      setCouponError('Invalid coupon code.');
+    }
+  };
+
+  const handleRemoveCoupon = () => {
+    setCouponApplied(false);
+    setCouponDiscount(0);
+    setCouponInput('');
+    setCouponError('');
+  };
+
   // Support request form state (inside success view)
   const [supportModalOpen, setSupportModalOpen] = useState(false);
   const [supportForm, setSupportForm] = useState({ subject: '', requirement: '' });
@@ -313,7 +342,8 @@ export default function StartupAdvisory() {
           ...formData,
           plan: selectedPlan,
           paymentStatus: 'PENDING',
-          paymentMethod: 'Razorpay'
+          paymentMethod: 'Razorpay',
+          couponCode: couponApplied ? couponInput.toUpperCase().trim() : undefined
         })
       });
 
@@ -481,7 +511,9 @@ export default function StartupAdvisory() {
   };
 
   const isThreeMonths = selectedPlan === 'THREE_MONTHS';
-  const planPrice = isThreeMonths ? 5999 : 2499;
+  const planBasePrice = isThreeMonths ? 5999 : 2499;
+  const planDiscount = couponApplied ? Math.round(planBasePrice * couponDiscount / 100) : 0;
+  const planPrice = planBasePrice - planDiscount;
 
   return (
     <div className="adv-page">
@@ -1240,6 +1272,60 @@ export default function StartupAdvisory() {
                     />
                   </div>
 
+                  {/* Coupon Code */}
+                  <div className="adv-form-group">
+                    <label>Coupon Code (Optional)</label>
+                    {!couponApplied ? (
+                      <div style={{ display: 'flex', gap: '0.5rem' }}>
+                        <input
+                          type="text"
+                          placeholder="e.g. FIRST10"
+                          value={couponInput}
+                          onChange={(e) => { setCouponInput(e.target.value.toUpperCase()); setCouponError(''); }}
+                          onKeyDown={(e) => e.key === 'Enter' && (e.preventDefault(), handleApplyCoupon())}
+                          style={{ flex: 1, textTransform: 'uppercase', letterSpacing: '0.05em' }}
+                        />
+                        <button
+                          type="button"
+                          onClick={handleApplyCoupon}
+                          style={{
+                            padding: '0 1rem',
+                            background: '#17a85a',
+                            color: '#fff',
+                            border: 'none',
+                            borderRadius: '8px',
+                            fontWeight: 700,
+                            cursor: 'pointer',
+                            whiteSpace: 'nowrap',
+                            fontSize: '0.82rem'
+                          }}
+                        >
+                          APPLY
+                        </button>
+                      </div>
+                    ) : (
+                      <div style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'space-between',
+                        background: 'rgba(23,168,90,0.1)',
+                        border: '1.5px solid #17a85a',
+                        borderRadius: '8px',
+                        padding: '0.5rem 0.85rem'
+                      }}>
+                        <span style={{ color: '#17a85a', fontWeight: 700, fontSize: '0.85rem' }}>
+                          ✅ {couponInput} — {couponDiscount}% OFF applied
+                        </span>
+                        <button type="button" onClick={handleRemoveCoupon} style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#888', fontSize: '0.8rem' }}>
+                          ✕ Remove
+                        </button>
+                      </div>
+                    )}
+                    {couponError && (
+                      <p style={{ color: '#e53e3e', fontSize: '0.78rem', margin: '0.25rem 0 0' }}>{couponError}</p>
+                    )}
+                  </div>
+
                   {/* Summary Box */}
                   <div className="adv-order-summary">
                     <div className="adv-summary-row">
@@ -1250,6 +1336,18 @@ export default function StartupAdvisory() {
                       <span>Priority Support:</span>
                       <strong className="text-green">INCLUDED</strong>
                     </div>
+                    {couponApplied && (
+                      <>
+                        <div className="adv-summary-row" style={{ color: '#888' }}>
+                          <span>Original Price:</span>
+                          <span style={{ textDecoration: 'line-through' }}>₹{planBasePrice.toLocaleString('en-IN')}</span>
+                        </div>
+                        <div className="adv-summary-row" style={{ color: '#17a85a' }}>
+                          <span>Discount ({couponDiscount}% — {couponInput}):</span>
+                          <span>− ₹{planDiscount.toLocaleString('en-IN')}</span>
+                        </div>
+                      </>
+                    )}
                     <div className="adv-summary-row adv-summary-total">
                       <span>Total Amount:</span>
                       <span className="adv-total-amount">₹{planPrice.toLocaleString('en-IN')}</span>

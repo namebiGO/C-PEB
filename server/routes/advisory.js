@@ -8,6 +8,27 @@ import crypto from 'crypto';
 const router = express.Router();
 
 // ─────────────────────────────────────────────────────────────
+// COUPON CODES
+// ─────────────────────────────────────────────────────────────
+const COUPONS = {
+  FIRST10: { discount: 10, type: 'percent', description: '10% off — First-time offer' },
+};
+
+const applyCoupon = (code, baseAmount) => {
+  if (!code) return { valid: false, finalAmount: baseAmount, discount: 0, couponCode: null };
+  const coupon = COUPONS[code.toUpperCase().trim()];
+  if (!coupon) return { valid: false, finalAmount: baseAmount, discount: 0, couponCode: null };
+  const discountAmt = Math.round(baseAmount * coupon.discount / 100);
+  return {
+    valid: true,
+    finalAmount: baseAmount - discountAmt,
+    discount: discountAmt,
+    couponCode: code.toUpperCase().trim(),
+    couponDescription: coupon.description
+  };
+};
+
+// ─────────────────────────────────────────────────────────────
 // PUBLIC ENDPOINTS
 // ─────────────────────────────────────────────────────────────
 
@@ -64,11 +85,15 @@ router.post('/subscribe', async (req, res) => {
     }
 
     const isThreeMonths = plan === 'THREE_MONTHS';
-    const amount = isThreeMonths ? 5999 : 2499;
+    const baseAmount = isThreeMonths ? 5999 : 2499;
     const duration = isThreeMonths ? '3 Months' : '1 Month';
     const planTitle = isThreeMonths
       ? 'Ongoing Advisory (3 Months)'
       : 'Starter Advisory (1 Month)';
+
+    // Apply coupon if provided
+    const couponResult = applyCoupon(req.body.couponCode, baseAmount);
+    const amount = couponResult.finalAmount;
 
     const startDate = new Date();
     const endDate = new Date(startDate.getTime() + (isThreeMonths ? 90 : 30) * 24 * 60 * 60 * 1000);
@@ -105,6 +130,8 @@ router.post('/subscribe', async (req, res) => {
       paymentMethod: req.body.paymentMethod || 'Razorpay',
       orderId,
       razorpayOrderId: razorpayOrder.id,
+      couponCode: couponResult.couponCode || null,
+      discountAmount: couponResult.discount || 0,
       prioritySupport: true,
       supportStatus: req.body.paymentStatus === 'PAID' ? 'ACTIVE' : 'PENDING_PAYMENT',
       requests: [
@@ -135,7 +162,13 @@ router.post('/subscribe', async (req, res) => {
       success: true,
       message: 'Your advisory plan order has been successfully generated.',
       data: subscription,
-      razorpayOrderId: razorpayOrder.id
+      razorpayOrderId: razorpayOrder.id,
+      coupon: couponResult.valid ? {
+        applied: true,
+        code: couponResult.couponCode,
+        discount: couponResult.discount,
+        finalAmount: amount
+      } : { applied: false }
     });
   } catch (error) {
     console.error('Error creating advisory subscription:', error);
