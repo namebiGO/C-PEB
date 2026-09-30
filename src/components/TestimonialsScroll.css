@@ -94,7 +94,7 @@
 .ts-track {
   display: flex;
   gap: 24px;
-  padding: 0.5rem 48px;
+  padding-right: 24px; /* Adds the 10th gap so -50% is exactly 5 cards + 5 gaps */
   width: max-content;
   animation: ts-drift 38s linear infinite;
   will-change: transform;
@@ -106,7 +106,7 @@
 }
 
 @keyframes ts-drift {
-  from { transform: translate3d(calc(-5 * 464px), 0, 0); }
+  from { transform: translate3d(-50%, 0, 0); }
   to   { transform: translate3d(0, 0, 0); }
 }
 
@@ -219,16 +219,5 @@
     max-width: 380px;
   }
 
-  /* Mobile: disable autoplay, enable native swipe */
-  .ts-track {
-    animation: none;
-    overflow-x: auto;
-    scroll-snap-type: x mandatory;
-    -webkit-overflow-scrolling: touch;
-    padding-left: 20px;
-    padding-right: 20px;
-    scrollbar-width: none;
-  }
-  .ts-track::-webkit-scrollbar { display: none; }
   .ts-fade { width: 32px; }
 }
