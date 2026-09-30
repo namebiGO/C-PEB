@@ -35,7 +35,7 @@ const Footer = () => (
         <div className="link-col">
           <h5>Company</h5>
           <Link to="/about">About Us</Link>
-          <Link to="/contact">Careers</Link>
+          <Link to="/careers">Careers</Link>
           <Link to="/contact">Contact</Link>
         </div>
 

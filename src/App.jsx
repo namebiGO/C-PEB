@@ -28,6 +28,7 @@ const StartupSupport    = lazy(() => import('./pages/StartupSupport'))
 const BusinessServices  = lazy(() => import('./pages/BusinessServices'))
 const Contact           = lazy(() => import('./pages/Contact'))
 const About             = lazy(() => import('./pages/About'))
+const Careers           = lazy(() => import('./pages/Careers'))
 const JoinCreator       = lazy(() => import('./pages/JoinCreator'))
 const ToolsHub          = lazy(() => import('./pages/tools/ToolsHub'))
 const ROICalculator     = lazy(() => import('./pages/tools/ROICalculator'))
@@ -149,6 +150,7 @@ function App() {
             <Route path="/case-studies" element={<CaseStudies />} />
             <Route path="/contact"      element={<Contact />} />
             <Route path="/about"        element={<About />} />
+            <Route path="/careers"      element={<Careers />} />
             <Route path="/creators"     element={<ForCreators />} />
             <Route path="/creators/:slug" element={<PublicCreatorProfile />} />
 
