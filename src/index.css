@@ -163,6 +163,11 @@
     );
 }
 
+.shared-hero-bg > * {
+  position: relative;
+  z-index: 2;
+}
+
 [data-theme='dark'] .shared-hero-bg::before {
   background: radial-gradient(ellipse, rgba(22, 163, 74, 0.15) 0%, rgba(22, 163, 74, 0.06) 42%, transparent 72%);
 }

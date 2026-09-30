@@ -525,7 +525,7 @@ export default function StartupAdvisory() {
       {/* ─────────────────────────────────────────────────────────────
           SECTION 1 — HERO
           ───────────────────────────────────────────────────────────── */}
-      <section className="adv-hero">
+      <section className="adv-hero shared-hero-bg">
         <div className="adv-container">
           <div className="adv-hero-inner">
             <span className="adv-eyebrow">STARTUP & BUSINESS SUPPORT</span>

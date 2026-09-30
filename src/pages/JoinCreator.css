@@ -14,7 +14,6 @@
 .creator-hero {
   padding: 8rem 0 6rem;
   position: relative;
-  background: var(--bg); /* clean solid background */
 }
 
 .creator-hero-inner {

@@ -31,7 +31,7 @@ export default function JoinCreator() {
         description="Join India's fastest-growing creator network. Monetize your audience on your terms, work with premium startups, and get guaranteed timely payouts." 
       />
       {/* ── Hero Section ── */}
-      <section className="creator-hero">
+      <section className="creator-hero shared-hero-bg">
         <div className="container creator-hero-inner">
           <div className="creator-hero-copy">
             <p className="section-eyebrow">FOR CREATORS</p>

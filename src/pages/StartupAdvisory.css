@@ -167,8 +167,6 @@
 /* ── Hero ────────────────────────────────────────────── */
 .adv-hero {
   padding: 5.5rem 0 4rem;
-  background: radial-gradient(circle at 85% 15%, rgba(23, 168, 90, 0.08), transparent 50%),
-              radial-gradient(circle at 15% 85%, rgba(16, 185, 129, 0.04), transparent 45%);
 }
 
 .adv-hero-inner {
