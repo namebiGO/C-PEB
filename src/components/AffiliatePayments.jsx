@@ -58,10 +58,6 @@ const AffiliatePayments = () => {
                 </div>
               </div>
 
-              <button className="rzp-btn">
-                Continue to Payment <ArrowRight size={16} />
-              </button>
-
               <div className="rzp-security">
                 <CheckCircle2 size={14} className="rzp-accent" />
                 <span>Secure payment powered by Razorpay</span>

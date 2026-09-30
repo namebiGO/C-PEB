@@ -206,7 +206,7 @@
 }
 
 .rzp-method-section {
-  margin-bottom: 2rem;
+  margin-bottom: 1.25rem;
 }
 
 .rzp-method-label {
@@ -269,30 +269,6 @@
   width: 8px; height: 8px;
   background: #3b82f6;
   border-radius: 50%;
-}
-
-.rzp-btn {
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
-  padding: 1rem;
-  background: var(--green-mid);
-  color: #fff;
-  border: none;
-  border-radius: 8px;
-  font-family: var(--font-head);
-  font-size: 1rem;
-  font-weight: 700;
-  cursor: pointer;
-  margin-bottom: 1.25rem;
-  transition: transform 0.2s, background 0.2s;
-}
-
-.rzp-btn:hover {
-  background: var(--green-dark);
-  transform: translateY(-1px);
 }
 
 .rzp-security {
