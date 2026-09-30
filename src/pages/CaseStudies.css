@@ -696,7 +696,7 @@
 
 .ow-stat-item {
   padding: 2rem 2.25rem;
-  background: rgba(255,255,255,0.6);
+  background: var(--bg);
   border-right: 1px solid rgba(23,168,90,0.15);
   border-bottom: 1px solid rgba(23,168,90,0.15);
 }
@@ -750,7 +750,7 @@
 .ow-spot-badge {
   position: absolute;
   bottom: 1.5rem; left: 1.5rem;
-  background: rgba(255,255,255,0.92);
+  background: var(--bg);
   border: 1px solid var(--border);
   border-radius: 8px;
   padding: 0.875rem 1.25rem;
@@ -887,7 +887,7 @@
 .ow-testi-card {
   width: 440px;
   flex-shrink: 0;
-  background: #fff;
+  background: var(--bg-2);
   border: 1px solid var(--border);
   border-radius: 14px;
   padding: 2rem 2.25rem 1.75rem;
@@ -1025,7 +1025,7 @@
 ═══════════════════════════════════════════ */
 .ow-final-cta {
   padding: 7rem 0;
-  background: var(--text-1);
+  background: #0f172a;
   border-top: 1px solid rgba(255,255,255,0.06);
 }
 
