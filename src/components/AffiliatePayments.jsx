@@ -1,6 +1,6 @@
 import React from 'react';
 import './AffiliatePayments.css';
-import { CreditCard, List, Megaphone, TrendingUp } from 'lucide-react';
+import { CreditCard, List, ShieldCheck, Activity, ArrowRight, CheckCircle2 } from 'lucide-react';
 
 const AffiliatePayments = () => {
   return (
@@ -11,88 +11,102 @@ const AffiliatePayments = () => {
           
           {/* Left: Visual Mockups */}
           <div className="payments-visual">
-            <div className="mock-payment-card">
-              <div className="mock-card-header">
-                <CreditCard size={20} className="accent" />
-                <span className="mock-card-title">Payout Method</span>
+            
+            {/* Background Activity Card */}
+            <div className="rzp-activity-card">
+              <div className="rzp-card-header">
+                <Activity size={18} className="rzp-muted-icon" />
+                <span className="rzp-card-title">Payment Activity</span>
               </div>
-              
-              <div className="mock-card-body">
-                <div className="mock-option active">
-                  <div className="mock-radio"></div>
-                  <span>Direct Bank Transfer</span>
+              <div className="rzp-statement-list">
+                <div className="rzp-statement-row">
+                  <div className="rzp-st-left">
+                    <span className="rzp-st-desc">Creator Campaign</span>
+                    <span className="rzp-st-amount">₹45,000</span>
+                  </div>
+                  <span className="rzp-st-status paid">Paid</span>
                 </div>
-                <div className="mock-option">
-                  <div className="mock-radio empty"></div>
-                  <span>PayPal</span>
-                </div>
-                
-                <div className="mock-input-group mt-3">
-                  <label>Account Number</label>
-                  <div className="mock-input">•••• •••• •••• 9030</div>
+                <div className="rzp-statement-row">
+                  <div className="rzp-st-left">
+                    <span className="rzp-st-desc">Affiliate Payment</span>
+                    <span className="rzp-st-amount">₹12,400</span>
+                  </div>
+                  <span className="rzp-st-status paid">Paid</span>
                 </div>
               </div>
             </div>
 
-            <div className="mock-statement-card">
-              <div className="mock-card-header">
-                <List size={18} />
-                <span className="mock-card-title">Recent Statements</span>
+            {/* Foreground Checkout Card */}
+            <div className="rzp-checkout-card">
+              <div className="rzp-header">
+                <span className="rzp-eyebrow">PAYMENT</span>
               </div>
               
-              <div className="mock-statement-list">
-                <div className="mock-statement-row">
-                  <div className="mock-st-left">
-                    <span className="mock-st-date">Today</span>
-                    <span className="mock-st-desc">Brand Collab - TechReview</span>
+              <div className="rzp-amount-section">
+                <h3 className="rzp-title">Creator Payment</h3>
+                <div className="rzp-amount">₹12,400</div>
+              </div>
+
+              <div className="rzp-method-section">
+                <span className="rzp-method-label">Payment Method</span>
+                <div className="rzp-method-box">
+                  <div className="rzp-logo">
+                    <div className="rzp-logo-mark"></div>
+                    <span>Razorpay</span>
                   </div>
-                  <span className="mock-st-amount positive">+₹45,000</span>
-                </div>
-                <div className="mock-statement-row">
-                  <div className="mock-st-left">
-                    <span className="mock-st-date">May 05</span>
-                    <span className="mock-st-desc">Affiliate Payout - Amazon</span>
-                  </div>
-                  <span className="mock-st-amount positive">+₹12,400</span>
-                </div>
-                <div className="mock-statement-row">
-                  <div className="mock-st-left">
-                    <span className="mock-st-date">Apr 28</span>
-                    <span className="mock-st-desc">Platform Fee</span>
-                  </div>
-                  <span className="mock-st-amount negative">-₹1,200</span>
+                  <div className="rzp-radio active"></div>
                 </div>
               </div>
+
+              <button className="rzp-btn">
+                Continue to Payment <ArrowRight size={16} />
+              </button>
+
+              <div className="rzp-security">
+                <CheckCircle2 size={14} className="rzp-accent" />
+                <span>Secure payment powered by Razorpay</span>
+              </div>
             </div>
+
           </div>
 
           {/* Right: Text Content */}
           <div className="payments-copy">
-            <p className="section-eyebrow">Influencer Affiliate Payments</p>
-            <h2>Pay influencers, Send creators free products</h2>
+            <p className="section-eyebrow">CREATOR PAYMENTS</p>
+            <h2>Simple, Secure Payments for Creators</h2>
             <p className="payments-desc">
-              Manage all your creator payouts in one place. Whether it's flat fees, affiliate commissions, or sending out product samples, our automated system ensures everyone gets paid on time, every time.
+              Make creator payments simple with a secure online payment experience powered by Razorpay. C-PEB helps you manage payments while keeping the experience straightforward for your team and creators.
             </p>
 
             <div className="payments-features">
               
               <div className="pay-feat-item">
                 <div className="pay-feat-icon">
-                  <Megaphone size={24} />
+                  <ShieldCheck size={24} />
                 </div>
                 <div className="pay-feat-text">
-                  <h4>Promote Your Product & Brand</h4>
-                  <p>Send free product samples seamlessly to creators. Track deliveries and content deliverables directly in your dashboard.</p>
+                  <h4>Secure Payments</h4>
+                  <p>Give creators a simple and secure online payment experience through Razorpay.</p>
                 </div>
               </div>
 
               <div className="pay-feat-item">
                 <div className="pay-feat-icon">
-                  <TrendingUp size={24} />
+                  <CreditCard size={24} />
                 </div>
                 <div className="pay-feat-text">
-                  <h4>Scale Up Businesses</h4>
-                  <p>Set up multi-tiered affiliate structures. Reward your top-performing creators with automated performance bonuses.</p>
+                  <h4>Simple Payment Flow</h4>
+                  <p>Keep the payment experience straightforward, from payment initiation to confirmation.</p>
+                </div>
+              </div>
+
+              <div className="pay-feat-item">
+                <div className="pay-feat-icon">
+                  <List size={24} />
+                </div>
+                <div className="pay-feat-text">
+                  <h4>Easy to Track</h4>
+                  <p>Keep payment activity organized so your team can easily follow creator payments.</p>
                 </div>
               </div>
 
