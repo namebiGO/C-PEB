@@ -11,6 +11,37 @@ const router = express.Router();
 // PUBLIC ENDPOINTS
 // ─────────────────────────────────────────────────────────────
 
+// @route   POST /api/advisory/test-payment
+// @desc    Create a ₹1 Razorpay order for integration testing only
+// @access  Public
+router.post('/test-payment', async (req, res) => {
+  try {
+    const razorpay = new Razorpay({
+      key_id: process.env.RAZORPAY_KEY_ID,
+      key_secret: process.env.RAZORPAY_KEY_SECRET,
+    });
+
+    const testOrderId = `CPEB-TEST-${Date.now().toString(36).toUpperCase()}`;
+
+    const razorpayOrder = await razorpay.orders.create({
+      amount: 100, // ₹1 in paise
+      currency: 'INR',
+      receipt: testOrderId.slice(0, 40),
+      notes: { test: 'true' }
+    });
+
+    res.json({
+      success: true,
+      razorpayOrderId: razorpayOrder.id,
+      testOrderId,
+      amount: 1
+    });
+  } catch (error) {
+    console.error('Test payment error:', error);
+    res.status(500).json({ success: false, error: error.message || 'Server Error' });
+  }
+});
+
 // @route   POST /api/advisory/subscribe
 // @desc    Purchase / register an advisory subscription
 // @access  Public

@@ -227,6 +227,10 @@ export default function StartupAdvisory() {
   const [lookupLoading, setLookupLoading] = useState(false);
   const [lookupError, setLookupError] = useState('');
 
+  // Test mode — only active when URL contains ?test=1
+  const [testMode] = useState(() => new URLSearchParams(window.location.search).get('test') === '1');
+  const [testStatus, setTestStatus] = useState('');
+
   const toggleFaq = (index) => {
     setOpenFaq(openFaq === index ? null : index);
   };
@@ -250,6 +254,39 @@ export default function StartupAdvisory() {
       handleOpenCheckout('ONE_MONTH');
     }
   }, []);
+
+  // ─── ₹1 Test Payment Handler ──────────────────────────────
+  const handleTestPayment = async () => {
+    setTestStatus('Creating ₹1 test order...');
+    try {
+      const res = await fetch(`${API_BASE}/api/advisory/test-payment`, { method: 'POST' });
+      const data = await res.json();
+      if (!res.ok || !data.success) throw new Error(data.error || 'Failed to create test order');
+
+      const loaded = await loadRazorpay();
+      if (!loaded) { setTestStatus('❌ Razorpay SDK failed to load'); return; }
+
+      const options = {
+        key: import.meta.env.VITE_RAZORPAY_KEY_ID || 'rzp_live_Ti8XXqrNUy345C',
+        amount: 100,
+        currency: 'INR',
+        name: 'C-PEB',
+        description: '₹1 Integration Test',
+        order_id: data.razorpayOrderId,
+        handler: function (response) {
+          setTestStatus(`✅ Test payment successful! Payment ID: ${response.razorpay_payment_id}`);
+        },
+        prefill: { name: 'Test User', email: 'test@cpeb.in', contact: '9999999999' },
+        theme: { color: '#17a85a' }
+      };
+      const rzp = new window.Razorpay(options);
+      rzp.on('payment.failed', (r) => setTestStatus(`❌ Failed: ${r.error.description}`));
+      rzp.open();
+      setTestStatus('💳 Razorpay modal opened — complete the payment');
+    } catch (err) {
+      setTestStatus(`❌ Error: ${err.message}`);
+    }
+  };
 
   const handleFormChange = (e) => {
     const { name, value } = e.target;
@@ -495,6 +532,46 @@ export default function StartupAdvisory() {
                 Check active plan status &rarr;
               </button>
             </div>
+
+            {/* ── TEST MODE BANNER (only visible at ?test=1) ── */}
+            {testMode && (
+              <div style={{
+                marginTop: '1.5rem',
+                padding: '1rem 1.25rem',
+                background: 'rgba(255,165,0,0.1)',
+                border: '1.5px dashed orange',
+                borderRadius: '10px',
+                display: 'flex',
+                flexDirection: 'column',
+                gap: '0.5rem',
+                maxWidth: '400px'
+              }}>
+                <span style={{ fontWeight: 700, fontSize: '0.75rem', color: 'orange', letterSpacing: '0.08em' }}>
+                  🧪 TEST MODE — NOT VISIBLE TO USERS
+                </span>
+                <button
+                  type="button"
+                  onClick={handleTestPayment}
+                  style={{
+                    background: 'orange',
+                    color: '#000',
+                    border: 'none',
+                    borderRadius: '8px',
+                    padding: '0.6rem 1.2rem',
+                    fontWeight: 700,
+                    cursor: 'pointer',
+                    fontSize: '0.9rem'
+                  }}
+                >
+                  💳 Pay ₹1 — Test Razorpay Integration
+                </button>
+                {testStatus && (
+                  <p style={{ fontSize: '0.82rem', margin: 0, color: testStatus.startsWith('✅') ? 'limegreen' : testStatus.startsWith('❌') ? 'red' : '#ccc' }}>
+                    {testStatus}
+                  </p>
+                )}
+              </div>
+            )}
           </div>
         </div>
       </section>
