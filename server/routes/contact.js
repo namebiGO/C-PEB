@@ -1,5 +1,6 @@
 import express from 'express';
 import Contact from '../models/Contact.js';
+import { sendNewContactEmail } from '../config/mailer.js';
 
 const router = express.Router();
 
@@ -26,6 +27,9 @@ router.post('/', async (req, res, next) => {
       phone: phone || '',
       company: company || '',
     });
+
+    // Fire-and-forget email notification to office
+    sendNewContactEmail({ ...contact.toObject() }).catch(() => {});
 
     return res.status(201).json({
       success: true,

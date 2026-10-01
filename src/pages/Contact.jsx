@@ -115,7 +115,7 @@ export default function Contact() {
                 <div className="info-icon"><Mail size={20} /></div>
                 <div>
                   <h3>Email Us</h3>
-                  <p>Support@c-peb.in</p>
+                  <p><a href="mailto:office@cpebindiait.com" style={{ color: 'inherit', textDecoration: 'none' }}>office@cpebindiait.com</a></p>
                   <span>Support & General Enquiries</span>
                 </div>
               </div>

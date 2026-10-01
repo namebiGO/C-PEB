@@ -18,7 +18,7 @@ const Footer = () => (
             <a href="#" className="social-icon" aria-label="Website"><Globe size={16} /></a>
             <a href="#" className="social-icon" aria-label="Share"><Share2 size={16} /></a>
             <a href="#" className="social-icon" aria-label="Link"><Link2 size={16} /></a>
-            <a href="#" className="social-icon" aria-label="Email"><Mail size={16} /></a>
+            <a href="mailto:office@cpebindiait.com" className="social-icon" aria-label="Email"><Mail size={16} /></a>
           </div>
         </div>
 

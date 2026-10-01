@@ -2,6 +2,7 @@ import express from 'express';
 import CreatorProfile from '../models/CreatorProfile.js';
 import Service from '../models/Service.js';
 import Lead from '../models/Lead.js';
+import { sendNewLeadEmail } from '../config/mailer.js';
 
 const router = express.Router();
 
@@ -49,6 +50,8 @@ router.post('/leads', async (req, res) => {
     }
 
     const lead = await Lead.create(data);
+    // Fire-and-forget email notification to office
+    sendNewLeadEmail(lead).catch(() => {});
     res.status(201).json({ success: true, data: lead });
   } catch (error) {
     res.status(400).json({ success: false, error: error.message });
