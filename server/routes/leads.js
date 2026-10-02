@@ -28,6 +28,10 @@ router.put('/:id', async (req, res) => {
       return res.status(404).json({ success: false, error: 'Lead not found' });
     }
 
+    if (req.io) {
+      req.io.emit('update_lead', lead);
+    }
+
     res.json({ success: true, data: lead });
   } catch (error) {
     res.status(400).json({ success: false, error: error.message });
@@ -45,6 +49,11 @@ router.delete('/:id', async (req, res) => {
     }
 
     await lead.deleteOne();
+    
+    if (req.io) {
+      req.io.emit('delete_lead', req.params.id);
+    }
+
     res.json({ success: true, data: {} });
   } catch (error) { console.error(error);  }
 });

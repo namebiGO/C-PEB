@@ -1,0 +1,272 @@
+/* ════════════════════════════════════════
+   LEADERSHIP SECTION
+   Uses existing C-PEB design tokens only.
+════════════════════════════════════════ */
+
+/* ── Section ── */
+.leadership-section {
+  padding: 6rem 0;
+  background: var(--bg-2);
+  border-top: 1px solid var(--border);
+}
+
+/* ── Header ── */
+.leadership-header {
+  margin-bottom: 3.5rem;
+}
+
+.leadership-header h2 {
+  font-size: clamp(1.8rem, 3vw, 2.5rem);
+  font-weight: 800;
+  color: var(--text-1);
+  margin: 0 0 0.75rem;
+  letter-spacing: -0.03em;
+  line-height: 1.15;
+}
+
+.leadership-desc {
+  font-size: 1rem;
+  color: var(--text-2);
+  line-height: 1.7;
+  max-width: 480px;
+  margin: 0;
+}
+
+/* ── Grid — 3 columns ── */
+.leadership-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+}
+
+/* ── Card ── */
+.lc-card {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  transition:
+    border-color 0.22s ease,
+    box-shadow 0.22s ease,
+    transform 0.22s ease;
+}
+
+.lc-card:hover {
+  border-color: #c8d5e0;
+  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.07);
+  transform: translateY(-3px);
+}
+
+/* ── Placeholder: same structure, subtle opacity ── */
+.lc-card--placeholder {
+  opacity: 0.45;
+  pointer-events: none;
+}
+
+/* ── Photo area ── */
+.lc-photo {
+  width: 100%;
+  aspect-ratio: 3 / 2;
+  overflow: hidden;
+  background: var(--bg-3);
+  position: relative;
+}
+
+.lc-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center top;
+  display: block;
+  transition: transform 0.28s ease;
+}
+
+.lc-card:hover .lc-photo img {
+  transform: scale(1.04);
+}
+
+/* Avatar fallback — no photo provided but confirmed member */
+.lc-avatar {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  background: linear-gradient(160deg, var(--bg-3) 0%, #e8f0ea 100%);
+}
+
+.lc-avatar-ring {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: var(--bg-2);
+  border: 2px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.lc-avatar-initials {
+  font-family: var(--font-head);
+  font-size: 1.6rem;
+  font-weight: 800;
+  color: var(--text-3);
+  letter-spacing: -0.04em;
+  line-height: 1;
+}
+
+/* Silhouette for placeholder (unknown person) */
+.lc-silhouette {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(160deg, var(--bg-3) 0%, #eaeef0 100%);
+}
+
+.lc-silhouette svg {
+  opacity: 0.35;
+}
+
+/* ── Card body ── */
+.lc-body {
+  padding: 1.25rem 1.5rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  gap: 0.75rem;
+}
+
+/* Thin top border separator between photo and body */
+.lc-body {
+  border-top: 1px solid var(--border);
+}
+
+/* ── Name & title ── */
+.lc-name {
+  font-family: var(--font-head);
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: var(--text-1);
+  margin: 0;
+  line-height: 1.25;
+  letter-spacing: -0.02em;
+}
+
+.lc-designation {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--green-mid);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin: 0.2rem 0 0;
+  line-height: 1;
+}
+
+/* ── Bio text ── */
+.lc-bio {
+  font-size: 0.88rem;
+  color: var(--text-2);
+  line-height: 1.6;
+  margin: 0;
+}
+
+/* ── Divider inside card ── */
+.lc-divider {
+  width: 28px;
+  height: 2px;
+  background: var(--border);
+  border-radius: 2px;
+  margin: 0;
+  flex-shrink: 0;
+}
+
+/* ── LinkedIn ── */
+.lc-linkedin {
+  margin-top: auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-family: var(--font-head);
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--text-3);
+  text-decoration: none;
+  transition: color 0.15s ease;
+  width: fit-content;
+}
+
+.lc-linkedin:hover {
+  color: var(--text-1);
+}
+
+.lc-linkedin:focus-visible {
+  outline: 2px solid var(--green-mid);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+.lc-linkedin-arrow {
+  transition: transform 0.15s ease;
+  flex-shrink: 0;
+}
+
+.lc-linkedin:hover .lc-linkedin-arrow {
+  transform: translate(2px, -2px);
+}
+
+/* ── Placeholder text in body ── */
+.lc-ph-name {
+  font-family: var(--font-head);
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--text-3);
+  margin: 0;
+}
+
+.lc-ph-role {
+  font-size: 0.73rem;
+  color: var(--text-3);
+  margin: 0.15rem 0 0;
+}
+
+/* ════════════════════════════════════════
+   RESPONSIVE
+════════════════════════════════════════ */
+
+@media (max-width: 1024px) {
+  .leadership-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 640px) {
+  .leadership-section {
+    padding: 4rem 0;
+  }
+
+  .leadership-header {
+    margin-bottom: 2.5rem;
+  }
+
+  .leadership-grid {
+    grid-template-columns: 1fr;
+    max-width: 360px;
+    gap: 1.25rem;
+  }
+
+  .lc-body {
+    padding: 1rem 1.25rem 1.25rem;
+  }
+}
+
+@media (max-width: 374px) {
+  .leadership-grid {
+    max-width: 100%;
+  }
+}

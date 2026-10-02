@@ -46,6 +46,10 @@ const contactSchema = new mongoose.Schema(
       enum: ['new', 'in-progress', 'closed'],
       default: 'new',
     },
+    notes: {
+      type: String,
+      default: '',
+    },
   },
   {
     timestamps: true, // adds createdAt & updatedAt automatically

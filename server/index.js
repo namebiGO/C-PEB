@@ -29,6 +29,9 @@ import publicCreatorsRouter from './routes/publicCreators.js';
 import adminCreatorsRouter from './routes/adminCreators.js';
 import advisoryRouter from './routes/advisory.js';
 import homepageRouter from './routes/homepage.js';
+import analyticsRouter from './routes/analytics.js';
+import queriesRouter from './routes/queries.js';
+import activityRouter from './routes/activity.js';
 import errorHandler from './middleware/errorHandler.js';
 
 // ── Connect to MongoDB ──────────────────────────
@@ -115,6 +118,9 @@ app.use('/api/homepage', homepageRouter);
 
 app.use('/api/public/creators', publicCreatorsRouter);
 app.use('/api/public', publicRouter);
+app.use('/api/analytics', analyticsRouter);
+app.use('/api/queries', queriesRouter);
+app.use('/api/activity', activityRouter);
 
 // 404 handler — catches unknown API routes
 app.use('/api', (_req, res) => {

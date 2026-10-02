@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useSocket } from '../../context/SocketContext';
 import './AdminCreators.css'; // Reusing styling
 
 const AdminLeads = () => {
@@ -7,6 +8,8 @@ const AdminLeads = () => {
   const [selectedLead, setSelectedLead] = useState(null);
   const [filter, setFilter] = useState('ALL');
   const [search, setSearch] = useState('');
+  
+  const socket = useSocket();
 
   const fetchLeads = async () => {
     setLoading(true);
@@ -27,6 +30,34 @@ const AdminLeads = () => {
   useEffect(() => {
     fetchLeads();
   }, []);
+
+  useEffect(() => {
+    if (!socket) return;
+
+    socket.on('new_lead', (newLead) => {
+      setLeads(prev => [newLead, ...prev]);
+    });
+
+    socket.on('update_lead', (updatedLead) => {
+      setLeads(prev => prev.map(l => l._id === updatedLead._id ? updatedLead : l));
+      if (selectedLead && selectedLead._id === updatedLead._id) {
+        setSelectedLead(updatedLead);
+      }
+    });
+
+    socket.on('delete_lead', (deletedId) => {
+      setLeads(prev => prev.filter(l => l._id !== deletedId));
+      if (selectedLead && selectedLead._id === deletedId) {
+        setSelectedLead(null);
+      }
+    });
+
+    return () => {
+      socket.off('new_lead');
+      socket.off('update_lead');
+      socket.off('delete_lead');
+    };
+  }, [socket, selectedLead]);
 
   const handleStatusChange = async (id, newStatus) => {
     try {

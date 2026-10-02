@@ -31,6 +31,10 @@ router.post('/', async (req, res, next) => {
     // Fire-and-forget email notification to office
     sendNewContactEmail({ ...contact.toObject() }).catch(() => {});
 
+    if (req.io) {
+      req.io.emit('new_contact', contact);
+    }
+
     return res.status(201).json({
       success: true,
       message: 'Your request has been received. We will be in touch shortly!',
@@ -93,25 +97,40 @@ router.get('/:id', async (req, res, next) => {
 });
 
 // ──────────────────────────────────────────────
-// PATCH /api/contact/:id/status
-// Update the lead status (new → in-progress → closed)
+// PATCH /api/contact/:id
+// Update the lead status and/or notes
 // ──────────────────────────────────────────────
-router.patch('/:id/status', async (req, res, next) => {
+router.patch('/:id', async (req, res, next) => {
   try {
-    const { status } = req.body;
-    if (!['new', 'in-progress', 'closed'].includes(status)) {
-      res.status(400);
-      throw new Error('status must be one of: new, in-progress, closed');
+    const { status, notes } = req.body;
+    
+    const updateData = {};
+    if (status) {
+      if (!['new', 'in-progress', 'closed'].includes(status)) {
+        res.status(400);
+        throw new Error('status must be one of: new, in-progress, closed');
+      }
+      updateData.status = status;
     }
+    
+    if (notes !== undefined) {
+      updateData.notes = notes;
+    }
+    
     const contact = await Contact.findByIdAndUpdate(
       req.params.id,
-      { status },
+      updateData,
       { new: true, runValidators: true }
     );
     if (!contact) {
       res.status(404);
       throw new Error('Submission not found.');
     }
+
+    if (req.io) {
+      req.io.emit('update_contact', contact);
+    }
+
     return res.json({ success: true, data: contact });
   } catch (err) {
     next(err);

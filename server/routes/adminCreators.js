@@ -4,11 +4,52 @@ import CreatorProfile from '../models/CreatorProfile.js';
 import SocialAccount from '../models/SocialAccount.js';
 import CreatorPortfolio from '../models/CreatorPortfolio.js';
 import AdminReview from '../models/AdminReview.js';
+import CreatorApplication from '../models/CreatorApplication.js';
+import AdminActivity from '../models/AdminActivity.js';
 
 const router = express.Router();
 
 router.use(protect);
 router.use(admin);
+
+// @route   GET /api/admin/creators/applications
+// @desc    Get all initial creator applications
+router.get('/applications', async (req, res) => {
+  try {
+    const applications = await CreatorApplication.find().sort({ createdAt: -1 });
+    res.json({ success: true, data: applications });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ success: false, error: 'Server Error' });
+  }
+});
+
+// @route   PATCH /api/admin/creators/applications/:id
+// @desc    Update creator application status / notes
+router.patch('/applications/:id', async (req, res) => {
+  try {
+    const { status, adminNotes } = req.body;
+    const application = await CreatorApplication.findById(req.params.id);
+    if (!application) return res.status(404).json({ success: false, error: 'Application not found' });
+
+    if (status) {
+      application.status = status;
+      application.reviewedAt = new Date();
+    }
+    if (adminNotes !== undefined) application.adminNotes = adminNotes;
+
+    await application.save();
+
+    if (req.io) {
+      req.io.emit('update_creator_application', application);
+    }
+
+    res.json({ success: true, data: application });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ success: false, error: 'Server Error' });
+  }
+});
 
 // @route   GET /api/admin/creators/profiles
 // @desc    Get all creator profiles for admin dashboard
@@ -93,13 +134,28 @@ router.post('/profiles/:id/review', async (req, res) => {
 
     await profile.save();
 
-    // Log the review
+    // Log the review (AdminReview for creator-specific history)
     const review = await AdminReview.create({
       creatorProfileId: profile._id,
       adminId: req.user._id,
       action,
       note: note || '',
     });
+
+    // Log to general admin activity log (non-blocking)
+    AdminActivity.create({
+      adminId: req.user._id,
+      adminName: req.user.name,
+      action: `${action}_CREATOR`,
+      entityType: 'CREATOR_PROFILE',
+      entityId: profile._id.toString(),
+      entityName: profile.displayName,
+      metadata: { note: note || '', action },
+    }).catch(() => {});
+
+    if (req.io) {
+      req.io.emit('update_creator_profile', profile);
+    }
 
     res.json({ success: true, data: { profile, review } });
   } catch (error) {
@@ -124,6 +180,11 @@ router.put('/profiles/:id', async (req, res) => {
     }
     
     await profile.save();
+
+    if (req.io) {
+      req.io.emit('update_creator_profile', profile);
+    }
+
     res.json({ success: true, data: profile });
   } catch (error) {
     console.error(error);

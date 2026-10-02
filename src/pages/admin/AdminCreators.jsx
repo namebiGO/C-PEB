@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
+import { useSocket } from '../../context/SocketContext';
 import './AdminCreators.css';
 
 const AdminCreators = () => {
@@ -10,10 +11,27 @@ const AdminCreators = () => {
   const [search, setSearch] = useState('');
   const { user } = useAuth();
   const navigate = useNavigate();
+  const socket = useSocket();
 
   useEffect(() => {
     fetchCreators();
   }, [filter]);
+
+  useEffect(() => {
+    if (!socket) return;
+    socket.on('update_creator_profile', (updatedProfile) => {
+      setCreators(prev => {
+        const exists = prev.find(c => c._id === updatedProfile._id);
+        if (exists) {
+          return prev.map(c => c._id === updatedProfile._id ? { ...c, ...updatedProfile } : c);
+        }
+        // If it doesn't exist in our list (maybe newly created profile), we could refetch or prepend
+        return [updatedProfile, ...prev];
+      });
+    });
+
+    return () => socket.off('update_creator_profile');
+  }, [socket]);
 
   const fetchCreators = async () => {
     setLoading(true);

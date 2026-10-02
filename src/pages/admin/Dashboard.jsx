@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useAuth } from '../../context/AuthContext';
+import { useSocket } from '../../context/SocketContext';
 import { Link } from 'react-router-dom';
 
 const Dashboard = () => {
@@ -12,35 +13,56 @@ const Dashboard = () => {
     recentCreatorActivity: []
   });
   const [loading, setLoading] = useState(true);
+  const socket = useSocket();
 
   // use admin or user token depending on how auth is structured
   const token = user?.token || admin?.token || JSON.parse(localStorage.getItem('adminToken'))?.token;
 
+  const fetchDashboardData = async () => {
+    try {
+      const headers = { Authorization: `Bearer ${token}` };
+      
+      const [statsRes, listsRes] = await Promise.all([
+        fetch('/api/admin/stats', { headers }),
+        fetch('/api/admin/dashboard-lists', { headers })
+      ]);
+      
+      const statsData = await statsRes.json();
+      const listsData = await listsRes.json();
+
+      if (statsData.success) setStats(statsData.data);
+      if (listsData.success) setLists(listsData.data);
+
+    } catch (error) {
+      console.error('Error fetching dashboard data:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
-    const fetchDashboardData = async () => {
-      try {
-        const headers = { Authorization: `Bearer ${token}` };
-        
-        const [statsRes, listsRes] = await Promise.all([
-          fetch('/api/admin/stats', { headers }),
-          fetch('/api/admin/dashboard-lists', { headers })
-        ]);
-        
-        const statsData = await statsRes.json();
-        const listsData = await listsRes.json();
-
-        if (statsData.success) setStats(statsData.data);
-        if (listsData.success) setLists(listsData.data);
-
-      } catch (error) {
-        console.error('Error fetching dashboard data:', error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
     if (token) fetchDashboardData();
   }, [token]);
+
+  useEffect(() => {
+    if (!socket || !token) return;
+
+    const handleUpdate = () => {
+      fetchDashboardData();
+    };
+
+    socket.on('new_lead', handleUpdate);
+    socket.on('new_contact', handleUpdate);
+    socket.on('new_creator_application', handleUpdate);
+    socket.on('update_creator_profile', handleUpdate);
+
+    return () => {
+      socket.off('new_lead', handleUpdate);
+      socket.off('new_contact', handleUpdate);
+      socket.off('new_creator_application', handleUpdate);
+      socket.off('update_creator_profile', handleUpdate);
+    };
+  }, [socket, token]);
 
   if (loading) return <div style={{ padding: '2rem' }}>Loading dashboard...</div>;
 

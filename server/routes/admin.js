@@ -3,11 +3,64 @@ import CreatorProfile from '../models/CreatorProfile.js';
 import Service from '../models/Service.js';
 import Lead from '../models/Lead.js';
 import AdvisorySubscription from '../models/AdvisorySubscription.js';
-import { protect } from '../middleware/authMiddleware.js';
+import User from '../models/User.js';
+import Contact from '../models/Contact.js';
+import SupportQuery from '../models/SupportQuery.js';
+import bcrypt from 'bcrypt';
+import { protect, admin } from '../middleware/authMiddleware.js';
 
 const router = express.Router();
 
 router.use(protect);
+router.use(admin); // Make sure only admins can access
+
+// @route   GET /api/admin/users
+// @desc    Get all users (Staff & Creators)
+router.get('/users', async (req, res) => {
+  try {
+    const users = await User.find().select('-passwordHash').sort({ createdAt: -1 });
+    res.json({ success: true, data: users });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ success: false, error: 'Server Error' });
+  }
+});
+
+// @route   POST /api/admin/users
+// @desc    Create a new user/admin
+router.post('/users', async (req, res) => {
+  try {
+    const { name, email, password, role } = req.body;
+    const userExists = await User.findOne({ email });
+    if (userExists) return res.status(400).json({ success: false, error: 'User already exists' });
+
+    const salt = await bcrypt.genSalt(10);
+    const passwordHash = await bcrypt.hash(password, salt);
+
+    const user = await User.create({ name, email, passwordHash, role: role || 'CREATOR' });
+    res.status(201).json({ success: true, data: { _id: user._id, name: user.name, email: user.email, role: user.role } });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ success: false, error: 'Server Error' });
+  }
+});
+
+// @route   DELETE /api/admin/users/:id
+// @desc    Delete a user
+router.delete('/users/:id', async (req, res) => {
+  try {
+    const user = await User.findById(req.params.id);
+    if (!user) return res.status(404).json({ success: false, error: 'User not found' });
+    if (user._id.toString() === req.user._id.toString()) {
+      return res.status(400).json({ success: false, error: 'Cannot delete yourself' });
+    }
+    await User.findByIdAndDelete(req.params.id);
+    res.json({ success: true, message: 'User deleted' });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ success: false, error: 'Server Error' });
+  }
+});
 
 // @route   GET /api/admin/stats
 // @desc    Get dashboard statistics
@@ -38,6 +91,14 @@ router.get('/stats', async (req, res) => {
       endDate: { $lte: sevenDaysFromNow, $gte: new Date() }
     });
 
+    // 5. Contacts / Strategy wizard submissions
+    const totalContacts = await Contact.countDocuments();
+    const newContacts = await Contact.countDocuments({ status: 'new' });
+
+    // 6. Support Queries
+    const openQueries = await SupportQuery.countDocuments({ status: 'OPEN' });
+    const urgentQueries = await SupportQuery.countDocuments({ priority: 'URGENT', status: { $in: ['OPEN', 'IN_PROGRESS'] } });
+
     res.json({
       success: true,
       data: {
@@ -50,7 +111,11 @@ router.get('/stats', async (req, res) => {
         totalLeads,
         newLeads,
         activeAdvisoryPlans,
-        expiringAdvisoryPlans
+        expiringAdvisoryPlans,
+        totalContacts,
+        newContacts,
+        openQueries,
+        urgentQueries,
       }
     });
   } catch (error) {

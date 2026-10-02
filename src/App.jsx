@@ -49,13 +49,20 @@ const ProtectedRoute    = lazy(() => import('./components/admin/ProtectedRoute')
 const Dashboard         = lazy(() => import('./pages/admin/Dashboard'))
 const AdminInfluencers  = lazy(() => import('./pages/admin/Influencers'))
 const AdminCreators     = lazy(() => import('./pages/admin/AdminCreators'))
+const AdminApplications = lazy(() => import('./pages/admin/AdminApplications'))
+const AdminUsers        = lazy(() => import('./pages/admin/AdminUsers'))
 const AdminCreatorOrder = lazy(() => import('./pages/admin/AdminCreatorOrder'))
 const AdminCreatorReview = lazy(() => import('./pages/admin/AdminCreatorReview'))
 const AdminServices     = lazy(() => import('./pages/admin/Services'))
 const AdminHomepage     = lazy(() => import('./pages/admin/Homepage'))
 const AdminLeads        = lazy(() => import('./pages/admin/Leads'))
+const AdminContacts     = lazy(() => import('./pages/admin/AdminContacts'))
 const AdminAdvisory     = lazy(() => import('./pages/admin/AdminAdvisory'))
 const AdminSettings     = lazy(() => import('./pages/admin/Settings'))
+const AdminAnalytics    = lazy(() => import('./pages/admin/AdminAnalytics'))
+const AdminQueries      = lazy(() => import('./pages/admin/AdminQueries'))
+const AdminQueryDetail  = lazy(() => import('./pages/admin/AdminQueryDetail'))
+const AdminActivityLog  = lazy(() => import('./pages/admin/AdminActivityLog'))
 
 // Creator pages
 const CreatorLogin      = lazy(() => import('./pages/creators/CreatorLogin'))
@@ -121,13 +128,20 @@ function App() {
               <Route index element={<Dashboard />} />
               <Route path="influencers" element={<AdminInfluencers />} />
               <Route path="creators" element={<AdminCreators />} />
+              <Route path="creators/applications" element={<AdminApplications />} />
               <Route path="creators/order" element={<AdminCreatorOrder />} />
               <Route path="creators/:id" element={<AdminCreatorReview />} />
               <Route path="services" element={<AdminServices />} />
               <Route path="homepage" element={<AdminHomepage />} />
               <Route path="leads" element={<AdminLeads />} />
+              <Route path="contacts" element={<AdminContacts />} />
               <Route path="advisory" element={<AdminAdvisory />} />
+              <Route path="users" element={<AdminUsers />} />
               <Route path="settings" element={<AdminSettings />} />
+              <Route path="analytics" element={<AdminAnalytics />} />
+              <Route path="queries" element={<AdminQueries />} />
+              <Route path="queries/:id" element={<AdminQueryDetail />} />
+              <Route path="activity" element={<AdminActivityLog />} />
             </Route>
           </Route>
 

@@ -3,6 +3,7 @@ import { ArrowRight, CheckCircle2 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import './About.css';
 import SEO from '../components/SEO';
+import LeadershipSection from '../components/about/LeadershipSection';
 
 export default function About() {
   return (
@@ -107,46 +108,8 @@ export default function About() {
         </div>
       </section>
 
-      {/* ── Team Section (Placeholder) ── */}
-      <section className="about-team">
-        <div className="container">
-          <div className="section-header text-center">
-            <p className="section-eyebrow">The Brains Behind C-PEB</p>
-            <h2>Meet the Leadership</h2>
-            <p className="max-w-600 mx-auto mt-3">Built by founders who have been in the trenches, grown companies, and understand exactly what you are going through.</p>
-          </div>
-
-          <div className="team-grid">
-            {/* You can duplicate this card to add actual team members later */}
-            <div className="team-card">
-              <div className="t-avatar">
-                <span className="t-initial">S</span>
-              </div>
-              <h4>Akash Sharma</h4>
-              <p className="t-role">Founder & CEO</p>
-              <p className="t-bio">10+ years in digital marketing and startup consulting. Passionate about MSME growth in India.</p>
-            </div>
-
-            <div className="team-card">
-              <div className="t-avatar">
-                <span className="t-initial">N</span>
-              </div>
-              <h4>Jeet Balraj</h4>
-              <p className="t-role">Head of Creator Partnerships</p>
-              <p className="t-bio">Managed campaigns for Fortune 500 brands. Now bringing that expertise to early-stage startups.</p>
-            </div>
-
-            <div className="team-card">
-              <div className="t-avatar">
-                <span className="t-initial">R</span>
-              </div>
-              <h4>Rajesh Kumar</h4>
-              <p className="t-role">Director of Financial Services</p>
-              <p className="t-bio">Ex-banker helping MSMEs navigate the complex world of government schemes and business loans.</p>
-            </div>
-          </div>
-        </div>
-      </section>
+      {/* ── Leadership ── */}
+      <LeadershipSection />
 
       {/* ── CTA ── */}
       <section className="about-cta">

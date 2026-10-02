@@ -18,7 +18,7 @@ const AdminInfluencers = () => {
   const fetchInfluencers = async () => {
     try {
       const token = JSON.parse(localStorage.getItem('adminToken'))?.token;
-      const res = await fetch('http://localhost:5001/api/admin/influencers', {
+      const res = await fetch('/api/admin/influencers', {
         headers: { Authorization: `Bearer ${token}` }
       });
       const data = await res.json();
@@ -46,8 +46,8 @@ const AdminInfluencers = () => {
     e.preventDefault();
     const token = JSON.parse(localStorage.getItem('adminToken'))?.token;
     const url = isEditing 
-      ? `http://localhost:5001/api/admin/influencers/${currentInfluencer._id}`
-      : 'http://localhost:5001/api/admin/influencers';
+      ? `/api/admin/influencers/${currentInfluencer._id}`
+      : '/api/admin/influencers';
     const method = isEditing ? 'PUT' : 'POST';
 
     try {
@@ -85,7 +85,7 @@ const AdminInfluencers = () => {
     
     try {
       const token = JSON.parse(localStorage.getItem('adminToken'))?.token;
-      await fetch(`http://localhost:5001/api/admin/influencers/${id}`, {
+      await fetch(`/api/admin/influencers/${id}`, {
         method: 'DELETE',
         headers: { Authorization: `Bearer ${token}` }
       });

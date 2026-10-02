@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight, CheckCircle2 } from 'lucide-react';
+import { useSocket } from '../context/SocketContext';
 import './TopInfluencers.css';
 
 const fallbackCreators = [
@@ -79,48 +80,56 @@ const fallbackCreators = [
 const TopInfluencers = () => {
   const [creators, setCreators] = useState(fallbackCreators);
   const [loading, setLoading] = useState(false);
+  const socket = useSocket();
+
+  const fetchInfluencers = async () => {
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 1500);
+    
+    try {
+      const res = await fetch('/api/public/featured-influencers', {
+        signal: controller.signal
+      });
+      clearTimeout(timeoutId);
+      
+      const data = await res.json();
+      if (data.success && data.data && data.data.length > 0) {
+        setCreators(data.data);
+      } else {
+        setCreators(fallbackCreators);
+      }
+    } catch (error) {
+      clearTimeout(timeoutId);
+      setCreators(fallbackCreators);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
-    const fetchInfluencers = async () => {
-      const controller = new AbortController();
-      const timeoutId = setTimeout(() => controller.abort(), 1500);
-      
-      try {
-        const res = await fetch('/api/public/featured-influencers', {
-          signal: controller.signal
-        });
-        clearTimeout(timeoutId);
-        
-        const data = await res.json();
-        if (data.success && data.data && data.data.length > 0) {
-          setCreators(data.data);
-        } else {
-          setCreators(fallbackCreators);
-        }
-      } catch (error) {
-        clearTimeout(timeoutId);
-        setCreators(fallbackCreators);
-      } finally {
-        setLoading(false);
-      }
-    };
     fetchInfluencers();
-
-    // Listen for real-time updates (dynamically imported)
-    const socketUrl = import.meta.env.VITE_API_URL || window.location.origin;
-    let socket = null;
-    import('socket.io-client').then(({ io }) => {
-      try {
-        socket = io(socketUrl, { reconnectionAttempts: 3 });
-        socket.on('content_updated', (data) => {
-          if (data && data.type && data.type.startsWith('influencer_')) {
-            fetchInfluencers();
-          }
-        });
-      } catch {}
-    }).catch(() => {});
-    return () => { if (socket) socket.disconnect(); };
   }, []);
+
+  useEffect(() => {
+    if (!socket) return;
+    
+    const handleUpdate = () => {
+      fetchInfluencers();
+    };
+
+    socket.on('update_creator_profile', handleUpdate);
+    // Backward compatibility if old content_updated was emitted
+    socket.on('content_updated', (data) => {
+      if (data && data.type && data.type.startsWith('influencer_')) {
+        handleUpdate();
+      }
+    });
+
+    return () => {
+      socket.off('update_creator_profile', handleUpdate);
+      socket.off('content_updated');
+    };
+  }, [socket]);
 
   if (loading) return null;
   if (creators.length === 0) return null;

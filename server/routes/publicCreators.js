@@ -2,6 +2,7 @@ import express from 'express';
 import CreatorProfile from '../models/CreatorProfile.js';
 import SocialAccount from '../models/SocialAccount.js';
 import CreatorPortfolio from '../models/CreatorPortfolio.js';
+import SearchEvent from '../models/SearchEvent.js';
 
 const router = express.Router();
 
@@ -25,6 +26,17 @@ router.get('/', async (req, res) => {
     }
     if (req.query.location) {
       query.city = { $regex: req.query.location, $options: 'i' };
+    }
+
+    // Track search analytics (fire-and-forget, never blocks the response)
+    if (req.query.category || req.query.location || req.query.search) {
+      SearchEvent.create({
+        eventType: req.query.category ? 'CATEGORY_BROWSE' : req.query.location ? 'LOCATION_BROWSE' : 'SEARCH',
+        query: req.query.search || '',
+        category: req.query.category || '',
+        location: req.query.location || '',
+        sessionId: (req.headers['x-session-id'] || '').slice(0, 64),
+      }).catch(() => {});
     }
     
     // Fetch profiles with pagination

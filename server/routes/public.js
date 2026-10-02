@@ -52,6 +52,11 @@ router.post('/leads', async (req, res) => {
     const lead = await Lead.create(data);
     // Fire-and-forget email notification to office
     sendNewLeadEmail(lead).catch(() => {});
+    
+    if (req.io) {
+      req.io.emit('new_lead', lead);
+    }
+
     res.status(201).json({ success: true, data: lead });
   } catch (error) {
     res.status(400).json({ success: false, error: error.message });
