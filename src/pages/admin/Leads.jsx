@@ -124,133 +124,138 @@ const AdminLeads = () => {
   };
 
   return (
-    <div className="admin-page-container">
-      <div className="admin-page-header">
-        <h2>Leads CRM</h2>
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <div>
+          <h1 style={{ margin: '0 0 0.25rem 0', fontSize: '1.5rem', fontWeight: 700, color: 'var(--admin-text-primary)' }}>Leads CRM</h1>
+          <p style={{ margin: 0, color: 'var(--admin-text-secondary)', fontSize: '0.875rem' }}>Track and convert potential business inquiries.</p>
+        </div>
       </div>
 
-      <div className="admin-subnav">
+      <div style={{ display: 'flex', gap: '0.5rem', background: 'var(--admin-surface)', padding: '0.25rem', borderRadius: 'var(--admin-radius-md)', border: '1px solid var(--admin-border)', width: 'fit-content' }}>
         {['ALL', 'New', 'Contacted', 'In Progress', 'Converted', 'Closed'].map(f => (
           <button 
             key={f} 
-            className={`subnav-btn ${filter === f ? 'active' : ''}`}
+            className={`admin-btn ${filter === f ? 'admin-btn-primary' : 'admin-btn-secondary'}`}
             onClick={() => setFilter(f)}
+            style={{ padding: '0.35rem 0.75rem', border: 'none', background: filter === f ? 'var(--admin-primary)' : 'transparent', color: filter === f ? '#fff' : 'var(--admin-text-secondary)' }}
           >
             {f}
           </button>
         ))}
       </div>
 
-      <div className="admin-controls-row">
+      <div style={{ position: 'relative', maxWidth: '400px' }}>
         <input 
           type="text" 
           placeholder="Search name, email, company..." 
           value={search}
           onChange={(e) => setSearch(e.target.value)}
-          className="admin-search-input"
+          style={{ width: '100%', padding: '0.5rem 1rem', borderRadius: 'var(--admin-radius-md)', border: '1px solid var(--admin-border)', fontSize: '0.875rem' }}
         />
       </div>
 
-      <div style={{ display: 'grid', gridTemplateColumns: selectedLead ? '2fr 1fr' : '1fr', gap: '2rem' }}>
+      <div style={{ display: 'grid', gridTemplateColumns: selectedLead ? '2fr 1fr' : '1fr', gap: '1.5rem' }}>
         
         {/* LEADS LIST */}
-        <div className="admin-table-container" style={{ alignSelf: 'start' }}>
-          <table className="admin-table">
-            <thead>
-              <tr>
-                <th>CONTACT</th>
-                <th>REQUIREMENT & SOURCE</th>
-                <th>STATUS</th>
-                <th>DATE</th>
-                <th>ACTION</th>
-              </tr>
-            </thead>
-            <tbody>
-              {loading ? (
-                <tr><td colSpan="5" style={{ padding: '2rem', textAlign: 'center' }}>Loading...</td></tr>
-              ) : filteredLeads.length > 0 ? filteredLeads.map(lead => (
-                <tr key={lead._id} style={{ background: selectedLead?._id === lead._id ? '#f8fafc' : 'white' }}>
-                  <td>
-                    <div style={{ fontWeight: 600, color: '#0f172a' }}>{lead.name}</div>
-                    <div style={{ fontSize: '0.8rem', color: '#64748b' }}>{lead.email}</div>
-                    {lead.company && <div style={{ fontSize: '0.75rem', color: '#94a3b8' }}>{lead.company}</div>}
-                  </td>
-                  <td>
-                    <div style={{ fontSize: '0.85rem', color: '#334155', maxWidth: '250px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-                      {lead.requirement}
-                    </div>
-                    <div style={{ fontSize: '0.75rem', color: '#64748b', marginTop: '0.2rem' }}>Source: {lead.source || 'Website'}</div>
-                  </td>
-                  <td>
-                    <span className={`admin-badge ${getStatusBadge(lead.status)}`}>{lead.status}</span>
-                  </td>
-                  <td style={{ fontSize: '0.8rem' }}>{new Date(lead.createdAt).toLocaleDateString()}</td>
-                  <td>
-                    <button onClick={() => setSelectedLead(lead)} className="btn-secondary" style={{ padding: '0.25rem 0.5rem', fontSize: '0.8rem' }}>
-                      View &rarr;
-                    </button>
-                  </td>
+        <div className="admin-card" style={{ alignSelf: 'start' }}>
+          <div style={{ overflowX: 'auto' }}>
+            <table className="admin-premium-table">
+              <thead>
+                <tr>
+                  <th>Contact</th>
+                  <th>Requirement & Source</th>
+                  <th>Status</th>
+                  <th>Date</th>
+                  <th>Action</th>
                 </tr>
-              )) : (
-                <tr><td colSpan="5" style={{ padding: '2rem', textAlign: 'center', color: '#64748b' }}>No leads found.</td></tr>
-              )}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {loading ? (
+                  <tr><td colSpan="5" style={{ padding: '3rem', textAlign: 'center', color: 'var(--admin-text-muted)' }}>Loading...</td></tr>
+                ) : filteredLeads.length > 0 ? filteredLeads.map(lead => (
+                  <tr key={lead._id} style={{ background: selectedLead?._id === lead._id ? 'var(--admin-primary-bg)' : 'transparent' }}>
+                    <td>
+                      <div className="font-semibold text-sm">{lead.name}</div>
+                      <div className="text-muted" style={{ fontSize: '0.75rem' }}>{lead.email}</div>
+                      {lead.company && <div style={{ fontSize: '0.7rem', color: 'var(--admin-primary)' }}>{lead.company}</div>}
+                    </td>
+                    <td>
+                      <div style={{ fontSize: '0.875rem', color: 'var(--admin-text-primary)', maxWidth: '250px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                        {lead.requirement}
+                      </div>
+                      <div className="text-muted" style={{ fontSize: '0.7rem', marginTop: '0.2rem' }}>Source: {lead.source || 'Website'}</div>
+                    </td>
+                    <td>
+                      <span className={`admin-status ${lead.status === 'New' ? 'admin-status-info' : lead.status === 'Converted' ? 'admin-status-success' : lead.status === 'Closed' ? 'admin-status-neutral' : 'admin-status-warning'}`}>{lead.status}</span>
+                    </td>
+                    <td className="text-muted text-sm">{new Date(lead.createdAt).toLocaleDateString()}</td>
+                    <td>
+                      <button onClick={() => setSelectedLead(lead)} className="admin-btn admin-btn-secondary" style={{ padding: '0.25rem 0.6rem', fontSize: '0.75rem' }}>
+                        View
+                      </button>
+                    </td>
+                  </tr>
+                )) : (
+                  <tr><td colSpan="5" style={{ padding: '4rem 2rem', textAlign: 'center', color: 'var(--admin-text-secondary)' }}>No leads found.</td></tr>
+                )}
+              </tbody>
+            </table>
+          </div>
         </div>
 
         {/* LEAD DETAIL PROFILE */}
         {selectedLead && (
-          <div className="admin-section" style={{ position: 'sticky', top: '2rem', alignSelf: 'start', padding: '1.5rem', marginBottom: 0 }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem', borderBottom: '1px solid #e2e8f0', paddingBottom: '1rem' }}>
-              <h3 style={{ margin: 0, fontSize: '1.1rem' }}>Lead Profile</h3>
-              <button onClick={() => setSelectedLead(null)} style={{ background: 'none', border: 'none', fontSize: '1.2rem', cursor: 'pointer', color: '#64748b' }}>&times;</button>
+          <div className="admin-card" style={{ position: 'sticky', top: '2rem', alignSelf: 'start' }}>
+            <div className="admin-card-header">
+              <h3 className="admin-card-title">Lead Profile</h3>
+              <button onClick={() => setSelectedLead(null)} style={{ background: 'none', border: 'none', fontSize: '1.2rem', cursor: 'pointer', color: 'var(--admin-text-muted)' }}>&times;</button>
             </div>
-            
-            <div style={{ marginBottom: '1.5rem' }}>
-              <h4 style={{ margin: '0 0 0.25rem 0', color: '#0f172a' }}>{selectedLead.name}</h4>
-              <div style={{ fontSize: '0.85rem', color: '#64748b', marginBottom: '0.2rem' }}>Email: <a href={`mailto:${selectedLead.email}`} style={{ color: '#2563eb' }}>{selectedLead.email}</a></div>
-              <div style={{ fontSize: '0.85rem', color: '#64748b', marginBottom: '0.2rem' }}>Phone: <a href={`tel:${selectedLead.phone}`} style={{ color: '#2563eb' }}>{selectedLead.phone || '-'}</a></div>
-              <div style={{ fontSize: '0.85rem', color: '#64748b' }}>Company: <strong>{selectedLead.company || '-'}</strong></div>
-            </div>
+            <div className="admin-card-body">
+              <div style={{ marginBottom: '1.5rem' }}>
+                <h4 style={{ margin: '0 0 0.25rem 0', color: 'var(--admin-text-primary)', fontSize: '1.1rem' }}>{selectedLead.name}</h4>
+                <div style={{ fontSize: '0.875rem', color: 'var(--admin-text-secondary)', marginBottom: '0.2rem' }}>Email: <a href={`mailto:${selectedLead.email}`} style={{ color: 'var(--admin-primary)', textDecoration: 'none' }}>{selectedLead.email}</a></div>
+                <div style={{ fontSize: '0.875rem', color: 'var(--admin-text-secondary)', marginBottom: '0.2rem' }}>Phone: <a href={`tel:${selectedLead.phone}`} style={{ color: 'var(--admin-primary)', textDecoration: 'none' }}>{selectedLead.phone || '-'}</a></div>
+                <div style={{ fontSize: '0.875rem', color: 'var(--admin-text-secondary)' }}>Company: <strong style={{ color: 'var(--admin-text-primary)' }}>{selectedLead.company || '-'}</strong></div>
+              </div>
 
-            <div style={{ marginBottom: '1.5rem', padding: '1rem', background: '#f8fafc', borderRadius: '6px' }}>
-              <div style={{ fontSize: '0.75rem', fontWeight: 600, color: '#64748b', textTransform: 'uppercase', marginBottom: '0.5rem' }}>Requirement</div>
-              <div style={{ fontSize: '0.9rem', color: '#334155', lineHeight: '1.5' }}>{selectedLead.requirement}</div>
-              <div style={{ marginTop: '0.5rem', fontSize: '0.75rem', color: '#94a3b8' }}>Source: {selectedLead.source || 'Website'}</div>
-            </div>
+              <div style={{ marginBottom: '1.5rem', padding: '1rem', background: 'var(--admin-bg)', borderRadius: 'var(--admin-radius-md)', border: '1px solid var(--admin-border-subtle)' }}>
+                <div style={{ fontSize: '0.75rem', fontWeight: 600, color: 'var(--admin-text-muted)', textTransform: 'uppercase', marginBottom: '0.5rem' }}>Requirement</div>
+                <div style={{ fontSize: '0.875rem', color: 'var(--admin-text-primary)', lineHeight: '1.5' }}>{selectedLead.requirement}</div>
+                <div style={{ marginTop: '0.5rem', fontSize: '0.75rem', color: 'var(--admin-text-muted)' }}>Source: {selectedLead.source || 'Website'}</div>
+              </div>
 
-            <div className="admin-form-group" style={{ marginBottom: '1.5rem' }}>
-              <label>Status</label>
-              <select 
-                value={selectedLead.status} 
-                onChange={(e) => handleStatusChange(selectedLead._id, e.target.value)} 
-                className="admin-select"
-              >
-                <option value="New">New</option>
-                <option value="Contacted">Contacted</option>
-                <option value="In Progress">In Progress</option>
-                <option value="Converted">Converted</option>
-                <option value="Closed">Closed</option>
-              </select>
-            </div>
+              <div style={{ marginBottom: '1.5rem' }}>
+                <label style={{ display: 'block', marginBottom: '0.35rem', fontSize: '0.875rem', fontWeight: 500 }}>Status</label>
+                <select 
+                  value={selectedLead.status} 
+                  onChange={(e) => handleStatusChange(selectedLead._id, e.target.value)} 
+                  style={{ width: '100%', padding: '0.5rem', borderRadius: 'var(--admin-radius-md)', border: '1px solid var(--admin-border)', background: 'var(--admin-surface)' }}
+                >
+                  <option value="New">New</option>
+                  <option value="Contacted">Contacted</option>
+                  <option value="In Progress">In Progress</option>
+                  <option value="Converted">Converted</option>
+                  <option value="Closed">Closed</option>
+                </select>
+              </div>
 
-            <div className="admin-form-group">
-              <label>Internal Notes</label>
-              <textarea 
-                rows="4" 
-                className="admin-input" 
-                placeholder="Add notes about this lead..."
-                value={selectedLead.notes || ''}
-                onChange={(e) => setSelectedLead({ ...selectedLead, notes: e.target.value })}
-              ></textarea>
-              <button className="btn-save" style={{ marginTop: '0.5rem', padding: '0.5rem 1rem', width: '100%' }} onClick={handleNotesChange}>
-                Save Notes
-              </button>
+              <div>
+                <label style={{ display: 'block', marginBottom: '0.35rem', fontSize: '0.875rem', fontWeight: 500 }}>Internal Notes</label>
+                <textarea 
+                  rows="4" 
+                  placeholder="Add notes about this lead..."
+                  value={selectedLead.notes || ''}
+                  onChange={(e) => setSelectedLead({ ...selectedLead, notes: e.target.value })}
+                  style={{ width: '100%', padding: '0.5rem', borderRadius: 'var(--admin-radius-md)', border: '1px solid var(--admin-border)' }}
+                ></textarea>
+                <button className="admin-btn admin-btn-primary" style={{ marginTop: '0.5rem', width: '100%' }} onClick={handleNotesChange}>
+                  Save Notes
+                </button>
+              </div>
             </div>
-
           </div>
         )}
-
       </div>
     </div>
   );

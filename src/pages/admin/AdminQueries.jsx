@@ -82,113 +82,113 @@ const AdminQueries = () => {
   };
 
   return (
-    <div className="admin-page-container">
-      <div className="admin-page-header">
-        <h2>Query Resolution</h2>
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <div>
+          <h1 style={{ margin: '0 0 0.25rem 0', fontSize: '1.5rem', fontWeight: 700, color: 'var(--admin-text-primary)' }}>Query Resolution</h1>
+          <p style={{ margin: 0, color: 'var(--admin-text-secondary)', fontSize: '0.875rem' }}>Manage and resolve user support tickets.</p>
+        </div>
       </div>
 
       {/* Summary cards */}
       {summary && (
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(5, 1fr)', gap: '1rem', marginBottom: '1.5rem' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: '1.25rem' }}>
           {[
-            { label: 'Open', value: summary.open, accent: '#f59e0b' },
-            { label: 'In Progress', value: summary.inProgress, accent: '#3b82f6' },
-            { label: 'Resolved', value: summary.resolved, accent: '#10b981' },
-            { label: 'Closed', value: summary.closed, accent: '#94a3b8' },
-            { label: '🔴 Urgent', value: summary.urgent, accent: '#ef4444' },
-          ].map(({ label, value, accent }) => (
-            <div key={label} style={{ background: '#fff', padding: '1rem 1.25rem', borderRadius: '8px', border: '1px solid #e2e8f0', borderLeft: `3px solid ${accent}` }}>
-              <div style={{ fontSize: '0.7rem', fontWeight: 700, color: '#64748b', textTransform: 'uppercase', marginBottom: '0.3rem' }}>{label}</div>
-              <div style={{ fontSize: '1.75rem', fontWeight: 800, color: '#0f172a' }}>{value}</div>
+            { label: 'Open', value: summary.open, icon: 'var(--admin-warning)', bg: 'var(--admin-warning-bg)' },
+            { label: 'In Progress', value: summary.inProgress, icon: 'var(--admin-primary)', bg: 'var(--admin-primary-bg)' },
+            { label: 'Resolved', value: summary.resolved, icon: 'var(--admin-success)', bg: 'var(--admin-success-bg)' },
+            { label: 'Closed', value: summary.closed, icon: 'var(--admin-text-muted)', bg: 'var(--admin-bg)' },
+            { label: 'Urgent', value: summary.urgent, icon: 'var(--admin-danger)', bg: 'var(--admin-danger-bg)' },
+          ].map(({ label, value, icon, bg }) => (
+            <div key={label} className="admin-card" style={{ padding: '1.25rem', borderTop: `4px solid ${icon}` }}>
+              <div style={{ fontSize: '0.75rem', fontWeight: 600, color: 'var(--admin-text-muted)', textTransform: 'uppercase', marginBottom: '0.5rem' }}>{label}</div>
+              <div style={{ fontSize: '1.875rem', fontWeight: 700, color: 'var(--admin-text-primary)' }}>{value}</div>
             </div>
           ))}
         </div>
       )}
 
-      {/* Filters */}
-      <div style={{ display: 'flex', gap: '1rem', marginBottom: '1rem', flexWrap: 'wrap' }}>
-        <input
-          type="text"
-          placeholder="Search name, email, subject…"
-          value={search}
-          onChange={e => { setSearch(e.target.value); setPage(1); }}
-          className="admin-search-input"
-          style={{ flex: 1, minWidth: '200px' }}
-        />
-        <select className="admin-select" style={{ width: 'auto' }} value={statusFilter} onChange={e => { setStatusFilter(e.target.value); setPage(1); }}>
-          <option value="ALL">All Statuses</option>
-          <option value="OPEN">Open</option>
-          <option value="IN_PROGRESS">In Progress</option>
-          <option value="RESOLVED">Resolved</option>
-          <option value="CLOSED">Closed</option>
-        </select>
-        <select className="admin-select" style={{ width: 'auto' }} value={priorityFilter} onChange={e => { setPriorityFilter(e.target.value); setPage(1); }}>
-          <option value="ALL">All Priorities</option>
-          <option value="LOW">Low</option>
-          <option value="MEDIUM">Medium</option>
-          <option value="HIGH">High</option>
-          <option value="URGENT">Urgent</option>
-        </select>
-      </div>
-
-      <div className="admin-table-container">
-        <table className="admin-table">
-          <thead>
-            <tr>
-              <th>#</th>
-              <th>SUBJECT</th>
-              <th>FROM</th>
-              <th>CATEGORY</th>
-              <th>PRIORITY</th>
-              <th>STATUS</th>
-              <th>RECEIVED</th>
-              <th>ACTION</th>
-            </tr>
-          </thead>
-          <tbody>
-            {loading ? (
-              <tr><td colSpan="8" style={{ padding: '2rem', textAlign: 'center', color: '#94a3b8' }}>Loading…</td></tr>
-            ) : queries.length === 0 ? (
-              <tr><td colSpan="8" style={{ padding: '3rem', textAlign: 'center', color: '#94a3b8' }}>
-                <div style={{ fontSize: '1.1rem', marginBottom: '0.5rem' }}>No queries found</div>
-                <div style={{ fontSize: '0.85rem' }}>There are currently no user queries matching your filters.</div>
-              </td></tr>
-            ) : queries.map(q => (
-              <tr key={q._id}>
-                <td style={{ fontSize: '0.75rem', color: '#94a3b8', fontFamily: 'monospace' }}>#{q._id.slice(-6).toUpperCase()}</td>
-                <td>
-                  <div style={{ fontWeight: 600, color: '#0f172a', maxWidth: '240px' }}>{q.subject}</div>
-                  <div style={{ fontSize: '0.75rem', color: '#64748b', marginTop: '0.15rem' }}>{q.category.replace('_', ' ')}</div>
-                </td>
-                <td>
-                  <div style={{ fontWeight: 500, fontSize: '0.875rem' }}>{q.name}</div>
-                  <div style={{ fontSize: '0.75rem', color: '#64748b' }}>{q.email}</div>
-                </td>
-                <td style={{ fontSize: '0.85rem', color: '#475569' }}>{q.category.replace(/_/g, ' ')}</td>
-                <td><Badge label={q.priority} color={PRIORITY_COLORS[q.priority] || PRIORITY_COLORS.LOW} /></td>
-                <td><Badge label={q.status.replace('_', ' ')} color={STATUS_COLORS[q.status] || STATUS_COLORS.OPEN} /></td>
-                <td style={{ fontSize: '0.8rem', color: '#64748b', whiteSpace: 'nowrap' }}>{timeAgo(q.createdAt)}</td>
-                <td>
-                  <button
-                    className="btn-secondary"
-                    style={{ padding: '0.3rem 0.6rem', fontSize: '0.8rem' }}
-                    onClick={() => navigate(`/admin/queries/${q._id}`)}
-                  >
-                    Open →
-                  </button>
-                </td>
+      {/* Table Card */}
+      <div className="admin-card">
+        <div className="admin-card-header" style={{ display: 'flex', flexWrap: 'wrap', gap: '1rem' }}>
+          <div style={{ flex: 1, minWidth: '200px', position: 'relative' }}>
+            <input
+              type="text"
+              placeholder="Search name, email, subject…"
+              value={search}
+              onChange={e => { setSearch(e.target.value); setPage(1); }}
+              style={{ width: '100%', padding: '0.5rem 1rem', borderRadius: 'var(--admin-radius-md)', border: '1px solid var(--admin-border)', fontSize: '0.875rem' }}
+            />
+          </div>
+          <select value={statusFilter} onChange={e => { setStatusFilter(e.target.value); setPage(1); }} style={{ padding: '0.5rem 1rem', borderRadius: 'var(--admin-radius-md)', border: '1px solid var(--admin-border)', fontSize: '0.875rem', background: 'var(--admin-surface)' }}>
+            <option value="ALL">All Statuses</option>
+            <option value="OPEN">Open</option>
+            <option value="IN_PROGRESS">In Progress</option>
+            <option value="RESOLVED">Resolved</option>
+            <option value="CLOSED">Closed</option>
+          </select>
+          <select value={priorityFilter} onChange={e => { setPriorityFilter(e.target.value); setPage(1); }} style={{ padding: '0.5rem 1rem', borderRadius: 'var(--admin-radius-md)', border: '1px solid var(--admin-border)', fontSize: '0.875rem', background: 'var(--admin-surface)' }}>
+            <option value="ALL">All Priorities</option>
+            <option value="LOW">Low</option>
+            <option value="MEDIUM">Medium</option>
+            <option value="HIGH">High</option>
+            <option value="URGENT">Urgent</option>
+          </select>
+        </div>
+        
+        <div style={{ overflowX: 'auto' }}>
+          <table className="admin-premium-table">
+            <thead>
+              <tr>
+                <th>Query</th>
+                <th>User</th>
+                <th>Category</th>
+                <th>Priority</th>
+                <th>Status</th>
+                <th>Received</th>
+                <th>Action</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {loading ? (
+                <tr><td colSpan="7" style={{ padding: '3rem', textAlign: 'center', color: 'var(--admin-text-muted)' }}>Loading…</td></tr>
+              ) : queries.length === 0 ? (
+                <tr>
+                  <td colSpan="7" style={{ padding: '4rem 2rem', textAlign: 'center' }}>
+                    <div style={{ fontSize: '1rem', fontWeight: 500, color: 'var(--admin-text-primary)', marginBottom: '0.5rem' }}>No queries found</div>
+                    <div style={{ fontSize: '0.875rem', color: 'var(--admin-text-secondary)' }}>There are currently no user queries matching your filters.</div>
+                  </td>
+                </tr>
+              ) : queries.map(q => (
+                <tr key={q._id}>
+                  <td>
+                    <div className="font-semibold text-sm">{q.subject}</div>
+                    <div className="text-muted" style={{ fontSize: '0.7rem', fontFamily: 'monospace' }}>#{q._id.slice(-6).toUpperCase()}</div>
+                  </td>
+                  <td>
+                    <div className="font-medium text-sm">{q.name}</div>
+                    <div className="text-muted" style={{ fontSize: '0.75rem' }}>{q.email}</div>
+                  </td>
+                  <td className="text-muted text-sm">{q.category.replace(/_/g, ' ')}</td>
+                  <td><span className={`admin-status ${q.priority === 'URGENT' ? 'admin-status-danger' : q.priority === 'HIGH' ? 'admin-status-warning' : 'admin-status-neutral'}`}>{q.priority}</span></td>
+                  <td><span className={`admin-status ${q.status === 'OPEN' ? 'admin-status-warning' : q.status === 'IN_PROGRESS' ? 'admin-status-info' : q.status === 'RESOLVED' ? 'admin-status-success' : 'admin-status-neutral'}`}>{q.status.replace('_', ' ')}</span></td>
+                  <td className="text-muted text-sm" style={{ whiteSpace: 'nowrap' }}>{timeAgo(q.createdAt)}</td>
+                  <td>
+                    <button className="admin-btn admin-btn-secondary" style={{ padding: '0.4rem 0.75rem' }} onClick={() => navigate(`/admin/queries/${q._id}`)}>Review</button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </div>
 
       {/* Pagination */}
       {pagination.pages > 1 && (
-        <div style={{ display: 'flex', justifyContent: 'center', gap: '0.5rem', marginTop: '1.5rem' }}>
-          <button className="btn-secondary" disabled={page === 1} onClick={() => setPage(p => p - 1)} style={{ padding: '0.4rem 0.75rem' }}>← Prev</button>
-          <span style={{ padding: '0.4rem 1rem', fontSize: '0.85rem', color: '#64748b' }}>Page {page} of {pagination.pages}</span>
-          <button className="btn-secondary" disabled={page >= pagination.pages} onClick={() => setPage(p => p + 1)} style={{ padding: '0.4rem 0.75rem' }}>Next →</button>
+        <div style={{ display: 'flex', justifyContent: 'center', gap: '0.5rem', marginTop: '1rem' }}>
+          <button className="admin-btn admin-btn-secondary" disabled={page === 1} onClick={() => setPage(p => p - 1)}>Previous</button>
+          <span style={{ display: 'flex', alignItems: 'center', padding: '0 1rem', fontSize: '0.875rem', color: 'var(--admin-text-secondary)' }}>Page {page} of {pagination.pages}</span>
+          <button className="admin-btn admin-btn-secondary" disabled={page >= pagination.pages} onClick={() => setPage(p => p + 1)}>Next</button>
         </div>
       )}
     </div>

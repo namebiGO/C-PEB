@@ -21,6 +21,7 @@ import influencersRouter from './routes/influencers.js';
 import servicesRouter from './routes/services.js';
 import leadsRouter from './routes/leads.js';
 import publicRouter from './routes/public.js';
+import adminPaymentsRouter from './routes/adminPayments.js';
 
 import creatorAuthRouter from './routes/creatorAuth.js';
 import creatorProfileRouter from './routes/creatorProfile.js';
@@ -108,6 +109,7 @@ app.use('/api/admin/influencers', influencersRouter);
 app.use('/api/admin/services', servicesRouter);
 app.use('/api/admin/leads', leadsRouter);
 app.use('/api/admin/creators', adminCreatorsRouter);
+app.use('/api/admin/payments', adminPaymentsRouter);
 app.use('/api/admin', adminRouter); // for /stats
 
 app.use('/api/creators/auth', creatorAuthRouter);

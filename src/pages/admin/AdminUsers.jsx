@@ -79,91 +79,102 @@ const AdminUsers = () => {
   };
 
   return (
-    <div className="admin-page-container">
-      <div className="admin-page-header">
-        <h2>User Management</h2>
-      </div>
-
-      <div className="admin-controls-row">
-        <div style={{ flex: 1 }}>
-          <p style={{ color: '#64748b', margin: 0, fontSize: '0.9rem' }}>Manage admin staff and creator accounts.</p>
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <div>
+          <h1 style={{ margin: '0 0 0.25rem 0', fontSize: '1.5rem', fontWeight: 700, color: 'var(--admin-text-primary)' }}>User Management</h1>
+          <p style={{ margin: 0, color: 'var(--admin-text-secondary)', fontSize: '0.875rem' }}>Manage admin staff and creator accounts.</p>
         </div>
-        <button className="btn-save" onClick={() => setShowAddModal(true)}>
+        <button className="admin-btn admin-btn-primary" onClick={() => setShowAddModal(true)}>
           + Add User
         </button>
       </div>
 
-      <div className="admin-table-container">
-        <table className="admin-table">
-          <thead>
-            <tr>
-              <th>NAME</th>
-              <th>EMAIL</th>
-              <th>ROLE</th>
-              <th>JOINED</th>
-              <th>ACTION</th>
-            </tr>
-          </thead>
-          <tbody>
-            {loading ? (
-              <tr><td colSpan="5" style={{ padding: '2rem', textAlign: 'center' }}>Loading...</td></tr>
-            ) : users.length > 0 ? users.map(user => (
-              <tr key={user._id}>
-                <td style={{ fontWeight: 600, color: '#0f172a' }}>{user.name}</td>
-                <td style={{ color: '#475569' }}>{user.email}</td>
-                <td>
-                  <span className={`admin-badge ${user.role === 'ADMIN' ? 'badge-success' : 'badge-default'}`}>
-                    {user.role}
-                  </span>
-                </td>
-                <td style={{ fontSize: '0.8rem' }}>{new Date(user.createdAt).toLocaleDateString()}</td>
-                <td>
-                  <button 
-                    onClick={() => handleDelete(user._id)} 
-                    style={{ background: 'none', border: 'none', color: '#ef4444', cursor: 'pointer', fontWeight: 600 }}
-                  >
-                    Delete
-                  </button>
-                </td>
+      <div className="admin-card">
+        <div style={{ overflowX: 'auto' }}>
+          <table className="admin-premium-table">
+            <thead>
+              <tr>
+                <th>User</th>
+                <th>Email</th>
+                <th>Role</th>
+                <th>Joined Date</th>
+                <th>Action</th>
               </tr>
-            )) : (
-              <tr><td colSpan="5" style={{ padding: '2rem', textAlign: 'center', color: '#64748b' }}>No users found.</td></tr>
-            )}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {loading ? (
+                <tr><td colSpan="5" style={{ padding: '3rem', textAlign: 'center', color: 'var(--admin-text-muted)' }}>Loading...</td></tr>
+              ) : users.length > 0 ? users.map(user => (
+                <tr key={user._id}>
+                  <td>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', fontWeight: 600, color: 'var(--admin-text-primary)' }}>
+                      <div style={{ width: '32px', height: '32px', borderRadius: '50%', background: 'var(--admin-primary-bg)', color: 'var(--admin-primary)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.85rem' }}>
+                        {user.name.charAt(0).toUpperCase()}
+                      </div>
+                      {user.name}
+                    </div>
+                  </td>
+                  <td className="text-muted text-sm">{user.email}</td>
+                  <td>
+                    <span className={`admin-status ${user.role === 'ADMIN' ? 'admin-status-info' : 'admin-status-neutral'}`}>
+                      {user.role}
+                    </span>
+                  </td>
+                  <td className="text-muted text-sm">{new Date(user.createdAt).toLocaleDateString()}</td>
+                  <td>
+                    <button 
+                      onClick={() => handleDelete(user._id)} 
+                      className="admin-btn"
+                      style={{ background: 'transparent', border: '1px solid transparent', color: 'var(--admin-danger)', padding: '0.25rem 0.6rem', fontSize: '0.75rem' }}
+                    >
+                      Delete
+                    </button>
+                  </td>
+                </tr>
+              )) : (
+                <tr><td colSpan="5" style={{ padding: '4rem 2rem', textAlign: 'center', color: 'var(--admin-text-secondary)' }}>No users found.</td></tr>
+              )}
+            </tbody>
+          </table>
+        </div>
       </div>
 
       {showAddModal && (
-        <div style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, background: 'rgba(0,0,0,0.5)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 9999 }}>
-          <div style={{ background: 'white', padding: '2rem', borderRadius: '8px', width: '400px' }}>
-            <h3 style={{ marginBottom: '1.5rem', marginTop: 0 }}>Add New User</h3>
-            <form onSubmit={handleAddSubmit}>
-              <div className="admin-form-group" style={{ marginBottom: '1rem' }}>
-                <label>Name</label>
-                <input required type="text" className="admin-input" value={formData.name} onChange={e => setFormData({...formData, name: e.target.value})} />
-              </div>
-              <div className="admin-form-group" style={{ marginBottom: '1rem' }}>
-                <label>Email</label>
-                <input required type="email" className="admin-input" value={formData.email} onChange={e => setFormData({...formData, email: e.target.value})} />
-              </div>
-              <div className="admin-form-group" style={{ marginBottom: '1rem' }}>
-                <label>Password</label>
-                <input required type="password" className="admin-input" value={formData.password} onChange={e => setFormData({...formData, password: e.target.value})} />
-              </div>
-              <div className="admin-form-group" style={{ marginBottom: '1.5rem' }}>
-                <label>Role</label>
-                <select className="admin-select" value={formData.role} onChange={e => setFormData({...formData, role: e.target.value})}>
-                  <option value="ADMIN">Admin</option>
-                  <option value="CREATOR">Creator</option>
-                </select>
-              </div>
-              <div style={{ display: 'flex', gap: '1rem', justifyContent: 'flex-end' }}>
-                <button type="button" className="btn-secondary" onClick={() => setShowAddModal(false)} disabled={submitting}>Cancel</button>
-                <button type="submit" className="btn-save" disabled={submitting}>
-                  {submitting ? 'Adding...' : 'Add User'}
-                </button>
-              </div>
-            </form>
+        <div style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, background: 'rgba(15, 23, 42, 0.4)', backdropFilter: 'blur(4px)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 9999 }}>
+          <div className="admin-card" style={{ width: '100%', maxWidth: '400px', boxShadow: 'var(--admin-shadow-lg)' }}>
+            <div className="admin-card-header">
+              <h2 className="admin-card-title" style={{ fontSize: '1.1rem' }}>Add New User</h2>
+            </div>
+            <div className="admin-card-body">
+              <form onSubmit={handleAddSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                <div>
+                  <label style={{ display: 'block', marginBottom: '0.35rem', fontSize: '0.875rem', fontWeight: 500 }}>Name</label>
+                  <input required type="text" value={formData.name} onChange={e => setFormData({...formData, name: e.target.value})} style={{ width: '100%', padding: '0.5rem', borderRadius: 'var(--admin-radius-md)', border: '1px solid var(--admin-border)' }} />
+                </div>
+                <div>
+                  <label style={{ display: 'block', marginBottom: '0.35rem', fontSize: '0.875rem', fontWeight: 500 }}>Email</label>
+                  <input required type="email" value={formData.email} onChange={e => setFormData({...formData, email: e.target.value})} style={{ width: '100%', padding: '0.5rem', borderRadius: 'var(--admin-radius-md)', border: '1px solid var(--admin-border)' }} />
+                </div>
+                <div>
+                  <label style={{ display: 'block', marginBottom: '0.35rem', fontSize: '0.875rem', fontWeight: 500 }}>Password</label>
+                  <input required type="password" value={formData.password} onChange={e => setFormData({...formData, password: e.target.value})} style={{ width: '100%', padding: '0.5rem', borderRadius: 'var(--admin-radius-md)', border: '1px solid var(--admin-border)' }} />
+                </div>
+                <div>
+                  <label style={{ display: 'block', marginBottom: '0.35rem', fontSize: '0.875rem', fontWeight: 500 }}>Role</label>
+                  <select value={formData.role} onChange={e => setFormData({...formData, role: e.target.value})} style={{ width: '100%', padding: '0.5rem', borderRadius: 'var(--admin-radius-md)', border: '1px solid var(--admin-border)', background: 'var(--admin-surface)' }}>
+                    <option value="ADMIN">Admin</option>
+                    <option value="CREATOR">Creator</option>
+                  </select>
+                </div>
+                <div style={{ display: 'flex', gap: '1rem', justifyContent: 'flex-end', marginTop: '0.5rem' }}>
+                  <button type="button" className="admin-btn admin-btn-secondary" onClick={() => setShowAddModal(false)} disabled={submitting}>Cancel</button>
+                  <button type="submit" className="admin-btn admin-btn-primary" disabled={submitting}>
+                    {submitting ? 'Adding...' : 'Add User'}
+                  </button>
+                </div>
+              </form>
+            </div>
           </div>
         </div>
       )}

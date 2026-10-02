@@ -1,5 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import './AdminCreators.css';
+import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
+import { Search, Eye, Users, FileText } from 'lucide-react';
+import './AdminLayout.css';
 
 const DAYS_OPTIONS = [
   { label: 'Today', value: 1 },
@@ -54,35 +56,40 @@ const AdminAnalytics = () => {
 
   useEffect(() => { fetchAll(); }, [fetchAll]);
 
-  const maxSearches = Math.max(...searchesOverTime.map(d => d.count), 1);
-
-  const StatCard = ({ label, value, accent }) => (
-    <div style={{ background: '#fff', padding: '1.5rem', borderRadius: '8px', border: '1px solid #e2e8f0', borderLeft: `4px solid ${accent || '#e2e8f0'}` }}>
-      <div style={{ fontSize: '0.7rem', fontWeight: 700, color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.5rem' }}>{label}</div>
-      <div style={{ fontSize: '2rem', fontWeight: 800, color: '#0f172a' }}>{value ?? '—'}</div>
+  const StatCard = ({ label, value, icon: Icon, color, bg }) => (
+    <div className="admin-card" style={{ padding: '1.25rem', display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+        <div>
+          <h3 style={{ fontSize: '0.75rem', fontWeight: 600, color: 'var(--admin-text-muted)', textTransform: 'uppercase', letterSpacing: '0.05em', margin: '0 0 0.5rem 0' }}>{label}</h3>
+          <div style={{ fontSize: '1.875rem', fontWeight: 700, color: 'var(--admin-text-primary)' }}>{value ?? '—'}</div>
+        </div>
+        <div style={{ width: '40px', height: '40px', borderRadius: 'var(--admin-radius-md)', background: bg, color: color, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+          <Icon size={20} />
+        </div>
+      </div>
     </div>
   );
 
   const RankList = ({ data, keyField, valueField, label }) => (
-    <div>
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
       {data.length === 0 ? (
-        <div style={{ padding: '2rem', textAlign: 'center', color: '#94a3b8', fontSize: '0.9rem' }}>Not enough data yet.</div>
+        <div style={{ padding: '2rem', textAlign: 'center', color: 'var(--admin-text-muted)', fontSize: '0.875rem' }}>Not enough data yet.</div>
       ) : data.map((item, idx) => {
         const maxVal = data[0][valueField] || 1;
         const pct = Math.round((item[valueField] / maxVal) * 100);
         return (
-          <div key={idx} style={{ padding: '0.75rem 0', borderBottom: '1px solid #f1f5f9' }}>
+          <div key={idx}>
             <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.35rem' }}>
               <div style={{ display: 'flex', gap: '0.75rem', alignItems: 'center' }}>
-                <span style={{ width: '22px', height: '22px', borderRadius: '50%', background: '#f1f5f9', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.7rem', fontWeight: 700, color: '#64748b', flexShrink: 0 }}>{idx + 1}</span>
-                <span style={{ fontWeight: 600, color: '#0f172a', fontSize: '0.9rem' }}>{item[keyField] || '(unknown)'}</span>
+                <span style={{ width: '22px', height: '22px', borderRadius: '50%', background: 'var(--admin-bg)', border: '1px solid var(--admin-border)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.7rem', fontWeight: 700, color: 'var(--admin-text-secondary)', flexShrink: 0 }}>{idx + 1}</span>
+                <span style={{ fontWeight: 600, color: 'var(--admin-text-primary)', fontSize: '0.875rem' }}>{item[keyField] || '(unknown)'}</span>
               </div>
-              <span style={{ fontWeight: 700, color: '#334155', fontSize: '0.9rem' }}>{item[valueField].toLocaleString()}</span>
+              <span style={{ fontWeight: 600, color: 'var(--admin-text-secondary)', fontSize: '0.875rem' }}>{item[valueField].toLocaleString()}</span>
             </div>
-            <div style={{ background: '#f1f5f9', borderRadius: '4px', height: '5px' }}>
-              <div style={{ background: '#3b82f6', height: '5px', borderRadius: '4px', width: `${pct}%`, transition: 'width 0.4s ease' }} />
+            <div style={{ background: 'var(--admin-border-subtle)', borderRadius: '4px', height: '6px' }}>
+              <div style={{ background: 'var(--admin-primary)', height: '6px', borderRadius: '4px', width: `${pct}%`, transition: 'width 0.4s ease' }} />
             </div>
-            {label && <div style={{ fontSize: '0.75rem', color: '#94a3b8', marginTop: '0.2rem', paddingLeft: '34px' }}>{label(item)}</div>}
+            {label && <div style={{ fontSize: '0.75rem', color: 'var(--admin-text-muted)', marginTop: '0.35rem', paddingLeft: '34px' }}>{label(item)}</div>}
           </div>
         );
       })}
@@ -90,16 +97,19 @@ const AdminAnalytics = () => {
   );
 
   return (
-    <div className="admin-page-container">
-      <div className="admin-page-header">
-        <h2>Search Analytics</h2>
-        <div style={{ display: 'flex', gap: '0.5rem' }}>
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1rem' }}>
+        <div>
+          <h1 style={{ margin: '0 0 0.25rem 0', fontSize: '1.5rem', fontWeight: 700, color: 'var(--admin-text-primary)' }}>Search Analytics</h1>
+          <p style={{ margin: 0, color: 'var(--admin-text-secondary)', fontSize: '0.875rem' }}>Monitor user search behavior and platform intelligence.</p>
+        </div>
+        <div style={{ display: 'flex', gap: '0.5rem', background: 'var(--admin-surface)', padding: '0.25rem', borderRadius: 'var(--admin-radius-md)', border: '1px solid var(--admin-border)' }}>
           {DAYS_OPTIONS.map(opt => (
             <button
               key={opt.value}
               onClick={() => setDays(opt.value)}
-              className={`subnav-btn ${days === opt.value ? 'active' : ''}`}
-              style={{ padding: '0.35rem 0.75rem' }}
+              className={`admin-btn ${days === opt.value ? 'admin-btn-primary' : 'admin-btn-secondary'}`}
+              style={{ padding: '0.35rem 0.75rem', border: 'none', background: days === opt.value ? 'var(--admin-primary)' : 'transparent', color: days === opt.value ? '#fff' : 'var(--admin-text-secondary)' }}
             >
               {opt.label}
             </button>
@@ -108,64 +118,88 @@ const AdminAnalytics = () => {
       </div>
 
       {loading ? (
-        <div style={{ padding: '3rem', textAlign: 'center', color: '#94a3b8' }}>Loading analytics…</div>
+        <div style={{ padding: '3rem', display: 'flex', justifyContent: 'center' }}>
+          <div style={{ width: 40, height: 40, borderRadius: '50%', border: '3px solid var(--admin-border)', borderTopColor: 'var(--admin-primary)', animation: 'spin 1s linear infinite' }} />
+        </div>
       ) : (
         <>
           {/* KPI Summary */}
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: '1rem', marginBottom: '2rem' }}>
-            <StatCard label="Total Searches" value={summary?.totalSearches?.toLocaleString()} accent="#3b82f6" />
-            <StatCard label="Profile Views" value={summary?.totalProfileViews?.toLocaleString()} accent="#8b5cf6" />
-            <StatCard label="Searches Today" value={summary?.todaySearches?.toLocaleString()} accent="#10b981" />
-            <StatCard label="Unique Queries" value={summary?.uniqueQueries?.toLocaleString()} accent="#f59e0b" />
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '1.25rem' }}>
+            <StatCard label="Total Searches" value={summary?.totalSearches?.toLocaleString()} icon={Search} color="var(--admin-primary)" bg="var(--admin-primary-bg)" />
+            <StatCard label="Profile Views" value={summary?.totalProfileViews?.toLocaleString()} icon={Eye} color="var(--admin-info)" bg="var(--admin-info-bg)" />
+            <StatCard label="Searches Today" value={summary?.todaySearches?.toLocaleString()} icon={Users} color="var(--admin-success)" bg="var(--admin-success-bg)" />
+            <StatCard label="Unique Queries" value={summary?.uniqueQueries?.toLocaleString()} icon={FileText} color="var(--admin-warning)" bg="var(--admin-warning-bg)" />
           </div>
 
           {/* Searches over time chart */}
-          <div className="admin-section" style={{ marginBottom: '2rem' }}>
-            <h3 style={{ margin: '0 0 1.5rem 0', fontSize: '1rem', color: '#0f172a' }}>Searches Over Time</h3>
-            {searchesOverTime.length === 0 ? (
-              <div style={{ textAlign: 'center', padding: '2rem', color: '#94a3b8' }}>Not enough data yet. Searches will appear here once users browse the site.</div>
-            ) : (
-              <div style={{ display: 'flex', alignItems: 'flex-end', gap: '4px', height: '120px', paddingBottom: '1.5rem', position: 'relative' }}>
-                {searchesOverTime.map((d, i) => {
-                  const barH = Math.max(4, Math.round((d.count / maxSearches) * 100));
-                  return (
-                    <div key={i} style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '4px' }}>
-                      <div title={`${d.date}: ${d.count} searches`} style={{ width: '100%', height: `${barH}px`, background: '#3b82f6', borderRadius: '3px 3px 0 0', minHeight: '4px', cursor: 'default' }} />
-                      <div style={{ fontSize: '0.55rem', color: '#94a3b8', transform: 'rotate(-45deg)', whiteSpace: 'nowrap', marginTop: '4px' }}>
-                        {d.date.slice(5)}
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
-            )}
+          <div className="admin-card">
+            <div className="admin-card-header">
+              <h2 className="admin-card-title">Search Volume ({days} Days)</h2>
+            </div>
+            <div className="admin-card-body" style={{ height: '350px' }}>
+              {searchesOverTime.length === 0 ? (
+                <div style={{ textAlign: 'center', paddingTop: '4rem', color: 'var(--admin-text-muted)' }}>Not enough data yet. Searches will appear here once users browse the site.</div>
+              ) : (
+                <ResponsiveContainer width="100%" height="100%">
+                  <AreaChart data={searchesOverTime} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
+                    <defs>
+                      <linearGradient id="colorSearches" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="5%" stopColor="var(--admin-primary)" stopOpacity={0.3}/>
+                        <stop offset="95%" stopColor="var(--admin-primary)" stopOpacity={0}/>
+                      </linearGradient>
+                    </defs>
+                    <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="var(--admin-border-subtle)" />
+                    <XAxis dataKey="date" axisLine={false} tickLine={false} tick={{ fontSize: 12, fill: 'var(--admin-text-muted)' }} tickFormatter={(val) => val.slice(5)} />
+                    <YAxis axisLine={false} tickLine={false} tick={{ fontSize: 12, fill: 'var(--admin-text-muted)' }} />
+                    <Tooltip contentStyle={{ borderRadius: '8px', border: 'none', boxShadow: 'var(--admin-shadow-md)' }} />
+                    <Area type="monotone" dataKey="count" name="Searches" stroke="var(--admin-primary)" strokeWidth={3} fillOpacity={1} fill="url(#colorSearches)" />
+                  </AreaChart>
+                </ResponsiveContainer>
+              )}
+            </div>
           </div>
 
           {/* Four column grid */}
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.5rem', marginBottom: '1.5rem' }}>
-            <div className="admin-section" style={{ margin: 0 }}>
-              <h3 style={{ margin: '0 0 1rem 0', fontSize: '1rem' }}>Most Viewed Creators</h3>
-              <RankList
-                data={topCreators}
-                keyField="displayName"
-                valueField="count"
-                label={(item) => `${item.primaryCategory || 'Creator'} • ${item.city || ''}`}
-              />
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.25rem' }}>
+            <div className="admin-card">
+              <div className="admin-card-header">
+                <h2 className="admin-card-title">Most Viewed Creators</h2>
+              </div>
+              <div className="admin-card-body">
+                <RankList
+                  data={topCreators}
+                  keyField="displayName"
+                  valueField="count"
+                  label={(item) => `${item.primaryCategory || 'Creator'} • ${item.city || ''}`}
+                />
+              </div>
             </div>
 
-            <div className="admin-section" style={{ margin: 0 }}>
-              <h3 style={{ margin: '0 0 1rem 0', fontSize: '1rem' }}>Top Search Queries</h3>
-              <RankList data={topQueries} keyField="query" valueField="count" />
+            <div className="admin-card">
+              <div className="admin-card-header">
+                <h2 className="admin-card-title">Top Search Queries</h2>
+              </div>
+              <div className="admin-card-body">
+                <RankList data={topQueries} keyField="query" valueField="count" />
+              </div>
             </div>
 
-            <div className="admin-section" style={{ margin: 0 }}>
-              <h3 style={{ margin: '0 0 1rem 0', fontSize: '1rem' }}>Top Categories Browsed</h3>
-              <RankList data={topCategories} keyField="category" valueField="count" />
+            <div className="admin-card">
+              <div className="admin-card-header">
+                <h2 className="admin-card-title">Top Categories Browsed</h2>
+              </div>
+              <div className="admin-card-body">
+                <RankList data={topCategories} keyField="category" valueField="count" />
+              </div>
             </div>
 
-            <div className="admin-section" style={{ margin: 0 }}>
-              <h3 style={{ margin: '0 0 1rem 0', fontSize: '1rem' }}>Top Locations Searched</h3>
-              <RankList data={topLocations} keyField="location" valueField="count" />
+            <div className="admin-card">
+              <div className="admin-card-header">
+                <h2 className="admin-card-title">Top Locations Searched</h2>
+              </div>
+              <div className="admin-card-body">
+                <RankList data={topLocations} keyField="location" valueField="count" />
+              </div>
             </div>
           </div>
         </>

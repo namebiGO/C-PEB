@@ -1,12 +1,17 @@
 import React, { useState, useEffect } from 'react';
-import { NavLink, Outlet, useNavigate } from 'react-router-dom';
+import { NavLink, Outlet, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
-import { LayoutDashboard, Users, Briefcase, Layout, MessageSquare, Settings, LogOut, ShieldCheck, UserCheck, Inbox, FileText, BarChart2, HelpCircle, Activity, Bell } from 'lucide-react';
+import { 
+  LayoutDashboard, Users, Briefcase, Layout, MessageSquare, 
+  Settings, LogOut, ShieldCheck, UserCheck, Inbox, FileText, 
+  BarChart2, HelpCircle, Activity, Bell, Search, Menu, CreditCard
+} from 'lucide-react';
 import './AdminLayout.css';
 
 const AdminLayout = () => {
-  const { logout } = useAuth();
+  const { logout, user } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
 
   const handleLogout = () => {
     logout();
@@ -14,6 +19,7 @@ const AdminLayout = () => {
   };
 
   const [notificationCount, setNotificationCount] = useState(0);
+  const [sidebarOpen, setSidebarOpen] = useState(true);
 
   useEffect(() => {
     const fetchNotifications = async () => {
@@ -31,28 +37,27 @@ const AdminLayout = () => {
       } catch (e) {}
     };
     fetchNotifications();
-    
-    // Poll every 1 minute
     const interval = setInterval(fetchNotifications, 60000);
     return () => clearInterval(interval);
   }, []);
 
+  const getPageTitle = () => {
+    const path = location.pathname.split('/').pop();
+    if (path === 'admin' || path === '') return 'Overview';
+    return path.charAt(0).toUpperCase() + path.slice(1).replace('-', ' ');
+  };
+
   return (
-    <div className="admin-layout">
+    <div className="admin-shell">
       {/* Sidebar */}
-      <aside className="admin-sidebar">
-        <div className="admin-sidebar-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-          <h2>ADMIN</h2>
-          {notificationCount > 0 && (
-            <div title="Items requiring attention" style={{ display: 'flex', alignItems: 'center', gap: '0.35rem', background: '#ef4444', color: '#fff', padding: '0.2rem 0.5rem', borderRadius: '100px', fontSize: '0.75rem', fontWeight: 'bold' }}>
-              <Bell size={12} /> {notificationCount}
-            </div>
-          )}
+      <aside className="admin-sidebar" style={{ display: sidebarOpen ? 'flex' : 'none' }}>
+        <div className="admin-sidebar-header">
+          <h2><span>C-PEB</span> Admin</h2>
         </div>
         
         <nav className="admin-nav">
           <NavLink to="/admin" end className={({ isActive }) => `admin-nav-link ${isActive ? 'active' : ''}`}>
-            <LayoutDashboard size={18} /> Dashboard
+            <LayoutDashboard size={18} /> Overview
           </NavLink>
           <NavLink to="/admin/analytics" className={({ isActive }) => `admin-nav-link ${isActive ? 'active' : ''}`}>
             <BarChart2 size={18} /> Analytics
@@ -80,6 +85,11 @@ const AdminLayout = () => {
             <ShieldCheck size={18} /> Advisory Plans
           </NavLink>
 
+          <div className="admin-nav-section">FINANCE</div>
+          <NavLink to="/admin/payments" className={({ isActive }) => `admin-nav-link ${isActive ? 'active' : ''}`}>
+            <CreditCard size={18} /> Payments
+          </NavLink>
+
           <div className="admin-nav-section">LEADS & CRM</div>
           <NavLink to="/admin/leads" className={({ isActive }) => `admin-nav-link ${isActive ? 'active' : ''}`}>
             <MessageSquare size={18} /> Leads
@@ -104,16 +114,50 @@ const AdminLayout = () => {
         </nav>
 
         <div className="admin-sidebar-footer">
-          <button onClick={handleLogout} className="admin-logout-btn">
-            <LogOut size={18} /> Logout
-          </button>
+          <div className="admin-user-profile" onClick={handleLogout} title="Click to logout">
+            <div className="admin-avatar">
+              {user?.name ? user.name.charAt(0).toUpperCase() : 'A'}
+            </div>
+            <div className="admin-user-info">
+              <span className="admin-user-name">{user?.name || 'Administrator'}</span>
+              <span className="admin-user-role">Log out</span>
+            </div>
+          </div>
         </div>
       </aside>
 
-      {/* Main Content */}
-      <main className="admin-main">
-        <Outlet />
-      </main>
+      {/* Main Wrapper */}
+      <div className="admin-main-wrapper">
+        {/* Top Header */}
+        <header className="admin-header">
+          <div className="admin-header-left">
+            <button className="admin-header-action" onClick={() => setSidebarOpen(!sidebarOpen)}>
+              <Menu size={20} />
+            </button>
+            <div className="admin-breadcrumb">{getPageTitle()}</div>
+          </div>
+          
+          <div className="admin-header-search">
+            <Search size={16} />
+            <input type="text" placeholder="Search influencers, queries..." />
+          </div>
+
+          <div className="admin-header-right">
+            <button className="admin-header-action" onClick={() => navigate('/admin/queries')}>
+              <Bell size={20} />
+              {notificationCount > 0 && <span className="admin-badge-dot"></span>}
+            </button>
+            <div className="admin-avatar" style={{ width: '32px', height: '32px', cursor: 'pointer' }}>
+              {user?.name ? user.name.charAt(0).toUpperCase() : 'A'}
+            </div>
+          </div>
+        </header>
+
+        {/* Page Content */}
+        <main className="admin-main-content">
+          <Outlet />
+        </main>
+      </div>
     </div>
   );
 };

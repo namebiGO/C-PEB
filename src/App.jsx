@@ -63,6 +63,7 @@ const AdminAnalytics    = lazy(() => import('./pages/admin/AdminAnalytics'))
 const AdminQueries      = lazy(() => import('./pages/admin/AdminQueries'))
 const AdminQueryDetail  = lazy(() => import('./pages/admin/AdminQueryDetail'))
 const AdminActivityLog  = lazy(() => import('./pages/admin/AdminActivityLog'))
+const AdminPayments     = lazy(() => import('./pages/admin/AdminPayments'))
 
 // Creator pages
 const CreatorLogin      = lazy(() => import('./pages/creators/CreatorLogin'))
@@ -142,6 +143,7 @@ function App() {
               <Route path="queries" element={<AdminQueries />} />
               <Route path="queries/:id" element={<AdminQueryDetail />} />
               <Route path="activity" element={<AdminActivityLog />} />
+              <Route path="payments" element={<AdminPayments />} />
             </Route>
           </Route>
 
