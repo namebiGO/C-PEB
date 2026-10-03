@@ -1,311 +1,269 @@
 /* ════════════════════════════════════════════════════════════════
    TrustedLeadersSection.css
-   Premium trust/transition section — image mosaic + central CTA
-   Sits immediately above the existing TestimonialsScroll section.
-   
-   Design: large white rounded panel on a light neutral bg,
-   surrounding image mosaic fades into the white via CSS masks.
-   
-   Namespaced with .tl- to avoid ALL collisions.
+   Premium trust section — 4-column image layout flanking center.
+   Matches the specific reference image provided by the user.
    ════════════════════════════════════════════════════════════════ */
 
-/* ── Outer section (page-level background) ─────────────────────── */
 .tl-section {
-  padding: 4rem 0 0;             /* top breath; bottom is 0 so panel merges down naturally */
+  padding: 4rem 0 0; /* Space above, zero below to blend into next section */
   background: var(--bg-2);
   border-top: 1px solid var(--border);
 }
 
-/* ── Main panel — the big white rounded card ─────────────────────── */
+/* ── Panel Container ── */
 .tl-panel {
   position: relative;
-  min-height: 580px;
   background: #ffffff;
   border-radius: 40px;
   overflow: hidden;
   box-shadow:
-    0 2px 4px rgba(15, 30, 50, 0.02),
-    0 8px 24px rgba(15, 30, 50, 0.04),
-    0 24px 56px rgba(15, 30, 50, 0.07);
+    0 4px 12px rgba(0, 0, 0, 0.02),
+    0 12px 32px rgba(0, 0, 0, 0.04);
   display: flex;
+  justify-content: space-between;
   align-items: center;
-  justify-content: center;
+  min-height: 600px;
+  padding: 0 2rem;
+  /* Mask image to create the top and bottom fade effect on the columns */
+  -webkit-mask-image: linear-gradient(
+    to bottom,
+    transparent 0%,
+    black 15%,
+    black 85%,
+    transparent 100%
+  );
+  mask-image: linear-gradient(
+    to bottom,
+    transparent 0%,
+    black 15%,
+    black 85%,
+    transparent 100%
+  );
 }
 
-/* Dark mode panel */
-[data-theme='dark'] .tl-section  { background: var(--bg-2); }
-[data-theme='dark'] .tl-panel    { background: var(--surface); }
+[data-theme='dark'] .tl-section { background: var(--bg-2); }
+[data-theme='dark'] .tl-panel   { background: var(--surface); }
 
-/* ── Edge fade masks (soft white vignette) ──────────────────────── */
-.tl-fade {
-  position: absolute;
-  pointer-events: none;
-  z-index: 3;
-}
-
-.tl-fade--top {
-  inset: 0 0 auto 0;
-  height: 180px;
-  background: linear-gradient(to bottom, #ffffff 0%, transparent 100%);
-}
-
-.tl-fade--bottom {
-  inset: auto 0 0 0;
-  height: 180px;
-  background: linear-gradient(to top, #ffffff 0%, transparent 100%);
-}
-
-.tl-fade--left {
-  inset: 0 auto 0 0;
-  width: 200px;
-  background: linear-gradient(to right, #ffffff 0%, transparent 100%);
-}
-
-.tl-fade--right {
-  inset: 0 0 0 auto;
-  width: 200px;
-  background: linear-gradient(to left, #ffffff 0%, transparent 100%);
-}
-
-[data-theme='dark'] .tl-fade--top    { background: linear-gradient(to bottom, var(--surface) 0%, transparent 100%); }
-[data-theme='dark'] .tl-fade--bottom { background: linear-gradient(to top,    var(--surface) 0%, transparent 100%); }
-[data-theme='dark'] .tl-fade--left   { background: linear-gradient(to right,  var(--surface) 0%, transparent 100%); }
-[data-theme='dark'] .tl-fade--right  { background: linear-gradient(to left,   var(--surface) 0%, transparent 100%); }
-
-/* ── Mosaic container ───────────────────────────────────────────── */
-.tl-mosaic {
-  position: absolute;
-  inset: 0;
+/* ── Column Groups ── */
+.tl-col-group {
+  display: flex;
+  gap: 1.25rem;
+  flex: 1;
+  position: relative;
   z-index: 1;
 }
 
-/* ── Individual tile base ───────────────────────────────────────── */
-.tl-tile {
-  position: absolute;
+.tl-col-group--left {
+  justify-content: flex-start;
+}
+
+.tl-col-group--right {
+  justify-content: flex-end;
+}
+
+/* ── Individual Columns ── */
+.tl-col {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  width: 120px;
+  transform: translateY(var(--col-offset, 0));
+}
+
+/* ── Images ── */
+.tl-img-wrap {
+  width: 100%;
+  aspect-ratio: 4 / 5;
   border-radius: 16px;
   overflow: hidden;
-  box-shadow:
-    0 4px 10px rgba(15, 30, 50, 0.07),
-    0 10px 24px rgba(15, 30, 50, 0.05);
-  transition: transform 0.22s ease, box-shadow 0.22s ease;
-  /* Staggered entrance animation */
-  animation: tileIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
-  animation-delay: calc(var(--tile-i, 0) * 55ms);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  flex-shrink: 0;
 }
 
-@keyframes tileIn {
-  from { opacity: 0; transform: translateY(10px) scale(0.97); }
-  to   { opacity: 1; transform: translateY(0)    scale(1);    }
+.tl-img-wrap:hover {
+  transform: translateY(-4px) scale(1.02);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
 }
 
-.tl-tile:hover { transform: scale(1.025); box-shadow: 0 12px 30px rgba(15, 30, 50, 0.12); }
-
-.tl-tile__img {
+.tl-img {
   width: 100%;
   height: 100%;
   object-fit: cover;
   display: block;
-  user-select: none;
-  -webkit-user-drag: none;
 }
 
-/* ── Tile size classes ──────────────────────────────────────────── */
-.tl-tile--lg { width: 115px; height: 142px; }
-.tl-tile--md { width: 100px; height: 122px; }
-.tl-tile--sm { width: 86px;  height: 106px; }
-
-/* ── DESKTOP POSITIONS (≥1024px) ────────────────────────────────
-   Panel inner is ~1200px wide. We use % positioning so the mosaic
-   scales correctly when the viewport changes.
-   Centre is approximately 40–60% horizontally, 25–75% vertically.
-   Images are placed outside this "safe zone".
-   ─────────────────────────────────────────────────────────────── */
-
-/* TOP-LEFT cluster */
-.tl-tile--tl1 { top:  6%;  left:  3%;   opacity: 0.82; }
-.tl-tile--tl2 { top: 13%;  left: 13%;   opacity: 0.90; }
-
-/* TOP-CENTER tile */
-.tl-tile--tc1 { top:  3%;  left: 38%;   opacity: 0.75; }
-
-/* TOP-RIGHT cluster */
-.tl-tile--tr1 { top: 12%;  right: 13%;  opacity: 0.88; }
-.tl-tile--tr2 { top:  5%;  right:  3%;  opacity: 0.80; }
-
-/* MID sides — left and right flanks */
-.tl-tile--ml1 { top: 43%;  left:  2%;   opacity: 0.72; transform: translateY(-50%); }
-.tl-tile--mr1 { top: 43%;  right:  2%;  opacity: 0.72; transform: translateY(-50%); }
-
-/* BOTTOM-LEFT cluster */
-.tl-tile--bl1 { bottom: 5%;  left:  3%;  opacity: 0.82; }
-
-/* BOTTOM-CENTER tile */
-.tl-tile--bc1 { bottom: 4%;  left: 38%;  opacity: 0.73; }
-
-/* BOTTOM-RIGHT cluster */
-.tl-tile--br1 { bottom: 5%;  right:  3%; opacity: 0.82; }
-
-/* Hover fix for mid tiles that have transform already */
-.tl-tile--ml1:hover { transform: translateY(-50%) scale(1.025); }
-.tl-tile--mr1:hover { transform: translateY(-50%) scale(1.025); }
-
-/* ── Central content ────────────────────────────────────────────── */
+/* ── Center Content ── */
 .tl-center {
   position: relative;
-  z-index: 4;
+  z-index: 2;
   text-align: center;
-  max-width: 560px;
-  padding: 4rem 1.5rem;
+  flex: 1.2;
+  min-width: 380px;
+  max-width: 500px;
+  padding: 2rem;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 0;
 }
 
-/* Eyebrow pill */
+/* Eyebrow Pill */
 .tl-pill {
   display: inline-block;
   font-family: var(--font-head);
   font-size: 0.75rem;
   font-weight: 600;
-  letter-spacing: 0.04em;
   color: var(--text-1);
-  background: var(--bg-3);
+  background: var(--bg-2);
   border: 1px solid var(--border);
-  border-radius: 999px;
-  padding: 0.3rem 0.9rem;
+  padding: 0.35rem 1rem;
+  border-radius: 99px;
   margin-bottom: 1.5rem;
 }
 
 /* Heading */
 .tl-heading {
   font-family: var(--font-head);
-  font-size: clamp(2.25rem, 4.5vw, 3.25rem);
+  font-size: clamp(2.25rem, 4vw, 3rem);
   font-weight: 700;
-  line-height: 1.08;
-  letter-spacing: -0.03em;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
   margin: 0 0 1.25rem;
   display: flex;
   flex-direction: column;
-  gap: 0.1em;
 }
 
-.tl-heading__line1 {
+.tl-h-dark {
   color: var(--text-1);
 }
 
-.tl-heading__line2 {
+.tl-h-muted {
   color: var(--text-2);
 }
 
 /* Description */
 .tl-desc {
-  font-size: 1.0rem;
+  font-size: 1rem;
   color: var(--text-2);
-  line-height: 1.65;
-  max-width: 440px;
-  margin: 0 0 2rem;
+  line-height: 1.6;
+  margin: 0 0 2.5rem;
+  max-width: 400px;
 }
 
-/* CTA — pill-shaped dark button */
+/* CTA Button */
 .tl-cta {
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
-  font-family: var(--font-head);
-  font-size: 0.9rem;
-  font-weight: 700;
+  background: #0f172a; /* Deep navy/black to match reference */
   color: #ffffff;
-  background: var(--text-1);
-  border-radius: 999px;
-  padding: 0.75rem 1.5rem;
+  font-weight: 600;
+  font-size: 0.95rem;
+  padding: 0.85rem 1.75rem;
+  border-radius: 99px;
   text-decoration: none;
-  border: none;
-  transition:
-    background var(--t-fast),
-    box-shadow var(--t-fast);
-  outline: none;
+  transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+[data-theme='dark'] .tl-cta {
+  background: var(--text-1);
+  color: var(--bg);
 }
 
 .tl-cta:hover {
-  background: var(--green-dark);
-  box-shadow: 0 6px 20px rgba(23, 168, 90, 0.25);
+  background: #1e293b;
+  transform: translateY(-2px);
 }
 
-.tl-cta:focus-visible {
-  outline: 2px solid var(--green-mid);
-  outline-offset: 3px;
+.tl-arrow {
+  transition: transform 0.2s ease;
 }
 
-.tl-cta__arrow {
-  transition: transform var(--t-fast);
-  flex-shrink: 0;
+.tl-cta:hover .tl-arrow {
+  transform: translateX(3px);
 }
 
-.tl-cta:hover .tl-cta__arrow {
-  transform: translateX(4px);
+/* ── Responsive Design ── */
+
+/* Large Tablet (1024px - 1200px) */
+@media (max-width: 1200px) {
+  .tl-col {
+    width: 100px;
+  }
 }
 
-/* ── TABLET (768px – 1023px) ────────────────────────────────────── */
+/* Tablet (768px - 1023px) */
 @media (max-width: 1023px) {
-  .tl-panel    { min-height: 520px; border-radius: 32px; }
-  .tl-tile--lg { width: 96px;  height: 118px; }
-  .tl-tile--md { width: 84px;  height: 104px; }
-  .tl-tile--sm { width: 72px;  height: 90px;  }
-
-  /* Reduce fade width on smaller screens */
-  .tl-fade--left  { width: 140px; }
-  .tl-fade--right { width: 140px; }
-
-  /* Hide the mid flanks — they crowd content on tablet */
-  .tl-tile--ml1,
-  .tl-tile--mr1 { display: none; }
-
-  .tl-heading { font-size: clamp(2rem, 5vw, 2.75rem); }
+  .tl-panel {
+    border-radius: 32px;
+    padding: 0 1rem;
+    min-height: 500px;
+  }
+  
+  .tl-col {
+    width: 80px;
+  }
+  
+  /* Hide the outer columns on tablet to save space */
+  .tl-col-group--left .tl-col:first-child,
+  .tl-col-group--right .tl-col:last-child {
+    display: none;
+  }
+  
+  .tl-center {
+    min-width: auto;
+  }
 }
 
-/* ── MOBILE (< 768px) ───────────────────────────────────────────── */
+/* Mobile (< 768px) */
 @media (max-width: 767px) {
-  .tl-section { padding: 2.5rem 0 0; }
-  .tl-panel   { min-height: 520px; border-radius: 24px; }
-
-  /* On mobile: shrink all tiles significantly */
-  .tl-tile--lg { width: 80px;  height: 96px;  }
-  .tl-tile--md { width: 72px;  height: 88px;  }
-  .tl-tile--sm { width: 62px;  height: 76px;  }
-
-  /* Wider fades on mobile — images recede further */
-  .tl-fade--top    { height: 120px; }
-  .tl-fade--bottom { height: 120px; }
-  .tl-fade--left   { width: 90px;  }
-  .tl-fade--right  { width: 90px;  }
-
-  /* Hide center-top and center-bottom — avoid overlap with heading */
-  .tl-tile--tc1,
-  .tl-tile--bc1 { display: none; }
-
-  /* Hide mid tiles */
-  .tl-tile--ml1,
-  .tl-tile--mr1 { display: none; }
-
-  /* Reposition remaining tiles to corners */
-  .tl-tile--tl1 { top:  4%; left:  2%; }
-  .tl-tile--tl2 { top: 13%; left: 11%; }
-  .tl-tile--tr1 { top: 13%; right: 11%; }
-  .tl-tile--tr2 { top:  4%; right:  2%; }
-  .tl-tile--bl1 { bottom:  4%; left:  2%; }
-  .tl-tile--br1 { bottom:  4%; right:  2%; }
-
-  .tl-center { padding: 3rem 1.25rem; }
-  .tl-heading { font-size: clamp(1.75rem, 8vw, 2.25rem); }
-  .tl-desc { font-size: 0.93rem; }
-}
-
-/* ── Very small (< 420px) ───────────────────────────────────────── */
-@media (max-width: 420px) {
-  .tl-tile--tl2,
-  .tl-tile--tr1 { display: none; }
-
-  .tl-tile--lg { width: 72px; height: 88px; }
-  .tl-tile--sm { width: 60px; height: 74px; }
+  .tl-section {
+    padding: 2.5rem 0 0;
+  }
+  
+  .tl-panel {
+    flex-direction: column;
+    justify-content: flex-start;
+    padding: 2rem 1rem;
+    border-radius: 24px;
+    -webkit-mask-image: none; /* Remove fade on mobile as layout changes */
+    mask-image: none;
+    min-height: auto;
+  }
+  
+  .tl-col-group {
+    width: 100%;
+    justify-content: center;
+    margin-bottom: 2rem;
+  }
+  
+  .tl-col-group--right {
+    margin-bottom: 0;
+    margin-top: 2rem;
+  }
+  
+  .tl-col {
+    transform: none !important; /* Remove stagger on mobile */
+    flex-direction: row; /* Horizontal scrolling or wrapping on mobile */
+    width: auto;
+  }
+  
+  .tl-img-wrap {
+    width: 80px;
+    height: 100px;
+  }
+  
+  /* On very small screens, maybe just show a few images row-wise above the text */
+  .tl-col-group {
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+  
+  .tl-center {
+    padding: 0;
+  }
+  
+  .tl-heading {
+    font-size: clamp(1.75rem, 8vw, 2.25rem);
+  }
 }
