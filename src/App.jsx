@@ -18,6 +18,7 @@ import WorkingProcess from './components/WorkingProcess'
 import AffiliatePayments from './components/AffiliatePayments'
 import FAQSection from './components/FAQSection'
 import TestimonialsScroll from './components/TestimonialsScroll'
+import TrustedLeadersSection from './components/TrustedLeadersSection'
 import Chatbot from './components/chatbot/Chatbot'
 import useScrollReveal from './hooks/useScrollReveal'
 
@@ -98,6 +99,7 @@ const HomePage = () => (
     <div className="reveal"><TopInfluencers /></div>
     <div className="reveal"><LatestServices /></div>
     <div className="reveal"><FAQSection /></div>
+    <div className="reveal"><TrustedLeadersSection /></div>
     <div className="reveal"><TestimonialsScroll /></div>
     <div className="reveal"><AffiliatePayments /></div>
   </main>
