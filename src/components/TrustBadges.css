@@ -32,9 +32,11 @@
   animation: scrollMarquee 30s linear infinite;
 }
 
-/* Pause animation on hover for better UX */
-.tb-marquee:hover {
-  animation-play-state: paused;
+/* Pause animation on hover for better UX, but only on devices that support hover (prevents mobile touch-scroll pausing) */
+@media (hover: hover) and (pointer: fine) {
+  .tb-marquee:hover {
+    animation-play-state: paused;
+  }
 }
 
 @keyframes scrollMarquee {
