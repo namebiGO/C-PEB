@@ -69,6 +69,7 @@ const TestimonialsScroll = ({
 
   return (
     <section
+      id="testimonials-scroll"
       className="ts-section"
       style={{ background: bg }}
       aria-label="Client testimonials"

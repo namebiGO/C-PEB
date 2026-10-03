@@ -1,5 +1,4 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 import { ArrowRight } from 'lucide-react';
 import './TrustedLeadersSection.css';
 
@@ -101,14 +100,16 @@ export default function TrustedLeadersSection() {
               them with the right creators and grow their business.
             </p>
 
-            <Link
-              to="/case-studies"
+            <button
+              onClick={() => {
+                document.getElementById('testimonials-scroll')?.scrollIntoView({ behavior: 'smooth' });
+              }}
               className="tl-cta"
               aria-label="Read C-PEB success stories"
             >
               Read Success Stories
               <ArrowRight size={14} className="tl-arrow" aria-hidden="true" />
-            </Link>
+            </button>
           </div>
 
           {/* ── Right image group ── */}
