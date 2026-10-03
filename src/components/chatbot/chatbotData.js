@@ -799,7 +799,7 @@ export const COMPANY_INFO = {
   whatsappUrl: 'https://wa.me/919876543210?text=Hi%20C-PEB%20Team%2C%20I%20would%20like%20to%20learn%20more%20about%20your%20services.',
   address: 'Mumbai, Maharashtra, India',
   hours: 'Monday to Saturday, 9:00 AM – 6:00 PM IST',
-  leadApiEndpoint: 'http://localhost:5001/api/public/leads'
+  leadApiEndpoint: '/api/public/leads'
 };
 
 export const COMMON_FAQS = [

@@ -103,7 +103,7 @@ const AdminAdvisory = () => {
     try {
       setUpdatingStatus(true);
       const token = JSON.parse(localStorage.getItem('adminToken'))?.token;
-      const res = await fetch(`http://localhost:5001/api/advisory/admin/subscriptions/${selectedSub._id}`, {
+      const res = await fetch(`/api/advisory/admin/subscriptions/${selectedSub._id}`, {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',
@@ -128,7 +128,7 @@ const AdminAdvisory = () => {
     try {
       setUpdatingStatus(true);
       const token = JSON.parse(localStorage.getItem('adminToken'))?.token;
-      const res = await fetch(`http://localhost:5001/api/advisory/admin/subscriptions/${selectedSub._id}`, {
+      const res = await fetch(`/api/advisory/admin/subscriptions/${selectedSub._id}`, {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',
@@ -153,7 +153,7 @@ const AdminAdvisory = () => {
     if (!selectedSub) return;
     try {
       const token = JSON.parse(localStorage.getItem('adminToken'))?.token;
-      const res = await fetch(`http://localhost:5001/api/advisory/admin/subscriptions/${selectedSub._id}/requests/${reqId}`, {
+      const res = await fetch(`/api/advisory/admin/subscriptions/${selectedSub._id}/requests/${reqId}`, {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',
@@ -175,7 +175,7 @@ const AdminAdvisory = () => {
     if (!selectedSub || !replyText.trim()) return;
     try {
       const token = JSON.parse(localStorage.getItem('adminToken'))?.token;
-      const res = await fetch(`http://localhost:5001/api/advisory/admin/subscriptions/${selectedSub._id}/requests/${reqId}`, {
+      const res = await fetch(`/api/advisory/admin/subscriptions/${selectedSub._id}/requests/${reqId}`, {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',

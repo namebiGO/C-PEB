@@ -14,7 +14,7 @@ const InfluencerProfile = () => {
   useEffect(() => {
     const fetchProfile = async () => {
       try {
-        const res = await fetch(`http://localhost:5001/api/public/influencer/${slug}`);
+        const res = await fetch(`/api/public/influencer/${slug}`);
         const data = await res.json();
         if (data.success) {
           setProfile(data.data.influencer);

@@ -601,7 +601,7 @@ function finalizeLead(memory) {
   }
 
   // Attempt async sync to backend API endpoint
-  fetch('http://localhost:5001/api/public/leads', {
+  fetch('/api/public/leads', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(leadPayload)
