@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { ArrowRight, ChevronDown, ChevronUp, CheckCircle2, Star, Rocket, Users, FileText, Lightbulb, Package, TrendingUp, Lock } from 'lucide-react';
 import './ServicePage.css';
 import './StartupAdvisory.css';
+import './StartupSupportHero.css';
 import SEO from '../components/SEO';
 import TestimonialsScroll from '../components/TestimonialsScroll';
 
@@ -106,71 +107,94 @@ const FAQItem = ({ faq }) => {
 export default function StartupSupport() {
   return (
     <div className="service-page">
-      <SEO 
-        title="Startup Support & Growth | C-PEB" 
-        description="From zero to known. We help startups break through with influencer-powered growth strategies built specifically for early-stage companies." 
+      <SEO
+        title="Startup Support & Growth | C-PEB"
+        description="From zero to known. We help startups break through with influencer-powered growth strategies built specifically for early-stage companies."
       />
 
-      <section className="svc-hero svc-hero--startup svc-hero--startup-new">
-        <div className="container svc-hero-inner svc-hero-inner--startup-new">
-          <div className="svc-hero-copy svc-hero-copy--startup-new">
-            <p className="section-eyebrow">STARTUP GROWTH • CREATOR-LED</p>
+      <section className="startup-hero-wrapper">
+        {/* Full-width organic backgrounds */}
+        <div className="sh-organic-bg" aria-hidden="true"></div>
+        <div className="sh-organic-bg-2" aria-hidden="true"></div>
+
+        <div className="startup-hero-container">
+          {/* Left Content */}
+          <div className="startup-hero-content">
+            <span className="sh-eyebrow">Startup Support</span>
             <h1>
-              Turn Your Startup<br />
-              Into Something<br />
-              <span className="svc-h1-accent">People Talk About.</span>
+              Launch Strong<br />
+              Grow Smarter
             </h1>
-            <p>From positioning and creator strategy to campaigns that generate real attention — we help early-stage startups become visible, credible, and talked about.</p>
-            <div className="svc-hero-actions">
-              <button className="btn btn-primary btn-lg">Build My Growth Plan <ArrowRight size={18} /></button>
-              <button className="btn btn-secondary btn-lg">Explore Startup Support</button>
+            <p>From launch visibility and creator-led PR to investor-ready storytelling and growth mentorship, we help startups build momentum at every stage.</p>
+
+            <div className="sh-actions">
+              <Link to="/contact" className="sh-btn-primary">
+                Talk to a Startup Expert
+              </Link>
+              <a href="#plans" className="sh-btn-secondary">
+                Explore services
+              </a>
             </div>
-          </div>
-          
-          <div className="startup-hero-visual">
-            <div className="shv-wrapper">
-              <img 
-                src="https://images.unsplash.com/photo-1556761175-5973dc0f32d7?ixlib=rb-4.0.3&auto=format&fit=crop&w=1600&q=80" 
-                alt="Startup ecosystem and growth" 
-                className="shv-image"
-              />
-              <div className="shv-overlay"></div>
-              
-              <svg className="shv-connections" viewBox="0 0 100 100" preserveAspectRatio="none">
-                <path d="M22,22 L50,50" className="shv-line" vectorEffect="non-scaling-stroke" />
-                <path d="M78,17 L50,50" className="shv-line" vectorEffect="non-scaling-stroke" />
-                <path d="M15,78 L50,50" className="shv-line" vectorEffect="non-scaling-stroke" />
-                <path d="M78,83 L50,50" className="shv-line" vectorEffect="non-scaling-stroke" />
-              </svg>
-              
-              <div className="shv-center-node">STARTUP</div>
-              
-              <div className="shv-floating-card card-creators">
-                <span className="shv-dot"></span> Creators
-              </div>
-              <div className="shv-floating-card card-content">
-                <span className="shv-dot"></span> Content
-              </div>
-              <div className="shv-floating-card card-community">
-                <span className="shv-dot"></span> Community
-              </div>
-              <div className="shv-floating-card card-growth">
-                <span className="shv-dot"></span> Growth
-              </div>
-            </div>
-          </div>
-        </div>
-        
-        <div className="container">
-          <div className="startup-proof-strip">
-            <p className="sps-label">Built for ambitious early-stage teams</p>
-            <div className="sps-metrics">
-              {RESULTS.map((r, i) => (
-                <div className="sps-metric-item" key={i}>
-                  <strong>{r.metric}</strong> <span>{r.label}</span>
+
+            <div className="sh-trust-strip">
+              <div className="sh-trust-item">
+                <div className="sh-trust-icon"><Rocket size={20} /></div>
+                <div className="sh-trust-text">
+                  <strong>Launch Visibility</strong>
+                  <span>Pre-launch & Go-live</span>
                 </div>
-              ))}
+              </div>
+              <div className="sh-trust-item">
+                <div className="sh-trust-icon"><Users size={20} /></div>
+                <div className="sh-trust-text">
+                  <strong>Creator-Led PR</strong>
+                  <span>Authentic reach</span>
+                </div>
+              </div>
+              <div className="sh-trust-item">
+                <div className="sh-trust-icon"><TrendingUp size={20} /></div>
+                <div className="sh-trust-text">
+                  <strong>Growth Mentorship</strong>
+                  <span>Expert guidance</span>
+                </div>
+              </div>
             </div>
+          </div>
+
+          {/* Right Visual */}
+          <div className="startup-hero-visual-wrapper">
+            <div className="sh-main-image">
+              <img
+                src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=800&q=80"
+                alt="Startup founder"
+              />
+            </div>
+
+            {/* Floating Cards mapped to reference aesthetic */}
+
+            {/* White Speech Bubble -> Launch */}
+            <div className="sh-floating-card fc-bubble">
+              <Rocket size={16} color="#17a85a" /> C-PEB Launch
+            </div>
+
+            {/* Small square blue icon -> PR */}
+            <div className="sh-floating-card fc-square">
+              <Users size={28} />
+            </div>
+
+            {/* Yellow Speech Bubble -> Investor Ready */}
+            <div className="sh-floating-card fc-yellow-bubble">
+              <Lightbulb size={16} /> Investor Ready
+            </div>
+
+            {/* Media Card -> Brand Story */}
+            <div className="sh-floating-card fc-media">
+              <img src="https://images.unsplash.com/photo-1542744173-8e7e53415bb0?auto=format&fit=crop&w=200&q=80" alt="Brand Story" className="fc-media-img" />
+              <span className="fc-media-text">Brand Story</span>
+            </div>
+
+            {/* 3D Object approximation -> Growth */}
+            <div className="sh-floating-card fc-3d-obj" title="Growth"></div>
           </div>
         </div>
       </section>

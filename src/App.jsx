@@ -7,11 +7,11 @@ import ScrollToTop from './components/ScrollToTop'
 
 // Home sections — eagerly loaded (above the fold, needed immediately)
 import HeroSection from './components/HeroSection'
+import CreatorsForEveryBrand from './components/CreatorsForEveryBrand'
 import TrustBadges from './components/TrustBadges'
 import HomeServices from './components/HomeServices'
 import WhyChooseUs from './components/WhyChooseUs'
 import Features from './components/Features'
-import Categories from './components/Categories'
 import TopInfluencers from './components/TopInfluencers'
 import LatestServices from './components/LatestServices'
 import WorkingProcess from './components/WorkingProcess'
@@ -95,7 +95,7 @@ const HomePage = () => (
     <div className="reveal"><WhyChooseUs /></div>
     <div className="reveal"><Features /></div>
     <div className="reveal"><WorkingProcess /></div>
-    <div className="reveal"><Categories /></div>
+    <div className="reveal"><CreatorsForEveryBrand /></div>
     <div className="reveal"><TopInfluencers /></div>
     <div className="reveal"><LatestServices /></div>
     <div className="reveal"><FAQSection /></div>

@@ -16,7 +16,7 @@
 
 .hero-eyebrow {
   display: inline-block;
-  color: var(--color-sage, #B2C5B2);
+  color: var(--green-dark);
   text-transform: uppercase;
   letter-spacing: 0.1em;
   font-weight: 600;
@@ -33,7 +33,7 @@
 
 .creators-hero p {
   font-size: 1.1rem;
-  color: #D1D5DB;
+  color: var(--text-2);
   line-height: 1.6;
   margin-bottom: 2.5rem;
   max-width: 600px;
@@ -63,18 +63,18 @@
 
 .btn-secondary-hero {
   background-color: transparent;
-  color: white;
+  color: var(--text-1);
   padding: 1rem 2rem;
   border-radius: 4px;
-  border: 1px solid white;
+  border: 1px solid var(--text-1);
   text-decoration: none;
   font-weight: 600;
   transition: all 0.2s;
 }
 
 .btn-secondary-hero:hover {
-  background-color: white;
-  color: var(--color-dark-navy, #0B192C);
+  background-color: var(--text-1);
+  color: var(--bg);
 }
 
 /* Directory Section */

@@ -1,0 +1,401 @@
+/* ════════════════════════════════════════
+   STARTUP SUPPORT - NEW HERO SECTION (REFERENCE MATCH)
+════════════════════════════════════════ */
+
+.startup-hero-wrapper {
+  padding: 6rem 1.5rem 8rem;
+  background: var(--bg);
+  position: relative;
+  overflow: hidden;
+}
+
+/* The large organic blue shape on the right */
+.sh-organic-bg {
+  position: absolute;
+  top: -15%;
+  right: -10%;
+  width: 65%;
+  height: 130%;
+  background: var(--green-light, #eef9f2);
+  border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%;
+  z-index: 0;
+  transform: rotate(-10deg);
+  opacity: 0.8;
+}
+
+/* Secondary subtle shape on the far left */
+.sh-organic-bg-2 {
+  position: absolute;
+  bottom: -10%;
+  left: -5%;
+  width: 30%;
+  height: 40%;
+  background: rgba(23, 168, 90, 0.04);
+  border-radius: 60% 40% 30% 70% / 50% 60% 40% 50%;
+  z-index: 0;
+}
+
+[data-theme='dark'] .sh-organic-bg {
+  background: rgba(23, 168, 90, 0.12);
+}
+[data-theme='dark'] .sh-organic-bg-2 {
+  background: rgba(23, 168, 90, 0.05);
+}
+
+.startup-hero-container {
+  max-width: 1240px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 4rem;
+  position: relative;
+  z-index: 1;
+}
+
+.startup-hero-content {
+  flex: 1.1;
+  max-width: 580px;
+  position: relative;
+  z-index: 10;
+  animation: fadeUp 0.5s ease-out forwards;
+}
+
+.sh-eyebrow {
+  display: block;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text-2);
+  margin-bottom: 0.75rem;
+  font-family: var(--font-head);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.startup-hero-content h1 {
+  font-size: clamp(3rem, 5vw, 4.5rem);
+  font-weight: 800;
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+  color: var(--text-1);
+  margin-bottom: 1.5rem;
+  font-family: var(--font-head);
+}
+
+.startup-hero-content p {
+  font-size: 1.125rem;
+  line-height: 1.6;
+  color: var(--text-2);
+  margin-bottom: 2.5rem;
+  max-width: 500px;
+}
+
+.sh-actions {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 3rem;
+  flex-wrap: wrap;
+}
+
+.sh-btn-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--green-mid);
+  color: #fff;
+  padding: 12px 32px;
+  border-radius: 100px;
+  font-weight: 700;
+  font-size: 1rem;
+  transition: all 0.2s ease;
+  text-decoration: none;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 8px 20px rgba(23, 168, 90, 0.25);
+  font-family: var(--font-head);
+}
+
+.sh-btn-primary:hover {
+  background-color: var(--green-dark);
+  transform: translateY(-2px);
+  box-shadow: 0 12px 24px rgba(23, 168, 90, 0.35);
+}
+
+.sh-btn-secondary {
+  background-color: var(--surface);
+  color: var(--text-1);
+  font-weight: 700;
+  font-size: 1rem;
+  text-decoration: none;
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  padding: 12px 32px;
+  border-radius: 100px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+  border: 1px solid var(--border);
+  font-family: var(--font-head);
+}
+
+.sh-btn-secondary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+}
+
+.sh-trust-strip {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  flex-wrap: wrap;
+  padding-top: 2rem;
+  border-top: 1px solid var(--border);
+}
+
+.sh-trust-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.sh-trust-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--bg-2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--green-mid);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+}
+
+.sh-trust-text {
+  display: flex;
+  flex-direction: column;
+}
+
+.sh-trust-text strong {
+  font-size: 0.95rem;
+  color: var(--text-1);
+  font-family: var(--font-head);
+}
+
+.sh-trust-text span {
+  font-size: 0.75rem;
+  color: var(--text-3);
+}
+
+
+/* ── Right Side Visual ── */
+
+.startup-hero-visual-wrapper {
+  flex: 0.9;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 550px;
+  z-index: 5;
+  animation: fadeUp 0.6s ease-out 0.1s forwards;
+  opacity: 0;
+}
+
+.sh-main-image {
+  position: relative;
+  z-index: 2;
+  width: 90%;
+  max-width: 460px;
+}
+
+/* Simulate cutout person with a soft organic mask if real cutout isn't available */
+.sh-main-image img {
+  width: 100%;
+  height: auto;
+  display: block;
+  object-fit: cover;
+  border-radius: 30% 70% 50% 50% / 50% 40% 60% 50%; /* Make it an organic shape */
+  box-shadow: 0 30px 60px rgba(0,0,0,0.1);
+}
+
+/* Floating UI Elements matching reference */
+.sh-floating-card {
+  position: absolute;
+  background-color: var(--surface);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+  z-index: 10;
+  transition: transform 0.3s ease;
+  animation: floatCard 6s ease-in-out infinite alternate;
+  font-family: var(--font-head);
+}
+
+.sh-floating-card:hover {
+  transform: translateY(-4px) scale(1.02);
+}
+
+/* The Speech Bubble (C-PEB / Launch) */
+.fc-bubble {
+  top: 5%;
+  left: 0%;
+  padding: 12px 20px;
+  border-radius: 100px;
+  font-weight: 700;
+  color: var(--text-1);
+  gap: 8px;
+  animation-delay: 0s;
+}
+.fc-bubble::after {
+  content: '';
+  position: absolute;
+  bottom: -8px;
+  left: 20px;
+  width: 16px;
+  height: 16px;
+  background: var(--surface);
+  transform: rotate(45deg);
+  box-shadow: 4px 4px 10px rgba(0,0,0,0.03);
+  z-index: -1;
+}
+
+/* Small square icon (PR) */
+.fc-square {
+  top: 30%;
+  left: -15%;
+  width: 64px;
+  height: 64px;
+  border-radius: 16px;
+  background: linear-gradient(135deg, var(--green-mid), var(--green-dark));
+  color: white;
+  animation-delay: -1s;
+}
+
+/* Accent Speech Bubble (Investor Ready) */
+.fc-yellow-bubble {
+  top: 15%;
+  right: 5%;
+  padding: 10px 16px;
+  border-radius: 100px;
+  background: var(--text-1);
+  color: var(--bg);
+  font-weight: 700;
+  gap: 6px;
+  animation-delay: -2s;
+}
+.fc-yellow-bubble::after {
+  content: '';
+  position: absolute;
+  bottom: -6px;
+  left: 50%;
+  width: 12px;
+  height: 12px;
+  background: var(--text-1);
+  transform: translateX(-50%) rotate(45deg);
+  z-index: -1;
+}
+
+/* Image/Video Card (Brand Story) */
+.fc-media {
+  bottom: 25%;
+  right: -10%;
+  padding: 8px;
+  border-radius: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  background: var(--surface);
+  animation-delay: -3s;
+}
+.fc-media-img {
+  width: 100px;
+  height: 60px;
+  border-radius: 8px;
+  background: #f1f5f9;
+  object-fit: cover;
+}
+.fc-media-text {
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-align: center;
+  color: var(--text-2);
+}
+
+/* 3D Object approximation (Growth) */
+.fc-3d-obj {
+  bottom: 0%;
+  left: 10%;
+  width: 70px;
+  height: 90px;
+  background: linear-gradient(135deg, var(--green-mid), var(--green-dark));
+  border-radius: 20px 20px 10px 10px;
+  box-shadow: inset -10px -10px 20px rgba(0,0,0,0.15), 0 20px 30px rgba(23, 168, 90, 0.25);
+  animation-delay: -1.5s;
+}
+.fc-3d-obj::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 20px;
+  background: rgba(255,255,255,0.3);
+  border-radius: 50%;
+}
+
+
+@keyframes floatCard {
+  0% { transform: translateY(0); }
+  100% { transform: translateY(-15px); }
+}
+
+@keyframes fadeUp {
+  0% { opacity: 0; transform: translateY(20px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+/* ── Responsive ── */
+@media (max-width: 1024px) {
+  .startup-hero-container {
+    gap: 2rem;
+  }
+  .startup-hero-content h1 {
+    font-size: 3rem;
+  }
+  .fc-square { left: -5%; }
+  .fc-media { right: -5%; }
+}
+
+@media (max-width: 768px) {
+  .startup-hero-wrapper {
+    padding: 5rem 1.5rem 4rem;
+  }
+  .startup-hero-container {
+    flex-direction: column;
+  }
+  .startup-hero-content {
+    max-width: 100%;
+    text-align: center;
+    order: 1;
+  }
+  .sh-actions {
+    justify-content: center;
+  }
+  .sh-trust-strip {
+    justify-content: center;
+  }
+  .startup-hero-visual-wrapper {
+    order: 2;
+    min-height: 400px;
+    width: 100%;
+    margin-top: 2rem;
+  }
+  .fc-square { left: 0; }
+  .fc-media { right: 0; }
+  .sh-organic-bg {
+    width: 100%;
+    top: 0;
+    right: 0;
+  }
+}
