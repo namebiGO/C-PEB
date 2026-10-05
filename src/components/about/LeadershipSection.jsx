@@ -32,7 +32,8 @@ const leadershipTeam = [
   {
     name: 'Amit Kumar',
     designation: 'Software Engineer',
-    image: null,
+    image: '/images/team/amit.jpg',
+    imagePosition: 'center 32%',
     bio: 'Amit builds the technology behind C-PEB — the platform, tools, and systems that power everything clients and creators interact with every day.',
     linkedin: null,
     placeholder: false,
@@ -63,6 +64,7 @@ const LeadershipSection = () => (
             name={member.name}
             designation={member.designation}
             image={member.image}
+            imagePosition={member.imagePosition}
             bio={member.bio}
             linkedin={member.linkedin}
             placeholder={member.placeholder}

@@ -60,7 +60,7 @@ const ArrowIcon = () => (
   </svg>
 );
 
-const LeadershipCard = ({ name, designation, image, bio, linkedin, placeholder }) => {
+const LeadershipCard = ({ name, designation, image, imagePosition, bio, linkedin, placeholder }) => {
   /* ── PLACEHOLDER card ── */
   if (placeholder) {
     return (
@@ -108,6 +108,7 @@ const LeadershipCard = ({ name, designation, image, bio, linkedin, placeholder }
             width={400}
             height={267}
             loading="lazy"
+            style={imagePosition ? { objectPosition: imagePosition } : undefined}
           />
         ) : (
           <div className="lc-avatar" aria-hidden="true">

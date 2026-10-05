@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import Typewriter from 'typewriter-effect';
 import './HeroSection.css';
@@ -39,6 +39,42 @@ const col1 = influencers.slice(0, 4);
 const col2 = influencers.slice(4, 8);
 const col3 = influencers.slice(8, 12);
 
+const Counter = ({ end, prefix = '', suffix = '' }) => {
+  const [count, setCount] = useState(0);
+  const [isFinished, setIsFinished] = useState(false);
+
+  useEffect(() => {
+    let startTimestamp = null;
+    const duration = 2500; // 2.5 seconds for a premium feel
+
+    const step = (timestamp) => {
+      if (!startTimestamp) startTimestamp = timestamp;
+      const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+      
+      // Smooth easeOutQuart
+      const easeProgress = 1 - Math.pow(1 - progress, 4);
+      
+      setCount(easeProgress * end);
+      
+      if (progress < 1) {
+        window.requestAnimationFrame(step);
+      } else {
+        setIsFinished(true);
+      }
+    };
+    window.requestAnimationFrame(step);
+  }, [end]);
+
+  // For small numbers (like 5 or 10), animate with a decimal to make it 60fps smooth
+  // Once finished, snap to the clean whole number
+  const needsDecimal = end < 50;
+  const displayValue = isFinished 
+    ? Math.round(count)
+    : (needsDecimal ? count.toFixed(1) : Math.floor(count));
+
+  return <>{prefix}{displayValue}{suffix}</>;
+};
+
 const HeroSection = () => {
   return (
     <section className="hero" id="home">
@@ -59,8 +95,8 @@ const HeroSection = () => {
                   strings: ["Economy, Unlocked", "Talent, Empowered", "Reach, Multiplied", "Growth, Accelerated"],
                   autoStart: true,
                   loop: true,
-                  delay: 75,
-                  deleteSpeed: 40,
+                  delay: 50, /* Smoother typing */
+                  deleteSpeed: 30, /* Smoother deletion */
                   wrapperClassName: "accent typewriter-text",
                   cursorClassName: "cursor",
                 }}
@@ -85,15 +121,15 @@ const HeroSection = () => {
 
           <div className="hero-stats">
             <div className="stat-item">
-              <span className="stat-value">10K+</span>
+              <span className="stat-value"><Counter end={10} suffix="K+" /></span>
               <span className="stat-label">Active Creators</span>
             </div>
             <div className="stat-item">
-              <span className="stat-value">₹5Cr+</span>
+              <span className="stat-value"><Counter end={5} prefix="₹" suffix="Cr+" /></span>
               <span className="stat-label">Paid Out</span>
             </div>
             <div className="stat-item">
-              <span className="stat-value">500+</span>
+              <span className="stat-value"><Counter end={500} suffix="+" /></span>
               <span className="stat-label">Brand Partners</span>
             </div>
           </div>

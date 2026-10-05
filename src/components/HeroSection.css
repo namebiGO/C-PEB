@@ -137,12 +137,15 @@
 .hero-title {
   margin-bottom: 1.5rem;
   min-height: 120px; /* Prevent layout shift */
+  display: block;
 }
 
 .typewriter-container {
-  display: inline-flex;
+  display: flex;
   align-items: center;
   white-space: nowrap;
+  height: 1.3em; /* Absolutely lock height */
+  overflow: visible;
 }
 
 .typewriter-container > div,
@@ -374,9 +377,10 @@
 
   .typewriter-container {
     white-space: nowrap;
-    display: inline-flex;
+    display: flex;
     justify-content: center;
     margin-top: 5px;
+    height: 1.3em; /* Absolutely lock height on mobile */
   }
 
   .typewriter-text {
