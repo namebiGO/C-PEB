@@ -284,15 +284,32 @@ export default function StartupAdvisory() {
     }
   }, []);
 
-  // Lock body scroll when modal is open
+  // Lock body scroll when modal is open without jumping to top
   useEffect(() => {
     if (modalOpen || lookupOpen) {
-      document.body.style.overflow = 'hidden';
+      const scrollY = window.scrollY;
+      // Save current scroll position
+      document.body.style.position = 'fixed';
+      document.body.style.top = `-${scrollY}px`;
+      document.body.style.width = '100%';
+      // Prevent horizontal jump on desktop by adding padding for scrollbar
+      const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
+      document.body.style.paddingRight = `${scrollbarWidth}px`;
     } else {
-      document.body.style.overflow = '';
+      const scrollY = document.body.style.top;
+      document.body.style.position = '';
+      document.body.style.top = '';
+      document.body.style.width = '';
+      document.body.style.paddingRight = '';
+      if (scrollY) {
+        window.scrollTo(0, parseInt(scrollY || '0') * -1);
+      }
     }
     return () => {
-      document.body.style.overflow = '';
+      document.body.style.position = '';
+      document.body.style.top = '';
+      document.body.style.width = '';
+      document.body.style.paddingRight = '';
     };
   }, [modalOpen, lookupOpen]);
 
