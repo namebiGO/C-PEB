@@ -284,6 +284,18 @@ export default function StartupAdvisory() {
     }
   }, []);
 
+  // Lock body scroll when modal is open
+  useEffect(() => {
+    if (modalOpen || lookupOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [modalOpen, lookupOpen]);
+
   // ─── ₹1 Test Payment Handler ──────────────────────────────
   const handleTestPayment = async () => {
     setTestStatus('Creating ₹1 test order...');
