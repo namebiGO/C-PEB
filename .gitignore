@@ -29,5 +29,31 @@ server/.env
 .env
 .env.local
 .env.production
+.env.staging
+
 # Scratch / utility scripts output
 scratch/
+
+# Large test/debug files — should never be deployed
+test.js
+test.html
+test2.js
+
+# Utility / download scripts — contain internal logic and should not be in repo
+download_bms.cjs
+download_highres.cjs
+download_wamiqa.cjs
+puppeteer_download.cjs
+process_images.cjs
+process_images_v2.cjs
+fix_images.js
+update_images_highres.js
+recover.cjs
+recover_perfect.cjs
+restore.cjs
+find.cjs
+find_app.cjs
+find_tool.cjs
+check-case.cjs
+check_orig.cjs
+

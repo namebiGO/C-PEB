@@ -5,58 +5,51 @@ import User from '../models/User.js';
 
 const router = express.Router();
 
+const JWT_SECRET = process.env.JWT_SECRET; // Guaranteed present by startup check in index.js
+
 const generateToken = (id) => {
-  return jwt.sign({ id }, process.env.JWT_SECRET || 'fallback_secret', {
-    expiresIn: '30d',
+  return jwt.sign({ id }, JWT_SECRET, {
+    expiresIn: '7d', // Reduced from 30d — limits exposure window of stolen tokens
   });
 };
 
-// @route   POST /api/admin/login
+// @route   POST /api/admin/auth/login
 // @desc    Auth admin & get token
 router.post('/login', async (req, res) => {
   try {
     const { email, password } = req.body;
 
-    const admin = await User.findOne({ email, role: 'ADMIN' });
+    // Basic input validation
+    if (!email || !password) {
+      return res.status(400).json({ success: false, error: 'Email and password are required.' });
+    }
 
-    if (admin && (await admin.matchPassword(password))) {
+    const adminUser = await User.findOne({ email: String(email).toLowerCase().trim(), role: 'ADMIN' });
+
+    if (adminUser && (await adminUser.matchPassword(password))) {
       res.json({
         success: true,
         data: {
-          _id: admin._id,
-          name: admin.name,
-          email: admin.email,
-          role: admin.role,
-          token: generateToken(admin._id),
+          _id: adminUser._id,
+          name: adminUser.name,
+          email: adminUser.email,
+          role: adminUser.role,
+          token: generateToken(adminUser._id),
         },
       });
     } else {
+      // Always return 401 regardless of whether email exists (prevent user enumeration)
       res.status(401).json({ success: false, error: 'Invalid email or password' });
     }
-  } catch (error) { console.error(error);  }
+  } catch (error) {
+    console.error('[Auth] Login error:', error.message);
+    res.status(500).json({ success: false, error: 'Server Error' });
+  }
 });
 
-// @route   POST /api/admin/seed
-// @desc    Seed initial admin user (Development only / One time)
-router.post('/seed', async (req, res) => {
-  try {
-    const adminExists = await User.findOne({ email: 'admin@c-peb.com' });
-    if (adminExists) {
-      return res.status(400).json({ success: false, error: 'Admin already seeded' });
-    }
-
-    const salt = await bcrypt.genSalt(10);
-    const passwordHash = await bcrypt.hash('password123', salt);
-
-    const admin = await User.create({
-      name: 'Site Admin',
-      email: 'admin@c-peb.com',
-      passwordHash,
-      role: 'ADMIN',
-    });
-
-    res.status(201).json({ success: true, message: 'Admin seeded successfully' });
-  } catch (error) { console.error(error);  }
-});
+// NOTE: The /seed endpoint has been REMOVED from this file.
+// To create the initial admin user, run the offline script: node seed_admin.js
+// This endpoint was a critical security vulnerability — publicly accessible,
+// creating an admin with a hardcoded password.
 
 export default router;

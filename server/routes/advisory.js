@@ -1,11 +1,14 @@
 import express from 'express';
 import AdvisorySubscription from '../models/AdvisorySubscription.js';
 import AdvisoryPlan from '../models/AdvisoryPlan.js';
-import { protect } from '../middleware/authMiddleware.js';
+import { protect, admin } from '../middleware/authMiddleware.js';
 import Razorpay from 'razorpay';
 import crypto from 'crypto';
 
 const router = express.Router();
+
+// ── Security: escape a string for safe use in a RegExp constructor ──
+const escapeRegex = (str) => str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 
 // ─────────────────────────────────────────────────────────────
 // COUPON CODES
@@ -76,6 +79,11 @@ router.post('/subscribe', async (req, res) => {
         error: 'Please provide all required fields: name, email, phone, business name, requirement, and plan.'
       });
     }
+
+    // Input length limits
+    if (String(customerName).trim().length > 100) return res.status(400).json({ success: false, error: 'Name is too long.' });
+    if (String(businessName).trim().length > 200) return res.status(400).json({ success: false, error: 'Business name is too long.' });
+    if (String(requirement).trim().length > 2000) return res.status(400).json({ success: false, error: 'Requirement description is too long (max 2000 chars).' });
 
     if (!['ONE_MONTH', 'THREE_MONTHS'].includes(plan)) {
       return res.status(400).json({
@@ -182,14 +190,16 @@ router.post('/subscribe', async (req, res) => {
 router.get('/order/:orderId', async (req, res) => {
   try {
     const { orderId } = req.params;
+    // SECURITY: Escape user input before using in RegExp to prevent ReDoS
+    const safeOrderId = escapeRegex(orderId.trim().slice(0, 100));
     let subscription = await AdvisorySubscription.findOne({
-      orderId: { $regex: new RegExp(`^${orderId.trim()}$`, 'i') }
+      orderId: { $regex: new RegExp(`^${safeOrderId}$`, 'i') }
     });
 
     if (!subscription) {
       // Allow lookup by email as fallback
       subscription = await AdvisorySubscription.findOne({
-        email: orderId.trim().toLowerCase()
+        email: orderId.trim().toLowerCase().slice(0, 200)
       }).sort({ createdAt: -1 });
     }
 
@@ -221,32 +231,35 @@ router.post('/order/:orderId/confirm-payment', async (req, res) => {
     const { orderId } = req.params;
     const { razorpay_payment_id, razorpay_order_id, razorpay_signature } = req.body;
 
+    // SECURITY: Escape user input before using in RegExp to prevent ReDoS
+    const safeOrderId = escapeRegex(orderId.trim().slice(0, 100));
     let subscription = await AdvisorySubscription.findOne({
-      orderId: { $regex: new RegExp(`^${orderId.trim()}$`, 'i') }
+      orderId: { $regex: new RegExp(`^${safeOrderId}$`, 'i') }
     });
 
     if (!subscription) {
       return res.status(404).json({ success: false, error: 'Order not found' });
     }
 
-    if (razorpay_payment_id && razorpay_order_id && razorpay_signature) {
-      const shasum = crypto.createHmac('sha256', process.env.RAZORPAY_KEY_SECRET);
-      shasum.update(`${razorpay_order_id}|${razorpay_payment_id}`);
-      const digest = shasum.digest('hex');
-
-      if (digest !== razorpay_signature) {
-        return res.status(400).json({ success: false, error: 'Invalid Razorpay signature' });
-      }
-      
-      subscription.razorpayPaymentId = razorpay_payment_id;
-      subscription.razorpaySignature = razorpay_signature;
-      subscription.paymentMethod = `Razorpay (${razorpay_payment_id})`;
-    } else {
-      // Fallback if not using Razorpay checkout directly
-      if (req.body.paymentId) {
-        subscription.paymentMethod = `Razorpay (${req.body.paymentId})`;
-      }
+    // SECURITY: Razorpay payment signature is MANDATORY.
+    // The previous fallback path that accepted `paymentId` without signature verification
+    // was a critical vulnerability — it allowed marking any order as PAID without payment.
+    if (!razorpay_payment_id || !razorpay_order_id || !razorpay_signature) {
+      return res.status(400).json({ success: false, error: 'Missing Razorpay payment credentials. Payment cannot be confirmed.' });
     }
+
+    // Verify the Razorpay HMAC signature
+    const shasum = crypto.createHmac('sha256', process.env.RAZORPAY_KEY_SECRET);
+    shasum.update(`${razorpay_order_id}|${razorpay_payment_id}`);
+    const digest = shasum.digest('hex');
+
+    if (digest !== razorpay_signature) {
+      return res.status(400).json({ success: false, error: 'Invalid Razorpay signature. Payment not confirmed.' });
+    }
+
+    subscription.razorpayPaymentId = razorpay_payment_id;
+    subscription.razorpaySignature = razorpay_signature;
+    subscription.paymentMethod = `Razorpay (${razorpay_payment_id})`;
 
     subscription.paymentStatus = 'PAID';
     subscription.supportStatus = 'ACTIVE';
@@ -334,7 +347,8 @@ router.post('/subscription/:id/requests', async (req, res) => {
 // @route   GET /api/advisory/admin/subscriptions
 // @desc    List all advisory subscriptions with metrics & filters
 // @access  Private (Admin)
-router.get('/admin/subscriptions', protect, async (req, res) => {
+// SECURITY: All /admin/* routes require both 'protect' (authenticated) AND 'admin' (role=ADMIN)
+router.get('/admin/subscriptions', protect, admin, async (req, res) => {
   try {
     const { filter = 'all' } = req.query;
 
@@ -396,7 +410,7 @@ router.get('/admin/subscriptions', protect, async (req, res) => {
 // @route   GET /api/advisory/admin/subscriptions/:id
 // @desc    Get detailed subscription record
 // @access  Private (Admin)
-router.get('/admin/subscriptions/:id', protect, async (req, res) => {
+router.get('/admin/subscriptions/:id', protect, admin, async (req, res) => {
   try {
     const subscription = await AdvisorySubscription.findById(req.params.id);
     if (!subscription) {
@@ -415,7 +429,7 @@ router.get('/admin/subscriptions/:id', protect, async (req, res) => {
 // @route   PATCH /api/advisory/admin/subscriptions/:id
 // @desc    Update status or private admin notes
 // @access  Private (Admin)
-router.patch('/admin/subscriptions/:id', protect, async (req, res) => {
+router.patch('/admin/subscriptions/:id', protect, admin, async (req, res) => {
   try {
     const { supportStatus, adminNotes, paymentStatus } = req.body;
     const subscription = await AdvisorySubscription.findById(req.params.id);
@@ -439,7 +453,7 @@ router.patch('/admin/subscriptions/:id', protect, async (req, res) => {
 // @route   PATCH /api/advisory/admin/subscriptions/:id/requests/:reqId
 // @desc    Reply to a support request, change status, or add notes
 // @access  Private (Admin)
-router.patch('/admin/subscriptions/:id/requests/:reqId', protect, async (req, res) => {
+router.patch('/admin/subscriptions/:id/requests/:reqId', protect, admin, async (req, res) => {
   try {
     const { status, replyMessage, adminNotes } = req.body;
     const subscription = await AdvisorySubscription.findById(req.params.id);
@@ -482,7 +496,7 @@ router.patch('/admin/subscriptions/:id/requests/:reqId', protect, async (req, re
 
 // @route   GET /api/advisory/admin/plans
 // @desc    Get all advisory plans
-router.get('/admin/plans', protect, async (req, res) => {
+router.get('/admin/plans', protect, admin, async (req, res) => {
   try {
     const plans = await AdvisoryPlan.find().sort({ displayOrder: 1 });
     res.json({ success: true, data: plans });
@@ -491,7 +505,7 @@ router.get('/admin/plans', protect, async (req, res) => {
 
 // @route   POST /api/advisory/admin/plans
 // @desc    Create a new advisory plan
-router.post('/admin/plans', protect, async (req, res) => {
+router.post('/admin/plans', protect, admin, async (req, res) => {
   try {
     const plan = await AdvisoryPlan.create(req.body);
     res.status(201).json({ success: true, data: plan });
@@ -502,7 +516,7 @@ router.post('/admin/plans', protect, async (req, res) => {
 
 // @route   PUT /api/advisory/admin/plans/:id
 // @desc    Update an advisory plan
-router.put('/admin/plans/:id', protect, async (req, res) => {
+router.put('/admin/plans/:id', protect, admin, async (req, res) => {
   try {
     const plan = await AdvisoryPlan.findByIdAndUpdate(req.params.id, req.body, { new: true, runValidators: true });
     if (!plan) return res.status(404).json({ success: false, error: 'Plan not found' });
@@ -514,7 +528,7 @@ router.put('/admin/plans/:id', protect, async (req, res) => {
 
 // @route   DELETE /api/advisory/admin/plans/:id
 // @desc    Delete an advisory plan
-router.delete('/admin/plans/:id', protect, async (req, res) => {
+router.delete('/admin/plans/:id', protect, admin, async (req, res) => {
   try {
     await AdvisoryPlan.findByIdAndDelete(req.params.id);
     res.json({ success: true, data: {} });

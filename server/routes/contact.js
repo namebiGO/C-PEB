@@ -1,12 +1,14 @@
 import express from 'express';
 import Contact from '../models/Contact.js';
 import { sendNewContactEmail } from '../config/mailer.js';
+import { protect, admin } from '../middleware/authMiddleware.js';
 
 const router = express.Router();
 
 // ──────────────────────────────────────────────
 // POST /api/contact
 // Save a new contact/strategy wizard submission
+// PUBLIC — but rate-limited in index.js (formLimiter)
 // ──────────────────────────────────────────────
 router.post('/', async (req, res, next) => {
   try {
@@ -18,14 +20,15 @@ router.post('/', async (req, res, next) => {
       throw new Error('Fields identity, goal, budget, name and email are required.');
     }
 
+    // Input length guards — prevent oversized payloads
     const contact = await Contact.create({
-      identity,
-      goal,
-      budget,
-      name,
-      email,
-      phone: phone || '',
-      company: company || '',
+      identity: String(identity).trim().slice(0, 200),
+      goal: String(goal).trim().slice(0, 200),
+      budget: String(budget).trim().slice(0, 100),
+      name: String(name).trim().slice(0, 100),
+      email: String(email).toLowerCase().trim().slice(0, 200),
+      phone: phone ? String(phone).trim().slice(0, 20) : '',
+      company: company ? String(company).trim().slice(0, 200) : '',
     });
 
     // Fire-and-forget email notification to office
@@ -47,31 +50,35 @@ router.post('/', async (req, res, next) => {
 
 // ──────────────────────────────────────────────
 // GET /api/contact
-// List all submissions (admin / dev use)
+// List all submissions — ADMIN ONLY
 // Query params: ?status=new&limit=50&page=1
 // ──────────────────────────────────────────────
-router.get('/', async (req, res, next) => {
+router.get('/', protect, admin, async (req, res, next) => {
   try {
     const { status, limit = 50, page = 1 } = req.query;
+
+    // Clamp pagination to prevent massive data dumps
+    const safeLimit = Math.min(Number(limit), 100);
+    const safePage = Math.max(Number(page), 1);
 
     const filter = {};
     if (status) filter.status = status;
 
-    const skip = (Number(page) - 1) * Number(limit);
+    const skip = (safePage - 1) * safeLimit;
 
     const [contacts, total] = await Promise.all([
       Contact.find(filter)
         .sort({ createdAt: -1 })
         .skip(skip)
-        .limit(Number(limit)),
+        .limit(safeLimit),
       Contact.countDocuments(filter),
     ]);
 
     return res.json({
       success: true,
       total,
-      page: Number(page),
-      limit: Number(limit),
+      page: safePage,
+      limit: safeLimit,
       data: contacts,
     });
   } catch (err) {
@@ -81,9 +88,9 @@ router.get('/', async (req, res, next) => {
 
 // ──────────────────────────────────────────────
 // GET /api/contact/:id
-// Fetch a single submission by ID
+// Fetch a single submission by ID — ADMIN ONLY
 // ──────────────────────────────────────────────
-router.get('/:id', async (req, res, next) => {
+router.get('/:id', protect, admin, async (req, res, next) => {
   try {
     const contact = await Contact.findById(req.params.id);
     if (!contact) {
@@ -98,12 +105,12 @@ router.get('/:id', async (req, res, next) => {
 
 // ──────────────────────────────────────────────
 // PATCH /api/contact/:id
-// Update the lead status and/or notes
+// Update the lead status and/or notes — ADMIN ONLY
 // ──────────────────────────────────────────────
-router.patch('/:id', async (req, res, next) => {
+router.patch('/:id', protect, admin, async (req, res, next) => {
   try {
     const { status, notes } = req.body;
-    
+
     const updateData = {};
     if (status) {
       if (!['new', 'in-progress', 'closed'].includes(status)) {
@@ -112,11 +119,11 @@ router.patch('/:id', async (req, res, next) => {
       }
       updateData.status = status;
     }
-    
+
     if (notes !== undefined) {
-      updateData.notes = notes;
+      updateData.notes = String(notes).trim().slice(0, 1000);
     }
-    
+
     const contact = await Contact.findByIdAndUpdate(
       req.params.id,
       updateData,

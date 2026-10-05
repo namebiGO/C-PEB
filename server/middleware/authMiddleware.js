@@ -1,6 +1,9 @@
 import jwt from 'jsonwebtoken';
 import User from '../models/User.js';
 
+// ── SECURITY: JWT_SECRET is guaranteed present by server/index.js startup check ──
+const JWT_SECRET = process.env.JWT_SECRET;
+
 const protect = async (req, res, next) => {
   let token;
 
@@ -8,20 +11,10 @@ const protect = async (req, res, next) => {
     try {
       token = req.headers.authorization.split(' ')[1];
 
-      // Decode token
-      const decoded = jwt.verify(token, process.env.JWT_SECRET || 'fallback_secret');
+      // Decode token using the required JWT_SECRET (no fallback)
+      const decoded = jwt.verify(token, JWT_SECRET);
 
       req.user = await User.findById(decoded.id).select('-passwordHash').catch(() => null);
-
-      // Support fallback for demo creator account
-      if (!req.user && decoded.id === '654321098765432109876543') {
-        req.user = {
-          _id: '654321098765432109876543',
-          name: 'Demo Influencer',
-          email: 'creator@cpeb.com',
-          role: 'CREATOR'
-        };
-      }
 
       if (!req.user) {
         return res.status(401).json({ success: false, error: 'Not authorized, user not found' });
@@ -32,7 +25,8 @@ const protect = async (req, res, next) => {
 
       next();
     } catch (error) {
-      console.error(error);
+      // Log the error server-side only — do not leak error details to the client
+      console.error('[Auth] Token verification failed:', error.message);
       res.status(401).json({ success: false, error: 'Not authorized, token failed' });
     }
   } else {
