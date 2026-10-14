@@ -91,6 +91,7 @@ export const HERO_SERVICES = [
 export default function ServiceHero() {
   const [activeIndex, setActiveIndex] = useState(0);
   const [isAnimating, setIsAnimating] = useState(false);
+  const [isPaused, setIsPaused] = useState(false);
 
   // Preload background images
   useEffect(() => {
@@ -99,6 +100,21 @@ export default function ServiceHero() {
       img.src = service.image;
     });
   }, []);
+
+  // Auto change hero section images every 2 seconds
+  useEffect(() => {
+    if (isPaused) return;
+
+    const timer = setTimeout(() => {
+      setIsAnimating(true);
+      setActiveIndex((prev) => (prev + 1) % HERO_SERVICES.length);
+      setTimeout(() => {
+        setIsAnimating(false);
+      }, 350);
+    }, 2000);
+
+    return () => clearTimeout(timer);
+  }, [activeIndex, isPaused]);
 
   const handleSelectService = useCallback((index) => {
     if (index === activeIndex) return;
@@ -214,7 +230,11 @@ export default function ServiceHero() {
         </div>
 
         {/* ── 4. Lower-Right "Photos —" / "Services —" Thumbnail Gallery ── */}
-        <div className="hero-photos-gallery-area">
+        <div 
+          className="hero-photos-gallery-area"
+          onMouseEnter={() => setIsPaused(true)}
+          onMouseLeave={() => setIsPaused(false)}
+        >
           <div className="gallery-header-row">
             <span className="gallery-title-text">Services</span>
             <span className="gallery-title-dash" />
@@ -261,7 +281,12 @@ export default function ServiceHero() {
         </div>
 
         {/* ── 5. Far-Right Vertical Pagination Indicator ── */}
-        <div className="hero-right-rail-nav" aria-label="Service navigation">
+        <div 
+          className="hero-right-rail-nav" 
+          aria-label="Service navigation"
+          onMouseEnter={() => setIsPaused(true)}
+          onMouseLeave={() => setIsPaused(false)}
+        >
           {HERO_SERVICES.map((service, idx) => {
             const isSelected = idx === activeIndex;
             return (
