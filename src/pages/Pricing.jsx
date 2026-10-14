@@ -124,7 +124,7 @@ export default function Pricing() {
               Brand Promotion
             </button>
             <button className={`pricing-tab ${activeTab === 'digital' ? 'active' : ''}`} onClick={() => setActiveTab('digital')}>
-              Digital Marketing
+              Tech Solutions
             </button>
             <button className={`pricing-tab ${activeTab === 'startup' ? 'active' : ''}`} onClick={() => setActiveTab('startup')}>
               Startup Support

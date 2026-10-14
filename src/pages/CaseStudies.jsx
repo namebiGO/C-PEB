@@ -18,7 +18,7 @@ const FILTER_CATS = [
   { id: 'business-support',       label: 'Business Support' },
   { id: 'influencer-connections', label: 'Influencer Connections' },
   { id: 'brand-promotion',        label: 'Brand Promotion' },
-  { id: 'digital-marketing',      label: 'Digital Marketing' },
+  { id: 'digital-marketing',      label: 'Tech Solutions' },
 ];
 
 const SERVICES = [
@@ -54,7 +54,7 @@ const SERVICES = [
   },
   {
     num: '06', id: 'digital-marketing',
-    title: 'Digital Marketing',
+    title: 'Tech Solutions',
     body: 'Building digital visibility and customer acquisition through content, campaigns and performance marketing.',
     items: ['Social Media Marketing', 'Performance Marketing', 'Content Strategy', 'Lead Generation', 'SEO', 'Conversion Optimisation'],
   },
@@ -81,12 +81,12 @@ const PROJECTS = [
     title: 'PayNova',
     client: 'PayNova (Fintech)',
     category: 'digital-marketing',
-    subtitle: 'Digital Marketing / User Acquisition',
+    subtitle: 'Tech Solutions / User Acquisition',
     year: '2024',
     summary: 'Acquiring 100,000 app users in 30 days for a new fintech product launch.',
     challenge: 'PayNova needed to hit a seed-round milestone of 100k active users quickly in a competitive fintech market.',
     outcome: '112,450 installs. Cost-per-install at ₹42 against a target of ₹80.',
-    services: ['Digital Marketing', 'Influencer Connections', 'PR Strategy'],
+    services: ['Tech Solutions', 'Influencer Connections', 'PR Strategy'],
     image: projectMockup2,
     imageAlt: 'PayNova fintech app user acquisition campaign',
     featured: true, layout: 'reverse', highlight: '+100k Users · 30 Days',
@@ -127,7 +127,7 @@ const PROJECTS = [
   {
     id: 'blocktrade', slug: 'blocktrade', number: '06',
     title: 'BlockTrade', client: 'BlockTrade (Crypto Exchange)',
-    category: 'digital-marketing', subtitle: 'Digital Marketing', year: '2023',
+    category: 'digital-marketing', subtitle: 'Tech Solutions', year: '2023',
     summary: 'Rebuilding user trust following market-wide confidence collapse.',
     highlight: '24 Media Features',
     image: 'https://images.unsplash.com/photo-1621504450181-5d156f8746c5?auto=format&fit=crop&w=800&q=80',

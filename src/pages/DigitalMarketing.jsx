@@ -176,7 +176,7 @@ const CONNECTED = [
   },
   {
     icon: <Megaphone size={20} />,
-    title: 'Digital Marketing',
+    title: 'Tech Solutions',
     desc: 'Campaign strategy, social media, paid advertising, content, and performance measurement.',
     link: '/services/digital-marketing',
     linkLabel: 'Current page',
@@ -536,7 +536,7 @@ export default function DigitalMarketing() {
   return (
     <div className="dm-page">
       <SEO
-        title="Digital Marketing Services | C-PEB"
+        title="Tech Solutions Services | C-PEB"
         description="Build your digital presence with search visibility, targeted campaigns, content strategy, and performance analytics. C-PEB connects SEO, advertising, social media and web development into a coordinated approach for your business."
       />
 
@@ -552,13 +552,13 @@ export default function DigitalMarketing() {
               <span className="dm-breadcrumb-sep">›</span>
               <span>Services</span>
               <span className="dm-breadcrumb-sep">›</span>
-              <span className="dm-breadcrumb-current">Digital Marketing</span>
+              <span className="dm-breadcrumb-current">Tech Solutions</span>
             </nav>
 
-            <p className="dm-hero-eyebrow">Digital Marketing</p>
+            <p className="dm-hero-eyebrow">Tech Solutions</p>
 
             <h1 className="dm-hero-h1">
-              Digital Marketing Built Around{' '}
+              Tech Solutions Built Around{' '}
               <span className="dm-h1-accent">Your Business Goals</span>
             </h1>
 
@@ -650,7 +650,7 @@ export default function DigitalMarketing() {
         <div className="container">
           <div className="dm-section-head">
             <p className="section-eyebrow">Services</p>
-            <h2>Digital Marketing Services</h2>
+            <h2>Tech Solutions Services</h2>
             <p>
               From improving organic visibility to managing targeted campaigns, we
               help businesses build a more consistent and measurable digital

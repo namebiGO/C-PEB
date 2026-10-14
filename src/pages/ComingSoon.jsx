@@ -7,7 +7,7 @@ const serviceInfo = {
   '/services/startup-support':   { name: 'Startup Support',   icon: <Rocket className="cs-icon-primary" /> },
   '/services/business-services': { name: 'Business Services',  icon: <CheckCircle2 className="cs-icon-primary" /> },
   '/services/brand-promotion':   { name: 'Brand Promotion',   icon: <CheckCircle2 className="cs-icon-primary" /> },
-  '/services/digital-marketing': { name: 'Digital Marketing', icon: <CheckCircle2 className="cs-icon-primary" /> },
+  '/services/digital-marketing': { name: 'Tech Solutions', icon: <CheckCircle2 className="cs-icon-primary" /> },
 };
 
 const ComingSoon = () => {

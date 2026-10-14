@@ -37,7 +37,7 @@ const SERVICES_DATA = [
   {
     id: "digital-marketing",
     number: "04",
-    title: "Digital Marketing",
+    title: "Tech Solutions",
     tagline: "Turn attention into measurable growth.",
     description: "Performance-focused digital strategies that help businesses reach the right audience, build stronger digital presence, and convert attention into meaningful results.",
     capabilities: ["SEO", "Social Media Marketing", "Paid Campaigns", "Content Strategy", "Performance Marketing"],

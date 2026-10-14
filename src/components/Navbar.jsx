@@ -9,7 +9,7 @@ const services = [
   { label: 'Startup Support', path: '/services/startup-support' },
   { label: 'Business Services', path: '/services/business-services' },
   { label: 'Brand Promotion', path: '/services/brand-promotion' },
-  { label: 'Digital Marketing', path: '/services/digital-marketing' },
+  { label: 'Tech Solutions', path: '/services/digital-marketing' },
 ];
 
 

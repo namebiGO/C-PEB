@@ -6,7 +6,7 @@ import SEO from './components/SEO'
 import ScrollToTop from './components/ScrollToTop'
 
 // Home sections — eagerly loaded (above the fold, needed immediately)
-import HeroSection from './components/HeroSection'
+import ServiceHero from './components/ServiceHero'
 import CreatorsForEveryBrand from './components/CreatorsForEveryBrand'
 import TrustBadges from './components/TrustBadges'
 import HomeServices from './components/HomeServices'
@@ -90,7 +90,7 @@ const HomePage = () => (
       title="C-PEB | Let's Change the Game for Indian Startups" 
       description="C-PEB is India's leading platform connecting funded startups with premium creators, while providing the operational and compliance backbone your business needs." 
     />
-    <HeroSection />
+    <ServiceHero />
     <TrustBadges />
     <div className="reveal"><HomeServices /></div>
     <div className="reveal"><WhyChooseUs /></div>

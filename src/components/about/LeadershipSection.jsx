@@ -38,7 +38,14 @@ const leadershipTeam = [
     linkedin: null,
     placeholder: false,
   },
-  { placeholder: true },
+  {
+    name: 'Adarsh Raj',
+    designation: 'Graphic Designer',
+    image: null,
+    bio: 'Adarsh brings C-PEB\'s brand to life through compelling visuals, creative direction, and design systems that make every client campaign look polished and unforgettable.',
+    linkedin: null,
+    placeholder: false,
+  },
   { placeholder: true },
   { placeholder: true },
 ];
