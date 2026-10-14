@@ -42,6 +42,7 @@ const NotFound          = lazy(() => import('./pages/NotFound'))
 const CategoryInfluencers = lazy(() => import('./pages/influencers/CategoryInfluencers'))
 const ComingSoon        = lazy(() => import('./pages/ComingSoon'))
 const StartupAdvisory   = lazy(() => import('./pages/StartupAdvisory'))
+const DigitalMarketing  = lazy(() => import('./pages/DigitalMarketing'))
 
 // Admin pages (heavy — only loaded when accessed)
 const AdminLayout       = lazy(() => import('./pages/admin/AdminLayout'))
@@ -160,7 +161,7 @@ function App() {
             <Route path="/services/startup-support"   element={<StartupSupport />} />
             <Route path="/services/business-services" element={<BusinessServices />} />
             <Route path="/services/brand-promotion"   element={<ComingSoon />} />
-            <Route path="/services/digital-marketing" element={<ComingSoon />} />
+            <Route path="/services/digital-marketing" element={<DigitalMarketing />} />
 
             {/* Content pages */}
             <Route path="/coming-soon"  element={<ComingSoon />} />
