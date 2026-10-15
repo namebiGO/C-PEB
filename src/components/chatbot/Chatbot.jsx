@@ -16,24 +16,32 @@ import {
   InfluencerCard,
   ServiceCard,
   PricingCard,
-  LeadConfirmationCard
+  LeadConfirmationCard,
+  WhatsAppHandoffCard
 } from './ChatbotCard';
 import { processMessage } from './chatbotEngine';
+import { buildHandoffUrl } from './whatsappHandoff';
 import './Chatbot.css';
 
 const INITIAL_WELCOME = {
   id: 'msg-welcome-0',
   sender: 'bot',
-  text: "Hi! 👋 Welcome to C-PEB. I can help you find influencers, explore business services, understand pricing, or connect you with our team. What are you looking for?",
+  text: "Hi! Welcome to C-PEB. 👋\n\nHow can our team help you today? Select any service below to connect directly with us on WhatsApp:",
   time: formatTime(new Date()),
   quickActions: [
-    'Find an Influencer',
-    'Influencer Marketing',
-    'Startup Services',
-    'Business Services',
-    'Pricing',
-    'Talk to a Team Member'
+    'Influencer Management',
+    'Event Management',
+    'Tech Solutions',
+    'Brand Growth',
+    'Something Else',
   ]
+};
+
+// Initial memory state for a fresh session — starts the wa_qualify flow
+const INITIAL_MEMORY = {
+  flow: 'wa_qualify',
+  wa_service: '',
+  wa_requirement: '',
 };
 
 function formatTime(date) {
@@ -93,7 +101,7 @@ export default function Chatbot() {
       const saved = sessionStorage.getItem('cpeb_chat_memory');
       if (saved) return JSON.parse(saved);
     } catch {}
-    return {};
+    return { ...INITIAL_MEMORY };
   });
 
   const [inputVal, setInputVal] = useState('');
@@ -139,7 +147,7 @@ export default function Chatbot() {
   };
 
   const handleClearChat = () => {
-    const freshMemory = {};
+    const freshMemory = { ...INITIAL_MEMORY };
     const freshMessages = [
       {
         ...INITIAL_WELCOME,
@@ -200,60 +208,122 @@ export default function Chatbot() {
     }
   };
 
+  // Handle quick actions — redirects to WhatsApp for services & WhatsApp CTAs
   const handleQuickAction = (actionText) => {
+    const lower = actionText.toLowerCase();
+
+    // 1. Direct WhatsApp quick reply
+    if (
+      lower === 'chat on whatsapp' ||
+      lower === 'continue on whatsapp' ||
+      lower.includes('whatsapp')
+    ) {
+      const handoffMsg = [...messages].reverse().find(
+        (m) => m.cardType === 'wa_handoff' && m.cards && m.cards[0]?.whatsappUrl
+      );
+      const url = handoffMsg ? handoffMsg.cards[0].whatsappUrl : 'https://wa.me/917079701229?text=Hi%20C-PEB%20Team%2C%20I%20would%20like%20to%20learn%20more%20about%20your%20services.';
+      try {
+        window.open(url, '_blank', 'noopener,noreferrer');
+      } catch (e) {}
+      return;
+    }
+
+    // 2. Navigation or reset
+    if (lower === 'choose another service' || lower === 'main menu' || lower === 'keep chatting') {
+      sendMessage(actionText);
+      return;
+    }
+
+    // 3. For EVERY service option, immediately open WhatsApp with prefilled message
+    let serviceName = '';
+    if (lower.includes('influencer') || lower.includes('creator')) {
+      serviceName = 'Influencer Management';
+    } else if (lower.includes('event')) {
+      serviceName = 'Event Management';
+    } else if (lower.includes('tech') || lower.includes('web') || lower.includes('app') || lower.includes('software') || lower.includes('it')) {
+      serviceName = 'Tech Solutions';
+    } else if (lower.includes('brand') || lower.includes('marketing') || lower.includes('campaign')) {
+      serviceName = 'Brand Growth';
+    } else if (lower.includes('startup') || lower.includes('fund') || lower.includes('advisory')) {
+      serviceName = 'Startup Support & Advisory';
+    } else if (lower.includes('something else') || lower.includes('other')) {
+      serviceName = 'General Business Advisory';
+    }
+
+    if (serviceName) {
+      const requirement = actionText !== serviceName ? actionText : `Inquiry for ${serviceName}`;
+      const url = buildHandoffUrl({ service: serviceName, requirement });
+      try {
+        window.open(url, '_blank', 'noopener,noreferrer');
+      } catch (e) {}
+
+      // Send message to display WhatsApp handoff card in chat
+      sendMessage(actionText);
+      return;
+    }
+
     sendMessage(actionText);
   };
 
-  // Card specific handlers
+  // Card specific handlers — redirect to WhatsApp for every service & creator
   const handleEnquireCreator = (influencer) => {
-    const updated = {
-      ...memory,
-      flow: 'lead_capture',
-      step: 'ask_name',
-      requirement: `Influencer inquiry for ${influencer.name} (${influencer.category} on ${influencer.platform})`
-    };
-    setMemory(updated);
+    const serviceName = 'Influencer Collaboration';
+    const requirement = `Collaboration inquiry with ${influencer.name} (${influencer.category} on ${influencer.platform})`;
+    const url = buildHandoffUrl({ service: serviceName, requirement });
+
+    try {
+      window.open(url, '_blank', 'noopener,noreferrer');
+    } catch (e) {}
 
     const botMsg = {
       id: `msg-bot-${Date.now()}`,
       sender: 'bot',
-      text: `Great choice! I have initiated an inquiry with **${influencer.name}**. May I have your full name to set up the collaboration brief?`,
+      text: `Connecting you with our team regarding **${influencer.name}**! 🚀\n\nClick **Continue on WhatsApp** below to discuss creator availability & rates at **+91 70797 01229**:`,
+      cardType: 'wa_handoff',
+      cards: [{ service: serviceName, requirement, whatsappUrl: url }],
+      quickActions: ['Continue on WhatsApp', 'Choose Another Service'],
       time: formatTime(new Date())
     };
     setMessages((prev) => [...prev, botMsg]);
   };
 
   const handleQuoteService = (service) => {
-    const updated = {
-      ...memory,
-      flow: 'lead_capture',
-      step: 'ask_name',
-      requirement: `Quote request for ${service.title} (${service.category})`
-    };
-    setMemory(updated);
+    const serviceName = service.title || 'Technical & Business Service';
+    const requirement = `Quote request for ${serviceName} (${service.category || 'Services'})`;
+    const url = buildHandoffUrl({ service: serviceName, requirement });
+
+    try {
+      window.open(url, '_blank', 'noopener,noreferrer');
+    } catch (e) {}
 
     const botMsg = {
       id: `msg-bot-${Date.now()}`,
       sender: 'bot',
-      text: `Let's get you a tailored proposal for **${service.title}**. May I have your name to get started?`,
+      text: `Connecting you with our team for **${serviceName}**! 🚀\n\nClick **Continue on WhatsApp** below to discuss your project scope & pricing at **+91 70797 01229**:`,
+      cardType: 'wa_handoff',
+      cards: [{ service: serviceName, requirement, whatsappUrl: url }],
+      quickActions: ['Continue on WhatsApp', 'Choose Another Service'],
       time: formatTime(new Date())
     };
     setMessages((prev) => [...prev, botMsg]);
   };
 
   const handleSelectPricing = (pkg) => {
-    const updated = {
-      ...memory,
-      flow: 'lead_capture',
-      step: 'ask_name',
-      requirement: `Subscription / inquiry for package: ${pkg.name} (${pkg.price})`
-    };
-    setMemory(updated);
+    const serviceName = `Package Subscription: ${pkg.name}`;
+    const requirement = `Subscription inquiry for ${pkg.name} (${pkg.price})`;
+    const url = buildHandoffUrl({ service: serviceName, requirement });
+
+    try {
+      window.open(url, '_blank', 'noopener,noreferrer');
+    } catch (e) {}
 
     const botMsg = {
       id: `msg-bot-${Date.now()}`,
       sender: 'bot',
-      text: `You have selected the **${pkg.name}** plan (${pkg.price}). May I have your full name so our team can prepare your onboarding?`,
+      text: `Connecting you with our team for the **${pkg.name}** plan! 🚀\n\nClick **Continue on WhatsApp** below to get started at **+91 70797 01229**:`,
+      cardType: 'wa_handoff',
+      cards: [{ service: serviceName, requirement, whatsappUrl: url }],
+      quickActions: ['Continue on WhatsApp', 'Choose Another Service'],
       time: formatTime(new Date())
     };
     setMessages((prev) => [...prev, botMsg]);
@@ -442,6 +512,17 @@ export default function Chatbot() {
                     {msg.cardType === 'lead_confirmation' &&
                       msg.cards.map((lead, idx) => (
                         <LeadConfirmationCard key={idx} lead={lead} />
+                      ))}
+
+                    {msg.cardType === 'wa_handoff' &&
+                      msg.cards.map((handoff, idx) => (
+                        <WhatsAppHandoffCard
+                          key={idx}
+                          handoff={handoff}
+                          onKeepChatting={() => {
+                            sendMessage('Keep Chatting');
+                          }}
+                        />
                       ))}
                   </div>
                 )}

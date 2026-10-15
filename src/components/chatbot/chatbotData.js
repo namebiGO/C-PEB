@@ -793,10 +793,11 @@ export const PRICING_PACKAGES = {
 export const COMPANY_INFO = {
   name: 'C-PEB',
   tagline: "Let's Change the Game for Indian Startups",
-  phone: '+91 98765 43210',
-  phoneDisplay: '+91 98765 43210 (Mon–Sat, 9 AM – 6 PM)',
+  phone: '+91 70797 01229',
+  phoneDisplay: '+91 70797 01229 (Mon–Sat, 9 AM – 6 PM)',
   email: 'office@cpebindiait.com',
-  whatsappUrl: 'https://wa.me/919876543210?text=Hi%20C-PEB%20Team%2C%20I%20would%20like%20to%20learn%20more%20about%20your%20services.',
+  whatsappNumber: '917079701229',
+  whatsappUrl: 'https://wa.me/917079701229?text=Hi%20C-PEB%20Team%2C%20I%20would%20like%20to%20learn%20more%20about%20your%20services.',
   address: 'Mumbai, Maharashtra, India',
   hours: 'Monday to Saturday, 9:00 AM – 6:00 PM IST',
   leadApiEndpoint: '/api/public/leads'

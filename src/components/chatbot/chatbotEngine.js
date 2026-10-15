@@ -5,6 +5,119 @@ import {
   COMPANY_INFO,
   COMMON_FAQS
 } from './chatbotData';
+import { buildHandoffUrl } from './whatsappHandoff';
+
+// ─────────────────────────────────────────────────────────────────
+// WhatsApp Guided Flow — service-aware question trees
+// Max 3 meaningful questions before handoff offer.
+// ─────────────────────────────────────────────────────────────────
+const WA_SERVICE_QUESTIONS = {
+  'Influencer Management': {
+    label: 'Influencer Management',
+    q2: {
+      text: "What are you looking to achieve with influencer marketing?",
+      options: [
+        'Find influencers for my brand',
+        'Run an influencer campaign',
+        'Collaborate as a creator',
+        'Something else',
+      ],
+    },
+    q3: {
+      text: "Do you have a campaign budget in mind?",
+      options: [
+        'Under ₹25,000',
+        '₹25,000 – ₹1 lakh',
+        'Above ₹1 lakh',
+        'Need guidance',
+      ],
+    },
+  },
+  'Event Management': {
+    label: 'Event Management',
+    q2: {
+      text: "What type of event are you planning?",
+      options: [
+        'Corporate event',
+        'Brand activation',
+        'College or entertainment event',
+        'Other event',
+      ],
+    },
+    q3: {
+      text: "When are you planning the event?",
+      options: [
+        'Within 2 weeks',
+        'Within a month',
+        'Later',
+        'Date not decided',
+      ],
+    },
+  },
+  'Tech Solutions': {
+    label: 'Tech Solutions',
+    q2: {
+      text: "What kind of tech solution do you need?",
+      options: [
+        'Website development',
+        'Web application',
+        'E-commerce website',
+        'Other technical support',
+      ],
+    },
+    q3: {
+      text: "What best describes your project?",
+      options: [
+        'New project from scratch',
+        'Improving an existing solution',
+        'Custom development',
+        'Not sure yet',
+      ],
+    },
+  },
+  'Brand Growth': {
+    label: 'Brand Growth',
+    q2: {
+      text: "What would you like help with?",
+      options: [
+        'Brand promotion',
+        'Digital campaigns',
+        'Creator collaborations',
+        'Other requirements',
+      ],
+    },
+    q3: {
+      text: "What is your approximate monthly budget?",
+      options: [
+        'Under ₹20,000',
+        '₹20,000 – ₹50,000',
+        'Above ₹50,000',
+        'Not sure yet',
+      ],
+    },
+  },
+  'Something Else': {
+    label: 'Something Else',
+    q2: {
+      text: "Could you briefly describe what you're looking for?",
+      options: [
+        'Business advisory',
+        'Compliance & legal support',
+        'Business loans & funding',
+        'Other',
+      ],
+    },
+    q3: {
+      text: "What's the best way to proceed?",
+      options: [
+        'Get a callback',
+        'Get a proposal',
+        'Just exploring for now',
+      ],
+    },
+  },
+};
+
 
 // Normalized category matcher
 const CATEGORY_KEYWORDS = {
@@ -174,6 +287,11 @@ export function processMessage(userInput, memory = {}) {
     name: memory.name || '',
     company: memory.company || ''
   };
+
+  // 0. In-progress WhatsApp Qualify Flow (NEW — takes priority before other flows)
+  if (memory.flow === 'wa_qualify') {
+    return handleWaQualifyStep(text, updatedMemory);
+  }
 
   // 1. In-progress Lead Capture Flow
   if (memory.flow === 'lead_capture') {
@@ -361,19 +479,28 @@ export function processMessage(userInput, memory = {}) {
     };
   }
 
-  // Greeting
+  // Greeting — prompts user to pick a service to connect on WhatsApp
   if (lower === 'hi' || lower === 'hello' || lower === 'hey' || lower === 'start') {
+    updatedMemory.flow = 'wa_qualify';
+    updatedMemory.wa_service = '';
+    updatedMemory.wa_requirement = '';
     return {
-      text: "Hello! How can I assist your business today? I can help you source influencers, explore our technical and business services, check pricing, or schedule a strategy call.",
-      quickActions: ['Find an Influencer', 'Influencer Marketing', 'Startup Services', 'Business Services', 'Pricing', 'Talk to a Team Member'],
+      text: "Hi! Welcome to C-PEB. 👋\n\nHow can our team help you today? Select any service below to connect directly with us on WhatsApp:",
+      quickActions: [
+        'Influencer Management',
+        'Event Management',
+        'Tech Solutions',
+        'Brand Growth',
+        'Something Else',
+      ],
       updatedMemory
     };
   }
 
-  // Fallback Handling (Prompt requirement 16)
+  // Fallback Handling — offer services or direct WhatsApp chat
   return {
-    text: "I want to make sure I understand correctly. Are you looking for an influencer, a business service, pricing information, or help from our team?",
-    quickActions: ['Find Influencer', 'Explore Services', 'Pricing', 'Contact Team'],
+    text: "I can connect you directly with the C-PEB team on WhatsApp for any of our services. Which service are you interested in?",
+    quickActions: ['Influencer Management', 'Event Management', 'Tech Solutions', 'Brand Growth', 'Chat on WhatsApp'],
     updatedMemory
   };
 }
@@ -614,6 +741,89 @@ function finalizeLead(memory) {
     cardType: 'lead_confirmation',
     cards: [leadPayload],
     quickActions: ['Explore Influencers', 'View Services Catalog', 'Chat on WhatsApp', 'Start New Conversation'],
+    updatedMemory: memory
+  };
+}
+
+// ─────────────────────────────────────────────────────────────────
+// WhatsApp Lead Flow Handler
+// For every service selected, immediately creates the WhatsApp handoff.
+// ─────────────────────────────────────────────────────────────────
+function handleWaQualifyStep(text, memory) {
+  const lower = text.toLowerCase();
+
+  // Reset / Main menu
+  if (
+    lower.includes('keep chatting') ||
+    lower.includes('main menu') ||
+    lower.includes('explore services')
+  ) {
+    memory.flow = 'wa_qualify';
+    return {
+      text: "No problem! What else can our team help you with? You can select any service below to connect on WhatsApp:",
+      quickActions: ['Influencer Management', 'Event Management', 'Tech Solutions', 'Brand Growth', 'Something Else'],
+      updatedMemory: memory
+    };
+  }
+
+  // Choose another service
+  if (
+    lower.includes('choose another service') ||
+    lower.includes('other service') ||
+    lower.includes('start over')
+  ) {
+    return {
+      text: "Which service would you like to discuss with the C-PEB team?",
+      quickActions: [
+        'Influencer Management',
+        'Event Management',
+        'Tech Solutions',
+        'Brand Growth',
+        'Something Else',
+      ],
+      updatedMemory: memory
+    };
+  }
+
+  // Identify service name
+  let serviceName = 'General Inquiry';
+  let requirement = text;
+
+  if (lower.includes('influencer') || lower.includes('creator')) {
+    serviceName = 'Influencer Management';
+  } else if (lower.includes('event')) {
+    serviceName = 'Event Management';
+  } else if (lower.includes('tech') || lower.includes('it') || lower.includes('web') || lower.includes('app') || lower.includes('software')) {
+    serviceName = 'Tech Solutions';
+  } else if (lower.includes('brand') || lower.includes('market') || lower.includes('campaign')) {
+    serviceName = 'Brand Growth';
+  } else if (lower.includes('startup') || lower.includes('fund') || lower.includes('advisory')) {
+    serviceName = 'Startup Support & Advisory';
+  } else if (lower.includes('something else') || lower.includes('other')) {
+    serviceName = 'General Business Advisory';
+  } else if (memory.wa_service) {
+    serviceName = memory.wa_service;
+    requirement = text;
+  } else {
+    serviceName = text;
+  }
+
+  memory.wa_service = serviceName;
+  memory.wa_requirement = requirement;
+
+  const waState = {
+    service: serviceName,
+    requirement: requirement !== serviceName ? requirement : `Inquiry for ${serviceName}`,
+    qualifier: 'Website Lead Inquiry',
+  };
+
+  const whatsappUrl = buildHandoffUrl(waState);
+
+  return {
+    text: `Redirecting you to our team for **${serviceName}**! 🚀\n\nClick **Continue on WhatsApp** below to discuss your project directly with our specialists at **+91 70797 01229**. Your requirement is prefilled.`,
+    cardType: 'wa_handoff',
+    cards: [{ ...waState, whatsappUrl }],
+    quickActions: ['Continue on WhatsApp', 'Choose Another Service', 'Keep Chatting'],
     updatedMemory: memory
   };
 }

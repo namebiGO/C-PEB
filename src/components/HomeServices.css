@@ -550,11 +550,81 @@
 
   .hs-mobile-visual {
     background: var(--bg-2);
-    padding: 2rem 1rem;
+    padding: 1.75rem 1rem;
     border-radius: 12px;
     margin-bottom: 1.5rem;
     border: 1px solid var(--border);
     display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    box-sizing: border-box;
+    width: 100%;
+  }
+
+  .hs-mobile-visual .sv-container {
+    max-width: 100%;
+    box-sizing: border-box;
+  }
+
+  /* Startup Visual Responsive — prevents node clipping on mobile */
+  .hs-mobile-visual .sv-startup {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: clamp(4px, 1.8vw, 10px);
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .hs-mobile-visual .sv-startup .sv-node {
+    font-size: clamp(0.68rem, 2vw, 0.75rem);
+    letter-spacing: clamp(0.02em, 0.4vw, 0.08em);
+    padding: clamp(0.35rem, 1.2vw, 0.5rem) clamp(0.55rem, 1.8vw, 0.9rem);
+    border-radius: 20px;
+    white-space: nowrap;
+    flex-shrink: 0;
+    box-sizing: border-box;
+  }
+
+  .hs-mobile-visual .sv-startup .sv-connector {
+    flex: 1 1 8px;
+    min-width: 6px;
+    max-width: 32px;
+    height: 2px;
+  }
+
+  /* Business Visual Responsive */
+  .hs-mobile-visual .sv-business {
+    gap: clamp(0.5rem, 2.5vw, 1.25rem);
+    justify-content: center;
+  }
+
+  .hs-mobile-visual .sv-b-node {
+    font-size: clamp(0.85rem, 2.2vw, 1.05rem);
+  }
+
+  .hs-mobile-visual .sv-b-arrow {
+    flex-shrink: 0;
+    width: 14px;
+    height: 14px;
+  }
+
+  /* Brand Visual Responsive */
+  .hs-mobile-visual .sv-brand {
+    gap: clamp(4px, 1.2vw, 8px);
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  .hs-mobile-visual .sv-br-node {
+    font-size: clamp(0.65rem, 2vw, 0.75rem);
+    padding: 0.4rem clamp(0.6rem, 1.5vw, 1rem);
+    letter-spacing: 0.08em;
+  }
+
+  .hs-mobile-visual .sv-br-line {
+    width: clamp(8px, 2vw, 16px);
   }
 
   .hs-proof {
@@ -572,6 +642,29 @@
     font-size: 2.25rem;
   }
   
+  .hs-accordion-inner {
+    padding: 1.25rem 1rem;
+  }
+
+  .hs-mobile-visual {
+    padding: 1.5rem 0.65rem;
+  }
+
+  .hs-mobile-visual .sv-startup {
+    gap: clamp(4px, 1.5vw, 8px);
+  }
+
+  .hs-mobile-visual .sv-startup .sv-node {
+    font-size: clamp(0.64rem, 2.6vw, 0.72rem);
+    padding: 0.38rem clamp(0.45rem, 1.8vw, 0.7rem);
+    letter-spacing: 0.04em;
+  }
+
+  .hs-mobile-visual .sv-startup .sv-connector {
+    min-width: 4px;
+    max-width: 20px;
+  }
+
   .hs-proof-metrics {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -583,5 +676,52 @@
     flex-wrap: wrap;
     justify-content: center;
     padding: 0.75rem;
+  }
+}
+
+@media (max-width: 380px) {
+  .home-services .container {
+    padding: 0 1rem;
+  }
+
+  .hs-accordion-trigger {
+    padding: 1rem 0.75rem;
+    gap: 0.65rem;
+  }
+
+  .hs-accordion-inner {
+    padding: 1rem 0.5rem;
+  }
+
+  .hs-mobile-visual {
+    padding: 1.25rem 0.35rem;
+  }
+
+  .hs-mobile-visual .sv-startup {
+    gap: 3px;
+  }
+
+  .hs-mobile-visual .sv-startup .sv-node {
+    font-size: 0.62rem;
+    padding: 0.32rem 0.45rem;
+    letter-spacing: 0.02em;
+  }
+
+  .hs-mobile-visual .sv-startup .sv-connector {
+    min-width: 4px;
+    max-width: 12px;
+  }
+
+  .hs-mobile-visual .sv-business {
+    gap: 0.35rem;
+  }
+
+  .hs-mobile-visual .sv-b-node {
+    font-size: 0.8rem;
+  }
+
+  .hs-mobile-visual .sv-b-arrow {
+    width: 12px;
+    height: 12px;
   }
 }

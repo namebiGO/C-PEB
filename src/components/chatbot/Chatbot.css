@@ -988,7 +988,188 @@
   background: #0a7c3e;
 }
 
+/* ── WhatsApp Handoff Card ── */
+.cb-wa-handoff-card {
+  width: 100%;
+  background: var(--surface, #ffffff);
+  border: 1px solid #86efac;
+  border-radius: 14px;
+  overflow: hidden;
+  margin-top: 6px;
+  box-shadow: 0 4px 16px rgba(23, 168, 90, 0.1);
+}
+
+[data-theme='dark'] .cb-wa-handoff-card {
+  background: #101d14;
+  border-color: #166534;
+}
+
+.cb-wa-handoff-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 11px 13px;
+  background: linear-gradient(135deg, #17a85a 0%, #0a7c3e 100%);
+}
+
+.cb-wa-handoff-icon {
+  width: 36px;
+  height: 36px;
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.cb-wa-handoff-title {
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: #ffffff;
+  margin: 0;
+  line-height: 1.3;
+}
+
+.cb-wa-handoff-sub {
+  font-size: 0.73rem;
+  color: rgba(255, 255, 255, 0.85);
+  margin: 2px 0 0 0;
+  line-height: 1.3;
+}
+
+.cb-wa-summary {
+  padding: 10px 13px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.cb-wa-summary-row {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  font-size: 0.78rem;
+}
+
+.cb-wa-summary-label {
+  font-weight: 700;
+  color: var(--text-2, #475569);
+  min-width: 80px;
+  flex-shrink: 0;
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.cb-wa-summary-val {
+  color: var(--text-1, #0f172a);
+  font-weight: 500;
+  line-height: 1.4;
+}
+
+[data-theme='dark'] .cb-wa-summary-val {
+  color: #e2e8f0;
+}
+
+.cb-wa-review-note {
+  font-size: 0.72rem;
+  color: var(--text-3, #94a3b8);
+  margin: 8px 13px 0;
+  line-height: 1.5;
+}
+
+.cb-wa-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  padding: 10px 13px 13px;
+}
+
+/* Primary — WhatsApp green */
+.cb-wa-primary-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  width: 100%;
+  padding: 10px 14px;
+  background: #25D366;
+  color: #ffffff !important;
+  text-decoration: none !important;
+  box-sizing: border-box;
+  border: none;
+  border-radius: 9px;
+  font-family: inherit;
+  font-size: 0.85rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.15s ease;
+  letter-spacing: 0.01em;
+}
+
+.cb-wa-primary-btn:hover {
+  background: #128C7E;
+  color: #ffffff !important;
+  text-decoration: none !important;
+  transform: translateY(-1px);
+}
+
+.cb-wa-primary-btn:active {
+  transform: translateY(0);
+}
+
+/* Secondary — quiet ghost button */
+.cb-wa-secondary-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  padding: 8px 14px;
+  background: transparent;
+  color: var(--text-2, #475569);
+  border: 1px solid var(--border, #e2e8f0);
+  border-radius: 9px;
+  font-family: inherit;
+  font-size: 0.8rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+}
+
+.cb-wa-secondary-btn:hover {
+  background: var(--bg-2, #f8fafc);
+  border-color: var(--text-3, #94a3b8);
+  color: var(--text-1, #0f172a);
+}
+
+[data-theme='dark'] .cb-wa-secondary-btn {
+  color: #94a3b8;
+  border-color: #2b303c;
+}
+
+[data-theme='dark'] .cb-wa-secondary-btn:hover {
+  background: #181b20;
+  color: #f1f5f9;
+}
+
+/* Reduced motion: strip unnecessary animations */
+@media (prefers-reduced-motion: reduce) {
+  .cb-pulse-ring,
+  .cb-launcher-badge,
+  .cb-status-dot,
+  .cb-dot {
+    animation: none;
+  }
+  .cb-launcher-btn,
+  .cb-wa-primary-btn,
+  .cb-wa-secondary-btn {
+    transition: none;
+  }
+}
+
 /* ── Keyframe Animations ── */
+
 @keyframes cbFadeSlideUp {
   0% {
     opacity: 0;

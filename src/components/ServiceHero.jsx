@@ -146,7 +146,7 @@ export default function ServiceHero() {
         {HERO_SERVICES.map((service, idx) => (
           <div
             key={service.id}
-            className={`hero-bg-layer ${idx === activeIndex ? 'active' : ''}`}
+            className={`hero-bg-layer hero-bg-${service.id} ${idx === activeIndex ? 'active' : ''}`}
             style={{ backgroundImage: `url(${service.image})` }}
           />
         ))}

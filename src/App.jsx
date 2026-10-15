@@ -17,6 +17,7 @@ import LatestServices from './components/LatestServices'
 import WorkingProcess from './components/WorkingProcess'
 import AffiliatePayments from './components/AffiliatePayments'
 import FAQSection from './components/FAQSection'
+import CreatorApplySection from './components/CreatorApplySection'
 import TestimonialsScroll from './components/TestimonialsScroll'
 import TrustedLeadersSection from './components/TrustedLeadersSection'
 import Chatbot from './components/chatbot/Chatbot'
@@ -100,6 +101,7 @@ const HomePage = () => (
     <div className="reveal"><TopInfluencers /></div>
     <div className="reveal"><LatestServices /></div>
     <div className="reveal"><FAQSection /></div>
+    <div className="reveal"><CreatorApplySection /></div>
     <div className="reveal"><TrustedLeadersSection /></div>
     <div className="reveal"><TestimonialsScroll /></div>
     <div className="reveal"><AffiliatePayments /></div>
