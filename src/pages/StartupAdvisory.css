@@ -787,6 +787,39 @@
   color: var(--text-1);
 }
 
+/* ── Plan Comparison Table — Mobile Responsive ── */
+@media (max-width: 768px) {
+  .adv-table-container {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    border-radius: 12px;
+    /* Stretch to viewport edges with a small gutter on narrow screens */
+    margin-left: -0.25rem;
+    margin-right: -0.25rem;
+  }
+
+  .adv-table {
+    /* Ensure all 3 columns have enough room before horizontal scroll kicks in */
+    min-width: 520px;
+  }
+
+  .adv-table th {
+    padding: 1rem 1rem;
+    font-size: 0.72rem;
+  }
+
+  .adv-table td {
+    padding: 0.9rem 1rem;
+    font-size: 0.88rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .adv-table {
+    min-width: 460px;
+  }
+}
+
 /* ── Section 8: How It Works ─────────────────────────── */
 .adv-steps-grid {
   display: grid;
