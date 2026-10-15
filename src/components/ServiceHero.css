@@ -513,16 +513,24 @@
 }
 
 @media (max-width: 992px) {
+  .indotourism-hero {
+    min-height: auto;
+    align-items: flex-start;
+  }
+
   .hero-content-stage {
     padding-left: 70px;
     padding-right: 30px;
+    padding-bottom: 2.5rem;
+    min-height: auto;
+    justify-content: flex-start;
   }
 
   .hero-photos-gallery-area {
     position: relative;
     right: auto;
     bottom: auto;
-    margin-top: 2.5rem;
+    margin-top: 2rem;
   }
 
   .gallery-thumbs-row {
@@ -536,13 +544,19 @@
 }
 
 @media (max-width: 768px) {
+  .indotourism-hero {
+    min-height: auto;
+    align-items: flex-start;
+  }
+
   .hero-left-rail {
     display: none;
   }
 
   .hero-content-stage {
-    padding: 100px 20px 100px 20px;
+    padding: 95px 20px 1.75rem 20px;
     min-height: auto;
+    justify-content: flex-start;
   }
 
   .hero-display-title {
@@ -569,9 +583,9 @@
     position: relative;
     right: auto;
     bottom: auto;
-    margin-top: 2rem;
+    margin-top: 1.75rem;
     width: 100%;
-    padding-bottom: 70px;
+    padding-bottom: 0;
   }
 
   .gallery-thumbs-row {
